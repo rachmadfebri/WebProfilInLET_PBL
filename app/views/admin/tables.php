@@ -21,12 +21,12 @@
     <link
       rel="apple-touch-icon"
       sizes="76x76"
-      href="../../../../public/assets/img/apple-icon.png"
+      href="assets/img/apple-icon.png"
     />
     <link
       rel="icon"
       type="image/png"
-      href="../../../../public/assets/img/favicon.png"
+      href="assets/img/favicon.png"
     />
     <title>Soft UI Dashboard Tailwind</title>
     <!--     Fonts and icons     -->
@@ -41,11 +41,11 @@
     ></script>
     <!-- Nucleo Icons -->
     <link
-      href="../../../../public/assets/css/nucleo-icons.css"
+      href="assets/css/nucleo-icons.css"
       rel="stylesheet"
     />
     <link
-      href="../../../../public/assets/css/nucleo-svg.css"
+      href="assets/css/nucleo-svg.css"
       rel="stylesheet"
     />
     <!-- Main Styling -->
@@ -53,7 +53,7 @@
     <link href="../../../../assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
 =======
     <link
-      href="../../../../public/assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
+      href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
       rel="stylesheet"
     />
 >>>>>>> 4ae8a1c7f20522c3271a903c4cb86cf5c56ee7e4:app/views/admin/pages/tables.html

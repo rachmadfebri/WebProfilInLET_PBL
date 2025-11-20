@@ -31,15 +31,14 @@ if ($action) {
     exit;
 }
 
-// --- TAMPILKAN HALAMAN (GET REQUEST) ---
 switch ($page) {
     case 'login':
-        // Lokasi View: app/views/pages/sign-in.php
+        // ... (kode yang sudah ada)
         require __DIR__ . '/../app/views/pages/sign-in.php'; 
         break;
-
+        
     case 'register':
-        // Lokasi View: app/views/pages/sign-up.php
+        // ... (kode yang sudah ada)
         require __DIR__ . '/../app/views/pages/sign-up.php';
         break;
 
@@ -50,6 +49,13 @@ switch ($page) {
     case 'mahasiswa-dashboard':
         $mahasiswaController->dashboard();
         break;
+
+    // --- Tambahkan blok ini ---
+    case 'tables': 
+        // Anda perlu memastikan jalur ini benar. Asumsi lokasi view adalah app/views/admin/tables.php
+        require __DIR__ . '/../app/views/admin/tables.php'; 
+        break;
+    // -------------------------
 
     default:
         echo "Page not found.";

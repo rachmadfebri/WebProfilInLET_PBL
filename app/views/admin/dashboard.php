@@ -6,12 +6,12 @@
     <link
       rel="apple-touch-icon"
       sizes="76x76"
-      href="../../../../public/assets/img/apple-icon.png"
+      href="public/assets/img/apple-icon.png"
     />
     <link
       rel="icon"
       type="image/png"
-      href="../../../../public/assets/img/favicon.png"
+      href="public/assets/img/favicon.png"
     />
     <title>Soft UI Dashboard Tailwind</title>
     <!--     Fonts and icons     -->
@@ -24,8 +24,6 @@
       src="https://kit.fontawesome.com/42d5adcbca.js"
       crossorigin="anonymous"
     ></script>
-    <!-- Nucleo Icons -->
-<<<<<<< HEAD:app/views/admin/dashboard.php
      <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
   <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
   
@@ -34,23 +32,7 @@
   
   <!-- Main Styling -->
   <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
-=======
-    <link
-      href="../../../../public/assets/css/nucleo-icons.css"
-      rel="stylesheet"
-    />
-    <link
-      href="../../../../public/assets/css/nucleo-svg.css"
-      rel="stylesheet"
-    />
-    <!-- Popper -->
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <!-- Main Styling -->
-    <link
-      href="../../../../public/assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
-      rel="stylesheet"
-    />
->>>>>>> 4ae8a1c7f20522c3271a903c4cb86cf5c56ee7e4:app/views/admin/pages/dashboard.html
+
 
     <!-- Nepcha Analytics (nepcha.com) -->
     <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
@@ -79,13 +61,13 @@
           target="_blank"
         >
           <img
-            src="../assets/img/logo-ct.png"
+            src="assets/img/logo.jpg"
             class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-8"
             alt="main_logo"
           />
           <span
             class="ml-1 font-semibold transition-all duration-200 ease-nav-brand"
-            >Soft UI Dashboard</span
+            >Web Inlet</span
           >
         </a>
       </div>
@@ -101,7 +83,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
-              href="../pages/dashboard.html"
+              href="pages/dashboard.html"
             >
               <div
                 class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -152,7 +134,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/tables.html"
+              href="?page=tables"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -195,7 +177,7 @@
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Tables</span
+                >galery</span
               >
             </a>
           </li>
@@ -203,7 +185,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/billing.html"
+              href="pages/billing.html"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center fill-current stroke-0 text-center xl:p-2.5"
@@ -246,7 +228,7 @@
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Billing</span
+                >News</span
               >
             </a>
           </li>
@@ -254,7 +236,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/virtual-reality.html"
+              href="pages/virtual-reality.html"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -309,7 +291,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/rtl.html"
+              href="pages/rtl.html"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -372,7 +354,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/profile.html"
+              href="pages/profile.html"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -419,7 +401,7 @@
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Profile</span
+                >Team</span
               >
             </a>
           </li>
@@ -427,7 +409,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/sign-in.html"
+              href="pages/sign-in.html"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -478,7 +460,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/sign-up.html"
+              href="pages/sign-up.html"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -536,8 +518,8 @@
         </ul>
       </div>
 
-      <div class="mx-4">
-        <!-- load phantom colors for card after: -->
+      <!-- <div class="mx-4">
+        load phantom colors for card after:
         <p
           class="invisible hidden text-gray-800 text-red-500 text-red-600 after:bg-gradient-to-tl after:from-gray-900 after:to-slate-800 after:bg-gradient-to-tl after:from-blue-600 after:to-cyan-400 after:bg-gradient-to-tl after:from-red-500 after:to-yellow-400 after:bg-gradient-to-tl after:from-green-600 after:to-lime-400 after:bg-gradient-to-tl after:from-red-600 after:to-rose-400 after:bg-gradient-to-tl after:from-slate-600 after:to-slate-300 text-lime-500 text-cyan-500 text-slate-400 text-fuchsia-500"
         ></p>
@@ -548,7 +530,7 @@
           <div
             class="mb-7.5 absolute h-full w-full rounded-2xl bg-cover bg-center"
             style="
-              background-image: url('../assets/img/curved-images/white-curved.jpeg');
+              background-image: url('assets/img/curved-images/white-curved.jpeg');
             "
           ></div>
           <div class="relative z-20 flex-auto w-full p-4 text-left text-white">
@@ -560,20 +542,9 @@
                 sidenav-card-icon
               ></i>
             </div>
-            <div class="transition-all duration-200 ease-nav-brand">
-              <h6 class="mb-0 text-white">Need help?</h6>
-              <p class="mt-0 mb-4 font-semibold leading-tight text-xs">
-                Please check our docs
-              </p>
-              <a
-                href="https://www.creative-tim.com/learning-lab/tailwind/html/quick-start/soft-ui-dashboard/"
-                target="_blank"
-                class="inline-block w-full px-8 py-2 mb-0 font-bold text-center text-black uppercase transition-all ease-in bg-white border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs hover:shadow-soft-2xl hover:scale-102"
-                >Documentation</a
-              >
-            </div>
+            
           </div>
-        </div>
+        </div> -->
         <!-- pro btn  -->
         <a
           class="inline-block w-full px-6 py-3 my-4 font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro text-xs bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102"
@@ -646,7 +617,7 @@
               </li> -->
               <li class="flex items-center">
                 <a
-                  href="../pages/sign-in.html"
+                  href="pages/sign-in.html"
                   class="block px-0 py-2 font-semibold transition-all ease-nav-brand text-sm text-slate-500"
                 >
                   <i class="fa fa-user sm:mr-1"></i>
@@ -711,7 +682,7 @@
                       <div class="flex py-1">
                         <div class="my-auto">
                           <img
-                            src="../assets/img/team-2.jpg"
+                            src="assets/img/team-2.jpg"
                             class="inline-flex items-center justify-center mr-4 text-white text-sm h-9 w-9 max-w-none rounded-xl"
                           />
                         </div>
@@ -737,7 +708,7 @@
                       <div class="flex py-1">
                         <div class="my-auto">
                           <img
-                            src="../assets/img/small-logos/logo-spotify.svg"
+                            src="assets/img/small-logos/logo-spotify.svg"
                             class="inline-flex items-center justify-center mr-4 text-white text-sm bg-gradient-to-tl from-gray-900 to-slate-800 h-9 w-9 max-w-none rounded-xl"
                           />
                         </div>
@@ -1019,7 +990,7 @@
                       class="h-full bg-gradient-to-tl from-purple-700 to-pink-500 rounded-xl"
                     >
                       <img
-                        src="../assets/img/shapes/waves-white.svg"
+                        src="assets/img/shapes/waves-white.svg"
                         class="absolute top-0 hidden w-1/2 h-full lg:block"
                         alt="waves"
                       />
@@ -1028,7 +999,7 @@
                       >
                         <img
                           class="relative z-20 w-full pt-6"
-                          src="../assets/img/illustrations/rocket-white.png"
+                          src="assets/img/illustrations/rocket-white.png"
                           alt="rocket"
                         />
                       </div>
@@ -1044,7 +1015,7 @@
             >
               <div
                 class="relative h-full overflow-hidden bg-cover rounded-xl"
-                style="background-image: url('../assets/img/ivancik.jpg')"
+                style="background-image: url('assets/img/ivancik.jpg')"
               >
                 <span
                   class="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-gray-900 to-slate-800 opacity-80"
@@ -1501,7 +1472,7 @@
                           <div class="flex px-2 py-1">
                             <div>
                               <img
-                                src="../assets/img/small-logos/logo-xd.svg"
+                                src="assets/img/small-logos/logo-xd.svg"
                                 class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl"
                                 alt="xd"
                               />
@@ -1524,7 +1495,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-1.jpg"
+                                src="assets/img/team-1.jpg"
                                 class="w-full rounded-full"
                                 alt="team1"
                               />
@@ -1547,7 +1518,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-2.jpg"
+                                src="assets/img/team-2.jpg"
                                 class="w-full rounded-full"
                                 alt="team2"
                               />
@@ -1570,7 +1541,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-3.jpg"
+                                src="assets/img/team-3.jpg"
                                 class="w-full rounded-full"
                                 alt="team3"
                               />
@@ -1593,7 +1564,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-4.jpg"
+                                src="assets/img/team-4.jpg"
                                 class="w-full rounded-full"
                                 alt="team4"
                               />
@@ -1651,7 +1622,7 @@
                           <div class="flex px-2 py-1">
                             <div>
                               <img
-                                src="../assets/img/small-logos/logo-atlassian.svg"
+                                src="assets/img/small-logos/logo-atlassian.svg"
                                 class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl"
                                 alt="atlassian"
                               />
@@ -1674,7 +1645,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-2.jpg"
+                                src="assets/img/team-2.jpg"
                                 class="w-full rounded-full"
                                 alt="team5"
                               />
@@ -1697,7 +1668,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-4.jpg"
+                                src="assets/img/team-4.jpg"
                                 class="w-full rounded-full"
                                 alt="team6"
                               />
@@ -1755,7 +1726,7 @@
                           <div class="flex px-2 py-1">
                             <div>
                               <img
-                                src="../assets/img/small-logos/logo-slack.svg"
+                                src="assets/img/small-logos/logo-slack.svg"
                                 class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl"
                                 alt="team7"
                               />
@@ -1778,7 +1749,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-3.jpg"
+                                src="assets/img/team-3.jpg"
                                 class="w-full rounded-full"
                                 alt="team8"
                               />
@@ -1801,7 +1772,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-1.jpg"
+                                src="assets/img/team-1.jpg"
                                 class="w-full rounded-full"
                                 alt="team9"
                               />
@@ -1859,7 +1830,7 @@
                           <div class="flex px-2 py-1">
                             <div>
                               <img
-                                src="../assets/img/small-logos/logo-spotify.svg"
+                                src="assets/img/small-logos/logo-spotify.svg"
                                 class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl"
                                 alt="spotify"
                               />
@@ -1882,7 +1853,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-4.jpg"
+                                src="assets/img/team-4.jpg"
                                 class="w-full rounded-full"
                                 alt="user1"
                               />
@@ -1905,7 +1876,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-3.jpg"
+                                src="assets/img/team-3.jpg"
                                 class="w-full rounded-full"
                                 alt="user2"
                               />
@@ -1928,7 +1899,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-4.jpg"
+                                src="assets/img/team-4.jpg"
                                 class="w-full rounded-full"
                                 alt="user3"
                               />
@@ -1951,7 +1922,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-1.jpg"
+                                src="assets/img/team-1.jpg"
                                 class="w-full rounded-full"
                                 alt="user4"
                               />
@@ -2009,7 +1980,7 @@
                           <div class="flex px-2 py-1">
                             <div>
                               <img
-                                src="../assets/img/small-logos/logo-jira.svg"
+                                src="assets/img/small-logos/logo-jira.svg"
                                 class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl"
                                 alt="jira"
                               />
@@ -2032,7 +2003,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-4.jpg"
+                                src="assets/img/team-4.jpg"
                                 class="w-full rounded-full"
                                 alt="user5"
                               />
@@ -2090,7 +2061,7 @@
                           <div class="flex px-2 py-1">
                             <div>
                               <img
-                                src="../assets/img/small-logos/logo-invision.svg"
+                                src="assets/img/small-logos/logo-invision.svg"
                                 class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl"
                                 alt="invision"
                               />
@@ -2113,7 +2084,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-1.jpg"
+                                src="assets/img/team-1.jpg"
                                 class="w-full rounded-full"
                                 alt="user6"
                               />
@@ -2136,7 +2107,7 @@
                               data-placement="bottom"
                             >
                               <img
-                                src="../assets/img/team-4.jpg"
+                                src="assets/img/team-4.jpg"
                                 class="w-full rounded-full"
                                 alt="user7"
                               />
@@ -2600,14 +2571,14 @@
     </div>
   </body>
   <!-- plugin for charts  -->
-  <script src="../assets/js/plugins/chartjs.min.js" async></script>
+  <script src="assets/js/plugins/chartjs.min.js" async></script>
   <!-- plugin for scrollbar  -->
-  <script src="../assets/js/plugins/perfect-scrollbar.min.js" async></script>
+  <script src="assets/js/plugins/perfect-scrollbar.min.js" async></script>
   <!-- github button -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- main script file  -->
   <script
-    src="../assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5"
+    src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5"
     async
   ></script>
 </html>
