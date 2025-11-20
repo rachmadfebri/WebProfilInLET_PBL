@@ -31,15 +31,14 @@ if ($action) {
     exit;
 }
 
-// --- TAMPILKAN HALAMAN (GET REQUEST) ---
 switch ($page) {
     case 'login':
-        // Lokasi View: app/views/pages/sign-in.php
+        // ... (kode yang sudah ada)
         require __DIR__ . '/../app/views/pages/sign-in.php'; 
         break;
-
+        
     case 'register':
-        // Lokasi View: app/views/pages/sign-up.php
+        // ... (kode yang sudah ada)
         require __DIR__ . '/../app/views/pages/sign-up.php';
         break;
 
