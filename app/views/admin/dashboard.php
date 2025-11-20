@@ -36,18 +36,18 @@
   <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
 =======
     <link
-      href="../../../../public/assets/css/nucleo-icons.css"
+      href="assets/css/nucleo-icons.css"
       rel="stylesheet"
     />
     <link
-      href="../../../../public/assets/css/nucleo-svg.css"
+      href="assets/css/nucleo-svg.css"
       rel="stylesheet"
     />
     <!-- Popper -->
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <!-- Main Styling -->
     <link
-      href="../../../../public/assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
+      href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
       rel="stylesheet"
     />
 >>>>>>> 4ae8a1c7f20522c3271a903c4cb86cf5c56ee7e4:app/views/admin/pages/dashboard.html
@@ -152,7 +152,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/tables.html"
+              href="?page=gallery"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -184,6 +184,7 @@
                             d="M12.25,17.5 L8.75,17.5 L8.75,1.75 C8.75,0.78225 9.53225,0 10.5,0 L31.5,0 C32.46775,0 33.25,0.78225 33.25,1.75 L33.25,12.25 L29.75,12.25 L29.75,3.5 L12.25,3.5 L12.25,17.5 Z"
                           ></path>
                           <path
+
                             class="fill-slate-800"
                             d="M40.25,14 L24.5,14 C23.53225,14 22.75,14.78225 22.75,15.75 L22.75,38.5 L19.25,38.5 L19.25,22.75 C19.25,21.78225 18.46775,21 17.5,21 L1.75,21 C0.78225,21 0,21.78225 0,22.75 L0,40.25 C0,41.21775 0.78225,42 1.75,42 L40.25,42 C41.21775,42 42,41.21775 42,40.25 L42,15.75 C42,14.78225 41.21775,14 40.25,14 Z M12.25,36.75 L7,36.75 L7,33.25 L12.25,33.25 L12.25,36.75 Z M12.25,29.75 L7,29.75 L7,26.25 L12.25,26.25 L12.25,29.75 Z M35,36.75 L29.75,36.75 L29.75,33.25 L35,33.25 L35,36.75 Z M35,29.75 L29.75,29.75 L29.75,26.25 L35,26.25 L35,29.75 Z M35,22.75 L29.75,22.75 L29.75,19.25 L35,19.25 L35,22.75 Z"
                           ></path>
@@ -195,7 +196,7 @@
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Tables</span
+                >Gallery</span
               >
             </a>
           </li>
