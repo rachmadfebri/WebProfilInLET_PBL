@@ -34,18 +34,18 @@
   <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
 =======
     <link
-      href="../../../../public/assets/css/nucleo-icons.css"
+      href="assets/css/nucleo-icons.css"
       rel="stylesheet"
     />
     <link
-      href="../../../../public/assets/css/nucleo-svg.css"
+      href="assets/css/nucleo-svg.css"
       rel="stylesheet"
     />
     <!-- Popper -->
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <!-- Main Styling -->
     <link
-      href="../../../../public/assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
+      href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
       rel="stylesheet"
     />
 >>>>>>> 4ae8a1c7f20522c3271a903c4cb86cf5c56ee7e4:app/views/admin/pages/dashboard.html
@@ -150,7 +150,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/tables.html"
+              href="?page=gallery"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -194,7 +194,7 @@
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Tables</span
+                >Gallery</span
               >
             </a>
           </li>
