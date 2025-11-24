@@ -53,8 +53,14 @@ switch ($page) {
     case 'gallery': 
         require __DIR__ . '/../app/views/admin/gallery.php'; 
         break;
+    case 'proses_galeri':
+        require __DIR__ . '/../app/views/admin/proses_galeri.php'; 
+        break;
     case 'news':
         require __DIR__ . '/../app/views/admin/news.php';
+        break;
+    case 'proses_news':
+        require __DIR__ . '/../app/views/admin/proses_news.php';
         break;
     default:
         echo "Page not found.";
