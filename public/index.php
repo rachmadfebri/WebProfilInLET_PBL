@@ -49,7 +49,7 @@ switch ($page) {
     case 'mahasiswa-dashboard':
         $mahasiswaController->dashboard();
         break;
-
+    
     case 'gallery': 
         require __DIR__ . '/../app/views/admin/gallery.php'; 
         break;
