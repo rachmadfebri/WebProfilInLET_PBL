@@ -32,7 +32,6 @@
   
   <!-- Main Styling -->
   <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
-=======
     <link
       href="assets/css/nucleo-icons.css"
       rel="stylesheet"
@@ -48,7 +47,6 @@
       href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
       rel="stylesheet"
     />
->>>>>>> 4ae8a1c7f20522c3271a903c4cb86cf5c56ee7e4:app/views/admin/pages/dashboard.html
 
     <!-- Nepcha Analytics (nepcha.com) -->
     <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
@@ -202,7 +200,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="pages/billing.html"
+              href="?page=news"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center fill-current stroke-0 text-center xl:p-2.5"
