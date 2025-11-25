@@ -140,18 +140,18 @@ $current_page = $_GET['page'] ?? 'dashboard';
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Dashboard</span
+                >Beranda</span
               >
             </a>
           </li>
 
           <li class="mt-0.5 w-full">
             <a
-              class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
               href="?page=gallery"
             >
               <div
-                class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
               >
                 <svg
                   width="12px"
@@ -176,12 +176,12 @@ $current_page = $_GET['page'] ?? 'dashboard';
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(153.000000, 2.000000)">
                           <path
-                            class="opacity-60"
+                            class="fill-slate-800 opacity-60"
                             d="M12.25,17.5 L8.75,17.5 L8.75,1.75 C8.75,0.78225 9.53225,0 10.5,0 L31.5,0 C32.46775,0 33.25,0.78225 33.25,1.75 L33.25,12.25 L29.75,12.25 L29.75,3.5 L12.25,3.5 L12.25,17.5 Z"
                           ></path>
                           <path
 
-                            class=""
+                            class="fill-slate-800"
                             d="M40.25,14 L24.5,14 C23.53225,14 22.75,14.78225 22.75,15.75 L22.75,38.5 L19.25,38.5 L19.25,22.75 C19.25,21.78225 18.46775,21 17.5,21 L1.75,21 C0.78225,21 0,21.78225 0,22.75 L0,40.25 C0,41.21775 0.78225,42 1.75,42 L40.25,42 C41.21775,42 42,41.21775 42,40.25 L42,15.75 C42,14.78225 41.21775,14 40.25,14 Z M12.25,36.75 L7,36.75 L7,33.25 L12.25,33.25 L12.25,36.75 Z M12.25,29.75 L7,29.75 L7,26.25 L12.25,26.25 L12.25,29.75 Z M35,36.75 L29.75,36.75 L29.75,33.25 L35,33.25 L35,36.75 Z M35,29.75 L29.75,29.75 L29.75,26.25 L35,26.25 L35,29.75 Z M35,22.75 L29.75,22.75 L29.75,19.25 L35,19.25 L35,22.75 Z"
                           ></path>
                         </g>
@@ -243,7 +243,7 @@ $current_page = $_GET['page'] ?? 'dashboard';
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >News</span
+                >Berita</span
               >
             </a>
           </li>
@@ -251,7 +251,7 @@ $current_page = $_GET['page'] ?? 'dashboard';
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="pages/virtual-reality.html"
+              href="?page=products"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -306,7 +306,7 @@ $current_page = $_GET['page'] ?? 'dashboard';
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="pages/rtl.html"
+              href="?page=research"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -361,7 +361,7 @@ $current_page = $_GET['page'] ?? 'dashboard';
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="pages/profile.html"
+              href="?page=team"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -408,7 +408,7 @@ $current_page = $_GET['page'] ?? 'dashboard';
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Team</span
+                >Tim</span
               >
             </a>
           </li>
