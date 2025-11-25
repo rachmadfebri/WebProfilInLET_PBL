@@ -1,0 +1,952 @@
+/* --- Global Styles --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    --primary-blue: #2d5bd4;
+    --gradient-start: #6a5acd;
+    --gradient-end: #d53f8c;
+    --text-dark: #1a202c;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+    color: var(--text-dark);
+    overflow-x: hidden;
+    
+    /* PENTING: Tambahkan padding agar konten tidak tertutup header */
+    padding-top: 80px; /* Nilai ini harus kurang lebih sama dengan tinggi header Anda */
+}
+
+/* --- Header Styles --- */
+header {
+    /* Properti baru untuk membuat header tetap di atas */
+    position: fixed; /* MENGUNCI posisi elemen terhadap viewport */
+    top: 0;          /* Memastikan elemen menempel di bagian paling atas */
+    width: 100%;     /* Memastikan elemen membentang penuh (100% lebar) */
+    z-index: 1000;   /* Memastikan header selalu berada di atas konten lain */
+    
+    /* Properti lama lainnya */
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    padding: 20px 50px; 
+    background-color: transparent; /* Penting: tambahkan background agar konten di bawahnya tidak terlihat */
+}
+
+/* Dalam file style.css */
+
+/* LOGO (Untuk memberikan background putih di sekitarnya) */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    /* Tambahkan background putih pada kontainer logo */
+    background-color: #fff; 
+    padding: 10px 20px;
+    border-radius: 50px; /* Bentuk kapsul */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Bayangan lembut */
+}
+
+/* NAVIGASI (Hanya perlu menyesuaikan sedikit, karena sudah berbentuk pill/kapsul) */
+/* --- PERBAIKAN DI STYLE.CSS --- */
+
+.nav-pill {
+    position: relative; /* Patokan utama */
+    background-color: #fff;
+    border: 2px solid var(--primary-blue);
+    border-radius: 50px;
+    padding: 5px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    display: inline-flex; 
+}
+
+.nav-pill ul {
+    list-style: none;
+    display: flex;
+    gap: 0; 
+    
+    /* WAJIB: Reset margin & padding agar perhitungan JS akurat */
+    margin: 0 !important; 
+    padding: 0 !important;
+    
+    position: relative;
+    z-index: 2; /* Teks di atas indikator */
+}
+
+.nav-pill a {
+    text-decoration: none;
+    color: #000;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 10px 25px;
+    display: block;
+    border-radius: 50px;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+/* State Aktif/Hover */
+.nav-pill a:hover,
+.nav-pill a.active {
+    color: white; 
+}
+
+/* Indikator */
+.nav-indicator {
+    position: absolute;
+    /* Hapus top/left default di sini, biar diatur JS sepenuhnya */
+    top: 5px; 
+    height: calc(100% - 10px); 
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+    border-radius: 50px;
+    z-index: 1; 
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    
+    /* Default agar tidak merusak tampilan sebelum JS jalan */
+    width: 0;
+    opacity: 0; 
+}
+
+/* TOMBOL KANAN (FORM) */
+.header-action {
+    /* Tambahkan background putih pada kontainer tombol kanan */
+    background-color: #fff; 
+    padding: 10px 10px;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Bayangan lembut */
+}
+
+.img-logo { height: 50px; width: auto; object-fit: contain; }
+.btn-gallery {
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+    color: white !important; padding: 8px 25px; border-radius: 50px;
+}
+.header-action .btn-form {
+    display: flex; align-items: center; gap: 15px; text-decoration: none;
+    border: 2px solid var(--primary-blue); border-radius: 50px;
+    padding: 5px 5px 5px 25px; color: #000; font-weight: 500; min-width: 140px; justify-content: space-between;
+}
+.circle-icon {
+    width: 35px; height: 35px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-blue), var(--gradient-end));
+    display: flex; align-items: center; justify-content: center; color: white;
+}
+
+/* --- SECTION 1: HERO TEXT --- */
+.hero {
+    padding: 150px 50px 300px 50px; /* Padding bawah dikurangi */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-content {
+    max-width: 700px; /* Lebar konten teks */
+}
+
+h1 {
+    font-size: 3.5rem; line-height: 1.2; color: var(--primary-blue);
+    margin-bottom: 20px; font-weight: 700;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.hero p {
+    font-size: 1.1rem; color: #333; margin-bottom: 40px; line-height: 1.6; max-width: 600px;
+}
+
+.hero-buttons { display: flex; gap: 30px; }
+
+.btn-hero {
+    display: flex; align-items: center; justify-content: flex-end;
+    width: 200px; height: 60px; border: 2px solid #3b5bdb;
+    border-radius: 50px; padding: 5px; background: white; transition: transform 0.2s;
+}
+.btn-hero:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.btn-hero .circle-icon { width: 46px; height: 46px; font-size: 1rem; }
+
+
+/* --- SECTION 2: STATS (DI BAWAH HERO) --- */
+.stats-section {
+    padding: 20px 50px 200px 50px;
+    max-width: 1000px; /* Sedikit lebih kecil agar visualnya rapat */
+    margin: 0 auto;
+}
+
+.stats-container {
+    display: flex;
+    flex-direction: column; /* Susunan vertikal ke bawah */
+    gap: 100px; /* Jarak antar baris statistik */
+}
+
+/* Container per baris */
+.stat-row {
+    display: flex;
+    width: 100%;
+}
+
+/* Pengaturan posisi Kiri dan Kanan */
+.row-left { justify-content: flex-start; } /* Rata Kiri */
+.row-right { justify-content: flex-end; }  /* Rata Kanan */
+
+/* Styling Item Statistik */
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: scale(1.05); /* Efek zoom sedikit saat dihover */
+}
+
+/* Gambar Statistik */
+.stat-img {
+    width: 120px; /* Atur ukuran gambar blob Anda di sini */
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(100, 100, 200, 0.15));
+}
+
+/* Teks Statistik */
+.stat-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive Mobile */
+@media (max-width: 768px) {
+    header { flex-direction: column; gap: 15px; padding: 20px; }
+    .nav-pill ul { gap: 10px; font-size: 0.8rem; flex-wrap: wrap; justify-content: center;}
+    
+    .hero { padding: 40px 20px; text-align: center; }
+    .hero-content { margin: 0 auto; }
+    .hero-buttons { justify-content: center; }
+    h1 { font-size: 2.5rem; }
+    
+    /* Di HP, buat statistik rata tengah semua agar rapi */
+    .row-left, .row-right { justify-content: center; }
+    .stat-item { flex-direction: column; text-align: center; }
+}
+
+/* --- SECTION 3: PORTFOLIO / APLIKASI --- */
+.portfolio-section {
+    padding: 60px 50px 100px 50px;
+    background-color: #ffffff; 
+    margin-top: 100px; /* Memberi jarak dari statistik di atas */
+}
+
+.portfolio-container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 100px; /* Jarak antar card (butuh lebih banyak ruang untuk tombol) */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.portfolio-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    padding: 30px;
+    text-align: center;
+    width: 100%;
+    max-width: 420px;
+    /* Position relative agar tombol absolut bisa menempel */
+    position: relative; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #eee;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(106, 90, 205, 0.15);
+}
+
+/* --- INI BAGIAN YANG BERUBAH --- */
+/* Tombol Lingkaran Gradien */
+.card-button-decorator {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 5px 15px rgba(106, 90, 205, 0.3);
+    
+    /* Style untuk Tombol (tag <a>) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: transform 0.2s ease;
+    z-index: 10; /* Memastikan tombol di atas card */
+}
+
+.card-button-decorator:hover {
+    transform: translateY(-50%) scale(1.1); /* Efek hover pada tombol */
+}
+
+.button-left {
+    left: -35px; /* Setengah dari width */
+}
+/* Untuk tombol kiri, ikonnya mungkin perlu dibalik */
+.button-left i {
+    transform: rotate(180deg);
+}
+
+.button-right {
+    right: -35px; /* Setengah dari width */
+}
+/* --- AKHIR BAGIAN YANG BERUBAH --- */
+
+
+/* Gambar/Logo di dalam Card */
+.card-image-wrapper {
+    margin-bottom: 25px;
+}
+
+.card-image-wrapper img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 15px;
+}
+
+/* Teks di dalam Card */
+.card-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.card-description {
+    font-size: 0.95rem;
+    color: #4A5568;
+    line-height: 1.7;
+}
+
+
+/* --- Penyesuaian Responsive --- */
+/* Letakkan kode ini DI DALAM @media (max-width: 768px) { ... } Anda */
+@media (max-width: 768px) {
+    /* ... (CSS mobile Anda sebelumnya) ... */
+    
+    .portfolio-section {
+        padding: 40px 20px;
+    }
+
+    .portfolio-container {
+        gap: 60px; /* Kurangi jarak di HP */
+    }
+
+    .portfolio-card {
+        padding: 25px;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+    }
+
+    /* Sembunyikan tombol lingkaran di HP agar tidak aneh */
+    .card-button-decorator {
+        display: none;
+    }
+}
+
+/* --- SECTION 4: NEWS SECTION --- */
+.news-section {
+    padding: 80px 50px 150px 50px; /* Padding bawah lebih banyak untuk ruang tombol */
+    background-color: #fff; /* Latar belakang putih */
+}
+
+.news-heading {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 60px;
+}
+
+.news-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Jaga agar card tetap rapi di atas */
+    flex-wrap: wrap;
+    gap: 40px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* Wrapper untuk card tengah + tombol */
+.news-card-wrapper {
+    position: relative;
+    padding-bottom: 50px; /* Ruang di bawah untuk tombol */
+}
+
+/* Ini adalah border gradien */
+.news-card-border {
+    padding: 2px; /* Ketebalan border */
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.news-card-border:hover {
+    transform: translateY(-5px);
+}
+
+/* Ini adalah card putih di dalamnya */
+.news-card {
+    background: #fff;
+    border-radius: 18px; /* Sedikit lebih kecil dari border agar pas */
+    width: 100%;
+    max-width: 360px;
+    overflow: hidden; /* Agar gambar mengikuti border radius */
+}
+
+.news-card-img {
+    width: 100%;
+    height: 240px; /* Tinggi gambar tetap */
+    object-fit: cover; /* Memastikan gambar mengisi area tanpa distorsi */
+}
+
+.news-card-content {
+    padding: 25px;
+    text-align: center;
+}
+
+.news-card-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.news-card-description {
+    font-size: 0.95rem;
+    color: #4A5568;
+    line-height: 1.6;
+}
+
+/* Tombol Lingkaran di Bawah Card Tengah */
+.news-button {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    box-shadow: 0 5px 20px rgba(106, 90, 205, 0.4);
+    
+    /* Posisi di tengah bawah wrapper */
+    position: absolute;
+    bottom: 0; /* Menempel di bawah wrapper */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* Style untuk Tombol (tag <a>) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem; /* Ukuran jika Anda taruh ikon */
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.news-button:hover {
+    transform: translateX(-50%) scale(1.1); /* Efek hover pada tombol */
+}
+
+
+/* --- Penyesuaian Responsive --- */
+/* Letakkan kode ini DI DALAM @media (max-width: 768px) { ... } Anda */
+@media (max-width: 768px) {
+    /* ... (CSS mobile Anda sebelumnya) ... */
+    
+    .news-section {
+        padding: 40px 20px 100px 20px;
+    }
+
+    .news-heading {
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+    }
+
+    .news-container {
+        gap: 60px; /* Beri jarak lebih saat menumpuk */
+    }
+
+    .news-card-wrapper {
+         /* Pastikan wrapper card tengah tetap punya ruang tombol */
+        padding-bottom: 50px;
+    }
+}
+
+/* --- SECTION 5: GALLERY STYLES --- */
+.gallery-section {
+            padding: 100px 50px;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 80px;
+        }
+
+        /* Bagian Kiri */
+        .gallery-left { flex: 1; max-width: 500px; }
+        .gallery-placeholder-box {
+            width: 100%; height: 250px; background-color: #e2e2e2; border-radius: 4px; margin-bottom: 30px;
+        }
+        .gallery-description {
+            font-size: 1rem; line-height: 1.6; color: #1a202c; margin-bottom: 40px; font-weight: 500;
+        }
+
+        /* Tombol View More */
+        .btn-view-more {
+            display: inline-block; padding: 15px 60px;
+            background: linear-gradient(90deg, #2d5bd4, #d53f8c);
+            color: white; text-decoration: none; font-size: 1.5rem; font-weight: 700;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 0 0 4px rgba(255, 255, 255, 1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn-view-more:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 0 0 4px rgba(255, 255, 255, 1);
+        }
+
+        /* Bagian Kanan (Gambar Kapsul) */
+        .gallery-right {
+            flex: 1; display: flex; gap: 20px; justify-content: center; height: 500px; align-items: center;
+        }
+        .gallery-capsule {
+            width: 120px; height: 350px; position: relative;
+            border-radius: 100px; padding: 3px;
+            background: linear-gradient(180deg, #2d5bd4, #d53f8c);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.3s ease;
+        }
+        .gallery-capsule img {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 95px; background-color: white; display: block;
+        }
+        .mt-down { transform: translateY(40px); }
+        .mt-up { transform: translateY(-40px); height: 380px; z-index: 2; }
+        .gallery-capsule:hover { transform: scale(1.02); z-index: 5; }
+        .mt-down:hover { transform: translateY(40px) scale(1.02); }
+        .mt-up:hover { transform: translateY(-40px) scale(1.02); }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            header { flex-direction: column; gap: 15px; padding: 20px; position: relative; background: white; }
+            .nav-pill ul { flex-wrap: wrap; justify-content: center; }
+            .hero { text-align: center; padding-top: 40px; }
+            .hero-buttons { justify-content: center; }
+            .stat-item { justify-content: center; text-align: center; flex-direction: column; }
+            .gallery-container { flex-direction: column; text-align: center; gap: 50px; }
+            .gallery-capsule { width: 90px; height: 250px; }
+            .mt-up { height: 280px; }
+            .card-button-decorator { display: none; }
+        }
+
+        /* --- SECTION 6: ACTIVITY SECTION (YOUTUBE EMBED) --- */
+.activity-section {
+    padding: 100px 50px;
+    background-color: #f8f8f8; /* Latar belakang sedikit abu-abu untuk kontras */
+    text-align: center;
+}
+
+.activity-section .section-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 60px;
+}
+
+.activity-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px; /* Jarak antara tombol panah dan kartu video */
+    max-width: 1400px; /* Maksimal lebar untuk kontainer video */
+    margin: 0 auto;
+}
+
+.video-card-wrapper {
+    position: relative;
+    padding: 10px; /* Padding untuk border gradien */
+    border-radius: 40px; /* Bentuk kapsul yang lebih besar */
+    background: linear-gradient(135deg, var(--primary-blue), var(--gradient-end));
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0; /* Pastikan tidak mengecil pada resolusi kecil */
+    width: 80%; /* Lebar relatif dari kontainer */
+    max-width: 900px; /* Batas lebar maksimal video */
+    height: 0;
+    padding-bottom: 45%; /* Aspek rasio 16:9 (lebar / 16 * 9) */
+    overflow: hidden; /* Sembunyikan overflow */
+}
+
+.video-card {
+    position: absolute;
+    top: 10px; /* Sesuaikan dengan padding wrapper */
+    left: 10px; /* Sesuaikan dengan padding wrapper */
+    right: 10px; /* Sesuaikan dengan padding wrapper */
+    bottom: 10px; /* Sesuaikan dengan padding wrapper */
+    background-color: white; /* Latar belakang putih di dalam border gradien */
+    border-radius: 30px; /* Radius yang lebih kecil dari wrapper */
+    overflow: hidden; /* Penting agar iframe tidak keluar dari border radius */
+}
+
+.video-card iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Tombol Panah Kiri Kanan */
+.arrow-button {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    box-shadow: 0 5px 20px rgba(106, 90, 205, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    flex-shrink: 0; /* Pastikan tombol tidak mengecil */
+}
+
+.arrow-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(106, 90, 205, 0.5);
+}
+
+/* Mobile Responsive untuk Activity Section */
+@media (max-width: 900px) {
+    .activity-section {
+        padding: 60px 20px;
+    }
+
+    .activity-section .section-title {
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+    }
+
+    .activity-container {
+        flex-direction: column; /* Tumpuk vertikal di mobile */
+        gap: 40px;
+    }
+
+    .video-card-wrapper {
+        width: 100%; /* Lebar penuh di mobile */
+        padding-bottom: 56.25%; /* Aspek rasio 16:9 untuk video standar */
+    }
+
+    .arrow-button {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+}
+
+/* --- EXTRA NEWS GRID (HIDDEN SECTION) --- */
+.more-news-wrapper {
+    margin-top: 60px;
+    width: 100%;
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.additional-news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 35px;
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.additional-news-grid .news-card-border,
+.additional-news-grid .news-card {
+    width: 100%;
+    max-width: none;
+}
+
+.grid-nav-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    margin-top: 60px;
+    padding-bottom: 40px;
+}
+
+.circle-btn-bottom {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    box-shadow: 0 5px 20px rgba(106, 90, 205, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.circle-btn-bottom:hover {
+    transform: scale(1.1);
+}
+
+@media (max-width: 992px) {
+    .additional-news-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .additional-news-grid {
+        grid-template-columns: 1fr;
+    }
+    .grid-nav-buttons {
+        gap: 40px;
+        flex-wrap: wrap;
+    }
+}
+
+/* --- STANDALONE PAGES (ABOUT / GALLERY / TEAM) --- */
+.page {
+    background-color: #f5f5f5;
+}
+
+.page-wrapper {
+    position: relative;
+    min-height: calc(100vh - 140px);
+    padding: 140px 80px 180px;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f4f4 75%, #e0e0e0 100%);
+    overflow: hidden;
+}
+
+.page-wrapper::after {
+    content: ">";
+    position: absolute;
+    top: 80px;
+    right: 40px;
+    font-size: 30vw;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.03);
+    line-height: 1;
+    pointer-events: none;
+}
+
+.page-wrapper::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 160px;
+    background: #dcdcdc;
+}
+
+.page-heading {
+    max-width: 640px;
+}
+
+.page-label {
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 0.85rem;
+    color: #8a8a8a;
+    margin-bottom: 10px;
+}
+
+.page-title {
+    font-size: 3.2rem;
+    margin-bottom: 15px;
+}
+
+.page-subtitle {
+    color: #5f5f5f;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+
+/* --- ABOUT PAGE --- */
+.about-panel {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    margin-top: 60px;
+    padding: 60px;
+    border-radius: 40px;
+    background: #ffffff;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+    position: relative;
+    z-index: 2;
+}
+
+.about-text {
+    flex: 1.2;
+}
+
+.about-portrait {
+    flex: 0.8;
+    max-width: 320px;
+}
+
+.about-portrait img {
+    width: 100%;
+    border-radius: 30px;
+    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.15);
+    display: block;
+}
+
+/* --- GALLERY PAGE --- */
+.gallery-page .gallery-wall {
+    margin-top: 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 18px;
+    position: relative;
+    z-index: 2;
+}
+
+.gallery-brick {
+    height: 110px;
+    border-radius: 14px;
+    background: #dfdfdf;
+    border: 1px solid #d0d0d0;
+    box-shadow: inset 0 4px 8px rgba(255, 255, 255, 0.8), 0 6px 10px rgba(0, 0, 0, 0.05);
+    display: block;
+    overflow: hidden;
+    position: relative;
+}
+
+.gallery-brick.wide {
+    grid-column: span 2;
+}
+
+.gallery-brick.tall {
+    height: 150px;
+}
+
+.gallery-brick img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.gallery-brick:hover img {
+    transform: scale(1.08);
+}
+
+/* --- TEAM PAGE --- */
+.team-page .team-grid {
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 50px 30px;
+    max-width: 960px;
+    position: relative;
+    z-index: 2;
+}
+
+.team-card {
+    background: #ffffff;
+    border-radius: 26px;
+    padding: 30px 20px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.07);
+    border: 1px solid #ececec;
+    text-align: center;
+}
+
+.team-card:nth-child(odd) {
+    transform: translateY(30px);
+}
+
+.team-card:nth-child(3n + 2) {
+    transform: translateY(-20px);
+}
+
+.team-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.team-card p {
+    font-size: 0.95rem;
+    color: #686868;
+}
+
+.team-avatar {
+    width: 100%;
+    height: 150px;
+    background: #d7d7d7;
+    border-radius: 16px;
+    border: 1px solid #cfcfcf;
+    margin-bottom: 25px;
+    box-shadow: inset 0 8px 18px rgba(255, 255, 255, 0.7);
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 1024px) {
+    .page-wrapper {
+        padding: 130px 40px 150px;
+    }
+    .about-panel {
+        flex-direction: column;
+        text-align: center;
+    }
+    .about-text {
+        flex: unset;
+    }
+    .team-card:nth-child(odd),
+    .team-card:nth-child(3n + 2) {
+        transform: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .page-wrapper {
+        padding: 110px 24px 140px;
+    }
+    .page-title {
+        font-size: 2.3rem;
+    }
+    .about-panel {
+        padding: 40px 24px;
+    }
+    .gallery-page .gallery-wall {
+        grid-template-columns: repeat(2, minmax(120px, 1fr));
+    }
+
+}
