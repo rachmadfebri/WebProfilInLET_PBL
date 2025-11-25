@@ -23,7 +23,7 @@ $current_page = $_GET['page'] ?? 'dashboard';
       type="image/png"
       href="assets/img/favicon.png"
     />
-    <title>Soft UI Dashboard Tailwind</title>
+    <title>Galeri - Lab InLET</title>
     <!--     Fonts and icons     -->
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"

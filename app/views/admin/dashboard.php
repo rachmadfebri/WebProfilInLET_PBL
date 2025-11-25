@@ -13,7 +13,7 @@
       type="image/png"
       href="public/assets/img/favicon.png"
     />
-    <title>Soft UI Dashboard Tailwind</title>
+    <title>Dashboard - Lab InLET</title>
     <!--     Fonts and icons     -->
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
@@ -140,7 +140,7 @@
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Dashboard</span
+                >Beranda</span
               >
             </a>
           </li>
@@ -243,7 +243,7 @@
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >News</span
+                >Berita</span
               >
             </a>
           </li>
@@ -251,7 +251,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="pages/virtual-reality.html"
+              href="?page=products"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -306,7 +306,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="pages/rtl.html"
+              href="?page=research"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -361,7 +361,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="pages/profile.html"
+              href="?page=team"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -408,7 +408,7 @@
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Team</span
+                >Tim</span
               >
             </a>
           </li>

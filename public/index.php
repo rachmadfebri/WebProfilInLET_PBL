@@ -62,6 +62,27 @@ switch ($page) {
     case 'proses_news':
         require __DIR__ . '/../app/views/admin/proses_news.php';
         break;
+    case 'products':
+        require __DIR__ . '/../app/views/admin/products.php';
+        break;
+    case 'proses_products':
+        require __DIR__ . '/../app/views/admin/proses_products.php';
+        break;
+    case 'research':
+        require __DIR__ . '/../app/views/admin/research.php';
+        break;
+    case 'proses_research':
+        require __DIR__ . '/../app/views/admin/proses_research.php';
+        break;
+    case 'proses_research':
+        require __DIR__ . '/../app/views/admin/proses_research.php';
+        break;
+    case 'team':
+        require __DIR__ . '/../app/views/admin/team.php';
+        break;
+    case 'proses_team':
+        require __DIR__ . '/../app/views/admin/proses_team.php';
+        break;
     default:
         echo "Page not found.";
         break;
