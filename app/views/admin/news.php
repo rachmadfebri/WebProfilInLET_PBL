@@ -18,7 +18,7 @@ if (!isset($newsList) || !is_array($newsList)) {
       type="image/png"
       href="public/assets/img/favicon.png"
     />
-    <title>Dashboard - Lab InLET</title>
+    <title>News - Lab InLET</title>
     <!--     Fonts and icons     -->
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
@@ -424,7 +424,6 @@ if (!isset($newsList) || !is_array($newsList)) {
       </div>
     </aside>
 
-    <!-- end sidenav -->
 
     <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
       

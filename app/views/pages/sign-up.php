@@ -13,7 +13,7 @@ if (session_status() === PHP_SESSION_NONE) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png" />
-  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="icon" type="image/png" href="assets/img/logo.jpg" />
   <title>Lab Inlet - Sign Up</title>
 
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -30,6 +30,9 @@ if (session_status() === PHP_SESSION_NONE) {
   <main class="mt-0 transition-all duration-200 ease-soft-in-out">
     <section>
       <div class="relative flex items-center p-0 overflow-hidden bg-center bg-cover min-h-75-screen">
+         <div class="absolute top-0 left-0 z-50 m-6">
+            <img src="assets/img/logo.jpg" alt="Logo" class="h-16 w-auto object-contain" />
+          </div>
         <div class="container z-10">
           <div class="flex flex-wrap mt-0 -mx-3">
             <div class="flex flex-col w-full max-w-full px-3 mx-auto md:flex-0 shrink-0 md:w-6/12 lg:w-5/12 xl:w-4/12">
@@ -111,7 +114,7 @@ if (session_status() === PHP_SESSION_NONE) {
               <div
                 class="absolute top-0 hidden w-3/5 h-full -mr-32 overflow-hidden -skew-x-10 -right-40 rounded-bl-xl md:block">
                 <div class="absolute inset-x-0 top-0 z-0 h-full -ml-16 bg-cover skew-x-10"
-                    style="background-image: url('assets/img/curved-images/curved6.jpg')">
+                    style="background-image: url('assets/img/curved-images/fotobersama.jpg')">
                 </div>
               </div>
             </div>
