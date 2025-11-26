@@ -9,7 +9,7 @@ class galleryController {
     }
 
     public function index() {
-        session_start();
+        //session_start();
         if ($_SESSION['role'] !== 'admin') {
             header("Location: ?page=login");
             exit;

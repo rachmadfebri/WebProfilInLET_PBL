@@ -4,27 +4,67 @@ if (!isset($newsList) || !is_array($newsList)) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png" />
-    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-    <title>News - Lab InLET</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
-    <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
-    <link href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="public/assets/img/apple-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="public/assets/img/favicon.png"
+    />
+    <title>Dashboard - Lab InLET</title>
+    <!--     Fonts and icons     -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome Icons -->
+    <script
+      src="https://kit.fontawesome.com/42d5adcbca.js"
+      crossorigin="anonymous"
+    ></script>
+     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
+  
+  <!-- Popper -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  
+  <!-- Main Styling -->
+  <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
+    <link
+      href="assets/css/nucleo-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/css/nucleo-svg.css"
+      rel="stylesheet"
+    />
+    <!-- Popper -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <!-- Main Styling -->
+    <link
+      href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
+      rel="stylesheet"
+    />
+
+    <!-- Nepcha Analytics (nepcha.com) -->
+    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
+    <script
+      defer
+      data-site="YOUR_DOMAIN_HERE"
+      src="https://api.nepcha.com/js/nepcha-analytics.js"
+    ></script>
   </head>
 
-  <body class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500">
-    
-    <?php 
-    // Anda bisa meng-include sidebar.php terpisah jika sudah dipisah
-    // Untuk saat ini saya biarkan struktur HTML sidebar yang ada di file Anda sebelumnya
-    ?>
+  <body
+    class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500"
+  >
     <!-- sidenav  -->
     <aside
       class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent"
@@ -377,10 +417,17 @@ if (!isset($newsList) || !is_array($newsList)) {
               >
             </a>
           </li>
+      <div class="mx-4 my-4">
+        <a href="?action=logout" class="inline-block w-full px-8 py-2 mb-4 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
+          Logout
+        </a>
+      </div>
     </aside>
 
+    <!-- end sidenav -->
 
     <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
+      
       <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="true">
         <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
           <nav>
