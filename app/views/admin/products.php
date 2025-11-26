@@ -9,20 +9,67 @@ $stmt = $conn->query("SELECT * FROM news ORDER BY created_at DESC");
 $newsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png" />
-    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
-    <title>News - Lab InLET</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-    <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
-    <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
-    <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="public/assets/img/apple-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="public/assets/img/favicon.png"
+    />
+    <title>Dashboard - Lab InLET</title>
+    <!--     Fonts and icons     -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome Icons -->
+    <script
+      src="https://kit.fontawesome.com/42d5adcbca.js"
+      crossorigin="anonymous"
+    ></script>
+     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
+  
+  <!-- Popper -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  
+  <!-- Main Styling -->
+  <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
+    <link
+      href="assets/css/nucleo-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/css/nucleo-svg.css"
+      rel="stylesheet"
+    />
+    <!-- Popper -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <!-- Main Styling -->
+    <link
+      href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
+      rel="stylesheet"
+    />
+
+    <!-- Nepcha Analytics (nepcha.com) -->
+    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
+    <script
+      defer
+      data-site="YOUR_DOMAIN_HERE"
+      src="https://api.nepcha.com/js/nepcha-analytics.js"
+    ></script>
   </head>
-  <body class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500">
+
+  <body
+    class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500"
+  >
     <!-- sidenav  -->
     <aside
       class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent"
@@ -33,19 +80,16 @@ $newsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
           sidenav-close
         ></i>
         <a
-          class="block px-8 py-6 m-0 text-sm whitespace-nowrap text-slate-700"
+          class="block px-8 py-0 m-0 text-sm whitespace-nowrap text-slate-700"
           href="javascript:;"
           target="_blank"
         >
           <img
-            src="assets/img/logo.jpg"
-            class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-8"
+            src="assets/img/logo_inlet_horizontal-removebg.png"
+            class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-12"
+            style="margin-top: -36px; margin-left: -5px !important;"
             alt="main_logo"
           />
-          <span
-            class="ml-1 font-semibold transition-all duration-200 ease-nav-brand"
-            >InLET</span
-          >
         </a>
       </div>
 
@@ -54,7 +98,7 @@ $newsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
       />
 
       <div
-        class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full"
+        class="items-center block w-auto max-h-screen overflow-hidden h-sidenav grow basis-full"
       >
         <ul class="flex flex-col pl-0 mb-0">
           <li class="mt-0.5 w-full">
@@ -376,43 +420,22 @@ $newsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </a>
           </li>
 
-      <!-- <div class="mx-4">
-        load phantom colors for card after:
-        <p
-          class="invisible hidden text-gray-800 text-red-500 text-red-600 after:bg-gradient-to-tl after:from-gray-900 after:to-slate-800 after:bg-gradient-to-tl after:from-blue-600 after:to-cyan-400 after:bg-gradient-to-tl after:from-red-500 after:to-yellow-400 after:bg-gradient-to-tl after:from-green-600 after:to-lime-400 after:bg-gradient-to-tl after:from-red-600 after:to-rose-400 after:bg-gradient-to-tl after:from-slate-600 after:to-slate-300 text-lime-500 text-cyan-500 text-slate-400 text-fuchsia-500"
-        ></p>
-        <div
-          class="after:opacity-65 after:bg-gradient-to-tl after:from-slate-600 after:to-slate-300 relative flex min-w-0 flex-col items-center break-words rounded-2xl border-0 border-solid border-blue-900 bg-white bg-clip-border shadow-none after:absolute after:top-0 after:bottom-0 after:left-0 after:z-10 after:block after:h-full after:w-full after:rounded-2xl after:content-['']"
-          sidenav-card
-        >
-          <div
-            class="mb-7.5 absolute h-full w-full rounded-2xl bg-cover bg-center"
-            style="
-              background-image: url('assets/img/curved-images/white-curved.jpeg');
-            "
-          ></div>
-          <div class="relative z-20 flex-auto w-full p-4 text-left text-white">
-            <div
-              class="flex items-center justify-center w-8 h-8 mb-4 text-center bg-white bg-center rounded-lg icon shadow-soft-2xl"
+          <li class="mt-0.5 w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=team"
             >
-              <i
-                class="top-0 z-10 text-transparent ni leading-none ni-diamond text-lg bg-gradient-to-tl from-slate-600 to-slate-300 bg-clip-text opacity-80"
-                sidenav-card-icon
-              ></i>
-            </div>
-            
-          </div>
-        </div> -->
-        <!-- pro btn  -->
-        <!--
-        <a
-          class="inline-block w-full px-6 py-3 my-4 font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro text-xs bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102"
-          target="_blank"
-          href="https://www.creative-tim.com/product/soft-ui-dashboard-pro-tailwind?ref=sidebarfree"
-          >Upgrade to pro</a
-        >
-      </div>
-        -->
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <i class="ni leading-none ni-paper-diploma text-xs relative top-2 text-gray"></i>
+              </div>
+              <span
+                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
+                >Kerjasama</span
+              >
+            </a>
+          </li>
       <div class="mx-4 my-4">
         <a href="?action=logout" class="inline-block w-full px-8 py-2 mb-4 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
           Logout
@@ -422,20 +445,99 @@ $newsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- end sidenav -->
 
-    <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
-      <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="true">
-        <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+    <main
+      class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200"
+    >
+      <!-- Navbar -->
+      <!-- Navbar -->
+      <nav
+        class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start"
+        navbar-main
+        navbar-scroll="true"
+      >
+        <div
+          class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit"
+        >
           <nav>
-            <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+            <!-- breadcrumb -->
+            <ol
+              class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16"
+            >
               <li class="leading-normal text-sm">
-                <a class="opacity-50 text-slate-700" href="javascript:;">Pages</a>
+                <a class="opacity-50 text-slate-700" href="javascript:;"
+                  >Pages</a
+                >
               </li>
-              <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">News</li>
+              <li
+                class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
+                aria-current="page"
+              >
+                Galeri
+              </li>
             </ol>
-            <h6 class="mb-0 font-bold capitalize">Form News Lab</h6>
+            <h6 class="mb-0 font-bold capitalize">Manajemen Galeri</h6>
           </nav>
+
+          <div
+            class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto"
+          >
+            <div class="flex items-center md:ml-auto md:pr-4">
+              <div
+                class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft"
+              >
+                <span
+                  class="text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all"
+                >
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+                <input
+                  type="text"
+                  class="pl-8.75 text-sm focus:shadow-soft-primary-outline ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                  placeholder="Cari..."
+                />
+              </div>
+            </div>
+            <ul
+              class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full"
+            >
+              
+              <li class="flex items-center pl-4 xl:hidden">
+                <a
+                  href="javascript:;"
+                  class="block p-0 text-sm transition-all ease-nav-brand text-slate-500"
+                  sidenav-trigger
+                >
+                  <div class="w-4.5 overflow-hidden">
+                    <i
+                      class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"
+                    ></i>
+                    <i
+                      class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"
+                    ></i>
+                    <i
+                      class="ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all"
+                    ></i>
+                  </div>
+                </a>
+              </li>
+              <li class="flex items-center px-4">
+                <a
+                  href="javascript:;"
+                  class="p-0 text-sm transition-all ease-nav-brand text-slate-500"
+                >
+                  <i
+                    fixed-plugin-button-nav
+                    class="cursor-pointer fa fa-cog"
+                    aria-hidden="true"
+                  ></i>
+                  <!-- fixed-plugin-button-nav  -->
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
+      <!-- End Navbar -->
       <div class="w-full px-6 py-6 mx-auto">
         <!-- Tombol Tambah News -->
         <div class="flex justify-end mb-4">

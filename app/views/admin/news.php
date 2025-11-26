@@ -5,22 +5,21 @@ if (!isset($newsList) || !is_array($newsList)) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="apple-touch-icon"
       sizes="76x76"
-      href="assets/img/apple-icon.png"
+      href="public/assets/img/apple-icon.png"
     />
     <link
       rel="icon"
       type="image/png"
-      href="assets/img/favicon.png"
+      href="public/assets/img/favicon.png"
     />
-    <title>Galeri - Lab InLET</title>
+    <title>Dashboard - Lab InLET</title>
     <!--     Fonts and icons     -->
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
@@ -31,7 +30,14 @@ if (!isset($newsList) || !is_array($newsList)) {
       src="https://kit.fontawesome.com/42d5adcbca.js"
       crossorigin="anonymous"
     ></script>
-    <!-- Nucleo Icons -->
+     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
+  
+  <!-- Popper -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  
+  <!-- Main Styling -->
+  <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
     <link
       href="assets/css/nucleo-icons.css"
       rel="stylesheet"
@@ -40,12 +46,15 @@ if (!isset($newsList) || !is_array($newsList)) {
       href="assets/css/nucleo-svg.css"
       rel="stylesheet"
     />
+    <!-- Popper -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <!-- Main Styling -->
-    <link href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
     <link
       href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
       rel="stylesheet"
     />
+
+    <!-- Nepcha Analytics (nepcha.com) -->
     <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
     <script
       defer
@@ -55,7 +64,7 @@ if (!isset($newsList) || !is_array($newsList)) {
   </head>
 
   <body
-    class="m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500"
+    class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500"
   >
     <!-- sidenav  -->
     <aside
@@ -67,19 +76,16 @@ if (!isset($newsList) || !is_array($newsList)) {
           sidenav-close
         ></i>
         <a
-          class="block px-8 py-6 m-0 text-sm whitespace-nowrap text-slate-700"
+          class="block px-8 py-0 m-0 text-sm whitespace-nowrap text-slate-700"
           href="javascript:;"
           target="_blank"
         >
           <img
-            src="assets/img/logo.jpg"
-            class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-8"
+            src="assets/img/logo_inlet_horizontal-removebg.png"
+            class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-12"
+            style="margin-top: -36px; margin-left: -5px !important;"
             alt="main_logo"
           />
-          <span
-            class="ml-1 font-semibold transition-all duration-200 ease-nav-brand"
-            >InLET</span
-          >
         </a>
       </div>
 
@@ -88,7 +94,7 @@ if (!isset($newsList) || !is_array($newsList)) {
       />
 
       <div
-        class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full"
+        class="items-center block w-auto max-h-screen overflow-hidden h-sidenav grow basis-full"
       >
         <ul class="flex flex-col pl-0 mb-0">
           <li class="mt-0.5 w-full">
@@ -409,6 +415,28 @@ if (!isset($newsList) || !is_array($newsList)) {
               >
             </a>
           </li>
+
+          <li class="mt-0.5 w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=team"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <i class="ni leading-none ni-paper-diploma text-xs relative top-2 text-gray"></i>
+              </div>
+              <span
+                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
+                >Kerjasama</span
+              >
+            </a>
+          </li>
+      <div class="mx-4 my-4">
+        <a href="?action=logout" class="inline-block w-full px-8 py-2 mb-4 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
+          Logout
+        </a>
+      </div>
     </aside>
 
     <!-- end sidenav -->
@@ -416,6 +444,7 @@ if (!isset($newsList) || !is_array($newsList)) {
     <main
       class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200"
     >
+      <!-- Navbar -->
       <!-- Navbar -->
       <nav
         class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start"
@@ -439,10 +468,10 @@ if (!isset($newsList) || !is_array($newsList)) {
                 class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
                 aria-current="page"
               >
-                Berita
+                Galeri
               </li>
             </ol>
-            <h6 class="mb-0 font-bold capitalize">Manajemen Berita</h6>
+            <h6 class="mb-0 font-bold capitalize">Manajemen Galeri</h6>
           </nav>
 
           <div
@@ -504,7 +533,7 @@ if (!isset($newsList) || !is_array($newsList)) {
           </div>
         </div>
       </nav>
-
+      <!-- End Navbar -->
       <div class="w-full px-6 py-6 mx-auto">
         
         <?php
@@ -572,15 +601,18 @@ if (!isset($newsList) || !is_array($newsList)) {
                 <label class="block text-sm font-semibold mb-1 text-gray-700">
                     <?= $isEdit ? "Ganti Thumbnail" : "Upload Thumbnail" ?>
                 </label>
+                
                 <input type="file" name="thumbnail" accept="image/*" 
-                       class="block w-full text-sm text-slate-500 
-                              file:mr-4 file:py-2 file:px-4 
-                              file:rounded-full file:border-0 
-                              file:text-sm file:font-semibold 
-                              file:bg-purple-50 file:text-purple-700 
-                              hover:file:bg-purple-100
-                              border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none py-2 px-2"
+                       class="w-full text-sm text-slate-500
+                              file:mr-4 file:py-2 file:px-4
+                              file:rounded-full file:border-0
+                              file:text-sm file:font-semibold
+                              file:bg-purple-700 file:text-white
+                              hover:file:bg-purple-600
+                              cursor-pointer focus:outline-none"
                        <?= $isEdit ? '' : 'required' ?>>
+                       
+                <p class="text-xs text-slate-400 mt-1">*Format: JPG, PNG, JPEG. Max: 2MB.</p>
               </div>
 
               <div class="flex justify-end pt-2">
