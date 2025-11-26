@@ -7,6 +7,8 @@ require_once __DIR__ . '/../app/controller/AdminController.php';
 require_once __DIR__ . '/../app/controller/MahasiswaController.php';
 require_once __DIR__ . '/../app/controller/galleryController.php';
 require_once __DIR__ . '/../app/controller/NewsController.php';
+require_once __DIR__ . '/../app/controller/ResearchController.php';
+// --- TAMBAH CONTROLLER ABSENSI (ATTENDANCE) ---
 require_once __DIR__ . '/../app/controller/AttendanceController.php';
 
 // Inisialisasi Database
@@ -19,6 +21,8 @@ $adminController = new AdminController();
 $mahasiswaController = new MahasiswaController();
 $galleryController = new galleryController($pdo);
 $newsController = new NewsController($pdo);
+$researchController = new ResearchController($pdo);
+// --- TAMBAH INIALISASI ATTENDANCE CONTROLLER ---
 $attendanceController = new AttendanceController();
 
 // Ambil Parameter URL
@@ -72,6 +76,18 @@ if ($page === 'news' && $action === 'create') {
   exit;
 }
 
+//routing riset
+if ($page === 'research' && $action === 'create') {
+  $researchController->create();
+  exit;
+} elseif ($page === 'research' && $action === 'edit') {
+  $researchController->edit($_GET['id']);
+  exit;
+} elseif ($page === 'research' && $action === 'delete') {
+  $researchController->delete($_GET['id']);
+  exit;
+}
+
 switch ($page) {
   case 'login':
     // ... (kode yang sudah ada)
@@ -101,7 +117,7 @@ switch ($page) {
     require __DIR__ . '/../app/views/admin/products.php';
     break;
   case 'research':
-    require __DIR__ . '/../app/views/admin/research.php';
+    $researchController->index();
     break;
   case 'team':
     require __DIR__ . '/../app/views/admin/team.php';
