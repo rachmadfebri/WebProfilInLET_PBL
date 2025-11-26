@@ -1,24 +1,26 @@
 <?php
+// Pastikan variabel ada
 if (!isset($newsList) || !is_array($newsList)) {
     $newsList = [];
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="apple-touch-icon"
       sizes="76x76"
-      href="public/assets/img/apple-icon.png"
+      href="assets/img/apple-icon.png"
     />
     <link
       rel="icon"
       type="image/png"
-      href="public/assets/img/favicon.png"
+      href="assets/img/favicon.png"
     />
-    <title>News - Lab InLET</title>
+    <title>Galeri - Lab InLET</title>
     <!--     Fonts and icons     -->
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
@@ -29,14 +31,7 @@ if (!isset($newsList) || !is_array($newsList)) {
       src="https://kit.fontawesome.com/42d5adcbca.js"
       crossorigin="anonymous"
     ></script>
-     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
-  
-  <!-- Popper -->
-  <script src="https://unpkg.com/@popperjs/core@2"></script>
-  
-  <!-- Main Styling -->
-  <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
+    <!-- Nucleo Icons -->
     <link
       href="assets/css/nucleo-icons.css"
       rel="stylesheet"
@@ -45,15 +40,12 @@ if (!isset($newsList) || !is_array($newsList)) {
       href="assets/css/nucleo-svg.css"
       rel="stylesheet"
     />
-    <!-- Popper -->
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <!-- Main Styling -->
+    <link href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
     <link
       href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
       rel="stylesheet"
     />
-
-    <!-- Nepcha Analytics (nepcha.com) -->
     <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
     <script
       defer
@@ -63,7 +55,7 @@ if (!isset($newsList) || !is_array($newsList)) {
   </head>
 
   <body
-    class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500"
+    class="m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500"
   >
     <!-- sidenav  -->
     <aside
@@ -417,47 +409,122 @@ if (!isset($newsList) || !is_array($newsList)) {
               >
             </a>
           </li>
-      <div class="mx-4 my-4">
-        <a href="?action=logout" class="inline-block w-full px-8 py-2 mb-4 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
-          Logout
-        </a>
-      </div>
     </aside>
 
+    <!-- end sidenav -->
 
-    <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
-      
-      <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="true">
-        <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+    <main
+      class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200"
+    >
+      <!-- Navbar -->
+      <nav
+        class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start"
+        navbar-main
+        navbar-scroll="true"
+      >
+        <div
+          class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit"
+        >
           <nav>
-            <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+            <!-- breadcrumb -->
+            <ol
+              class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16"
+            >
               <li class="leading-normal text-sm">
-                <a class="opacity-50 text-slate-700" href="javascript:;">Pages</a>
+                <a class="opacity-50 text-slate-700" href="javascript:;"
+                  >Pages</a
+                >
               </li>
-              <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">News</li>
+              <li
+                class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
+                aria-current="page"
+              >
+                Berita
+              </li>
             </ol>
             <h6 class="mb-0 font-bold capitalize">Manajemen Berita</h6>
           </nav>
+
+          <div
+            class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto"
+          >
+            <div class="flex items-center md:ml-auto md:pr-4">
+              <div
+                class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft"
+              >
+                <span
+                  class="text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all"
+                >
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+                <input
+                  type="text"
+                  class="pl-8.75 text-sm focus:shadow-soft-primary-outline ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                  placeholder="Cari..."
+                />
+              </div>
+            </div>
+            <ul
+              class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full"
+            >
+              
+              <li class="flex items-center pl-4 xl:hidden">
+                <a
+                  href="javascript:;"
+                  class="block p-0 text-sm transition-all ease-nav-brand text-slate-500"
+                  sidenav-trigger
+                >
+                  <div class="w-4.5 overflow-hidden">
+                    <i
+                      class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"
+                    ></i>
+                    <i
+                      class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"
+                    ></i>
+                    <i
+                      class="ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all"
+                    ></i>
+                  </div>
+                </a>
+              </li>
+              <li class="flex items-center px-4">
+                <a
+                  href="javascript:;"
+                  class="p-0 text-sm transition-all ease-nav-brand text-slate-500"
+                >
+                  <i
+                    fixed-plugin-button-nav
+                    class="cursor-pointer fa fa-cog"
+                    aria-hidden="true"
+                  ></i>
+                  <!-- fixed-plugin-button-nav  -->
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
 
       <div class="w-full px-6 py-6 mx-auto">
         
         <?php
+            // Logika View
             $isEdit = isset($editData);
             $formTitle = $isEdit ? "Edit Berita" : "Tambah Berita";
             $formAction = $isEdit 
                 ? "index.php?page=news&action=edit&id=" . $editData['id'] 
                 : "index.php?page=news&action=create";
+            
+            // Logika Visibilitas
             $popoverClass = $isEdit ? "" : "hidden";
         ?>
 
-        <div class="flex justify-start mb-4 relative">
+        <div class="relative inline-block text-left mb-4" style="z-index: 50;">
           
           <?php if (!$isEdit): ?>
           <button
             id="addNewsBtn"
-            class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all"
+            class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all shadow-md"
             onclick="toggleNewsPopover()"
           >
             + Tambah Berita
@@ -466,52 +533,74 @@ if (!isset($newsList) || !is_array($newsList)) {
 
           <div
             id="newsPopover"
-            class="absolute left-0 top-12 z-50 <?= $popoverClass ?> bg-white rounded-lg shadow-lg p-6 w-full max-w-lg border border-gray-100"
-            style="min-width:350px;"
+            class="absolute left-0 mt-2 bg-white rounded-lg shadow-lg p-6 border border-gray-100 <?= $popoverClass ?>"
+            style="width: 400px; max-width: 90vw; z-index: 100;"
           >
-            <h3 class="text-lg font-bold mb-4 border-b pb-2"><?= $formTitle ?></h3>
+            <h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800"><?= $formTitle ?></h3>
             
             <form action="<?= $formAction ?>" method="POST" enctype="multipart/form-data">
-                <?php if ($isEdit && !empty($editData['thumbnail'])): ?>
+              
+              <?php if ($isEdit && !empty($editData['thumbnail'])): ?>
                 <div class="mb-4 text-center">
                     <p class="text-xs font-semibold mb-1 text-gray-500">Thumbnail Saat Ini:</p>
-                    <img src="<?= htmlspecialchars($editData['thumbnail']) ?>" class="h-24 w-auto mx-auto object-cover rounded border">
+                    
+                    <img src="<?= htmlspecialchars($editData['thumbnail']) ?>" 
+                         class="mx-auto rounded border shadow-sm object-contain bg-gray-100"
+                         style="height: 120px; width: auto; max-width: 100%; display: block;">
+                         
                 </div>
               <?php endif; ?>
 
               <div class="mb-4">
-                <label class="block text-sm font-semibold mb-1">Judul Artikel</label>
-                <input type="text" name="title" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" 
+                <label class="block text-sm font-semibold mb-1 text-gray-700">Judul Artikel</label>
+                <input type="text" name="title" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all" 
                        value="<?= $isEdit ? htmlspecialchars($editData['title']) : '' ?>" required>
               </div>
 
               <div class="mb-4">
-                <label class="block text-sm font-semibold mb-1">Tanggal Publish</label>
-                <input type="date" name="published_date" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" 
+                <label class="block text-sm font-semibold mb-1 text-gray-700">Tanggal Publish</label>
+                <input type="date" name="published_date" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all" 
                        value="<?= $isEdit ? htmlspecialchars($editData['published_date']) : date('Y-m-d') ?>" required>
               </div>
 
               <div class="mb-4">
-                <label class="block text-sm font-semibold mb-1">Isi Konten</label>
-                <textarea name="content" rows="5" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" required><?= $isEdit ? htmlspecialchars($editData['content']) : '' ?></textarea>
+                <label class="block text-sm font-semibold mb-1 text-gray-700">Isi Konten</label>
+                <textarea name="content" rows="4" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all" required><?= $isEdit ? htmlspecialchars($editData['content']) : '' ?></textarea>
               </div>
 
               <div class="mb-4">
-                <label class="block text-sm font-semibold mb-1">
-                    <?= $isEdit ? "Ganti Thumbnail (Opsional)" : "Upload Thumbnail" ?>
+                <label class="block text-sm font-semibold mb-1 text-gray-700">
+                    <?= $isEdit ? "Ganti Thumbnail" : "Upload Thumbnail" ?>
                 </label>
-                <input type="file" name="thumbnail" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100" 
+                <input type="file" name="thumbnail" accept="image/*" 
+                       class="block w-full text-sm text-slate-500 
+                              file:mr-4 file:py-2 file:px-4 
+                              file:rounded-full file:border-0 
+                              file:text-sm file:font-semibold 
+                              file:bg-purple-50 file:text-purple-700 
+                              hover:file:bg-purple-100
+                              border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none py-2 px-2"
                        <?= $isEdit ? '' : 'required' ?>>
               </div>
 
               <div class="flex justify-end pt-2">
+                
                 <?php if ($isEdit): ?>
-                    <a href="index.php?page=news" class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 text-sm font-semibold flex items-center">Batal</a>
+                    <a href="index.php?page=news" 
+                       class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all">
+                       Batal
+                    </a>
                 <?php else: ?>
-                    <button type="button" class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 text-sm font-semibold" onclick="toggleNewsPopover()">Batal</button>
+                    <button type="button" 
+                            class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" 
+                            onclick="toggleNewsPopover()">
+                            Batal
+                    </button>
                 <?php endif; ?>
                 
-                <button type="submit" class="px-4 py-2 rounded bg-purple-700 text-white text-sm font-semibold hover:bg-purple-600 transition-all">Simpan</button>
+                <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">
+                    Simpan
+                </button>
               </div>
 
             </form>
@@ -537,29 +626,37 @@ if (!isset($newsList) || !is_array($newsList)) {
                   <?php if (!empty($newsList)): ?>
                       <?php foreach ($newsList as $news): ?>
                       <tr>
-                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
-                          <img src="<?= htmlspecialchars($news['thumbnail']) ?>" class="h-16 w-24 object-cover rounded-lg mx-auto border" alt="thumb" />
+                        <td class="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent text-center">
+                          <?php if(!empty($news['thumbnail'])): ?>
+                            <img src="<?= htmlspecialchars($news['thumbnail']) ?>" class="h-16 w-24 object-cover rounded-lg mx-auto border" alt="thumb" />
+                          <?php else: ?>
+                             <span class="text-xs text-gray-400">No Image</span>
+                          <?php endif; ?>
                         </td>
-                        
-                        <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
+                        <td class="p-2 align-middle bg-transparent shadow-transparent">
                            <div class="flex flex-col px-2 py-1">
-                                <h6 class="mb-0 text-sm leading-normal font-bold"><?= htmlspecialchars($news['title']) ?></h6>
+                                <h6 class="mb-0 text-sm leading-normal font-bold text-slate-700"><?= htmlspecialchars($news['title']) ?></h6>
                                 <p class="mb-0 text-xs text-slate-400 overflow-hidden w-64 truncate">
                                     <?= htmlspecialchars(substr($news['content'], 0, 100)) ?>...
                                 </p>
                            </div>
                         </td>
-
-                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                        <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
                           <span class="text-xs font-semibold leading-tight text-slate-400">
-                            Pub: <?= date('d M Y', strtotime($news['published_date'])) ?><br>
-                            <span class="text-xxs">Created: <?= date('d/m/Y', strtotime($news['created_at'])) ?></span>
+                            <?= date('d M Y', strtotime($news['published_date'])) ?>
                           </span>
                         </td>
-
-                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <a href="index.php?page=news&action=edit&id=<?= $news['id'] ?>" class="text-xs font-semibold leading-tight text-blue-500 mr-3"> Edit </a>
-                          <a href="index.php?page=news&action=delete&id=<?= $news['id'] ?>" class="text-xs font-semibold leading-tight text-red-500" onclick="return confirm('Yakin ingin menghapus berita ini?')"> Hapus </a>
+                        <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
+                          <a href="index.php?page=news&action=edit&id=<?= $news['id'] ?>" 
+                             class="text-xs font-bold leading-tight text-blue-800 mr-6 hover:text-blue-950 transition-all"> 
+                             Edit 
+                          </a>
+                          
+                          <a href="index.php?page=news&action=delete&id=<?= $news['id'] ?>" 
+                             class="text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" 
+                             onclick="return confirm('Yakin ingin menghapus berita ini?')"> 
+                             Hapus 
+                          </a>
                         </td>
                       </tr>
                       <?php endforeach; ?>
@@ -573,6 +670,7 @@ if (!isset($newsList) || !is_array($newsList)) {
             </div>
           </div>
         </div>
+
       </div>
     </main>
     
@@ -581,13 +679,13 @@ if (!isset($newsList) || !is_array($newsList)) {
         const popover = document.getElementById("newsPopover");
         popover.classList.toggle("hidden");
       }
-      // Tutup jika klik di luar
       document.addEventListener("click", function(e) {
         const btn = document.getElementById("addNewsBtn");
         const popover = document.getElementById("newsPopover");
-        // Cek jika btn ada (karena btn hilang saat mode edit)
-        if (btn && popover && !popover.contains(e.target) && e.target !== btn) {
-          popover.classList.add("hidden");
+        if (popover && !popover.contains(e.target)) {
+           if (btn && e.target !== btn) {
+               popover.classList.add("hidden");
+           }
         }
       });
     </script>

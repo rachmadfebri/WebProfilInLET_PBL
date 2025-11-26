@@ -412,44 +412,6 @@ $current_page = $_GET['page'] ?? 'dashboard';
               >
             </a>
           </li>
-
-      <!-- <div class="mx-4">
-        load phantom colors for card after:
-        <p
-          class="invisible hidden text-gray-800 text-red-500 text-red-600 after:bg-gradient-to-tl after:from-gray-900 after:to-slate-800 after:bg-gradient-to-tl after:from-blue-600 after:to-cyan-400 after:bg-gradient-to-tl after:from-red-500 after:to-yellow-400 after:bg-gradient-to-tl after:from-green-600 after:to-lime-400 after:bg-gradient-to-tl after:from-red-600 after:to-rose-400 after:bg-gradient-to-tl after:from-slate-600 after:to-slate-300 text-lime-500 text-cyan-500 text-slate-400 text-fuchsia-500"
-        ></p>
-        <div
-          class="after:opacity-65 after:bg-gradient-to-tl after:from-slate-600 after:to-slate-300 relative flex min-w-0 flex-col items-center break-words rounded-2xl border-0 border-solid border-blue-900 bg-white bg-clip-border shadow-none after:absolute after:top-0 after:bottom-0 after:left-0 after:z-10 after:block after:h-full after:w-full after:rounded-2xl after:content-['']"
-          sidenav-card
-        >
-          <div
-            class="mb-7.5 absolute h-full w-full rounded-2xl bg-cover bg-center"
-            style="
-              background-image: url('assets/img/curved-images/white-curved.jpeg');
-            "
-          ></div>
-          <div class="relative z-20 flex-auto w-full p-4 text-left text-white">
-            <div
-              class="flex items-center justify-center w-8 h-8 mb-4 text-center bg-white bg-center rounded-lg icon shadow-soft-2xl"
-            >
-              <i
-                class="top-0 z-10 text-transparent ni leading-none ni-diamond text-lg bg-gradient-to-tl from-slate-600 to-slate-300 bg-clip-text opacity-80"
-                sidenav-card-icon
-              ></i>
-            </div>
-            
-          </div>
-        </div> -->
-        <!-- pro btn  -->
-        <!--
-        <a
-          class="inline-block w-full px-6 py-3 my-4 font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro text-xs bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102"
-          target="_blank"
-          href="https://www.creative-tim.com/product/soft-ui-dashboard-pro-tailwind?ref=sidebarfree"
-          >Upgrade to pro</a
-        >
-      </div>
-        -->
     </aside>
 
     <!-- end sidenav -->
@@ -471,7 +433,7 @@ $current_page = $_GET['page'] ?? 'dashboard';
             <ol
               class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16"
             >
-              <li class="text-sm leading-normal">
+              <li class="leading-normal text-sm">
                 <a class="opacity-50 text-slate-700" href="javascript:;"
                   >Pages</a
                 >
@@ -483,6 +445,7 @@ $current_page = $_GET['page'] ?? 'dashboard';
                 Galeri
               </li>
             </ol>
+            <h6 class="mb-0 font-bold capitalize">Manajemen Galeri</h6>
           </nav>
 
           <div
@@ -500,22 +463,14 @@ $current_page = $_GET['page'] ?? 'dashboard';
                 <input
                   type="text"
                   class="pl-8.75 text-sm focus:shadow-soft-primary-outline ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
-                  placeholder="Type here..."
+                  placeholder="Cari..."
                 />
               </div>
             </div>
             <ul
               class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full"
             >
-              <li class="flex items-center">
-                <a
-                  href="../pages/sign-in.html"
-                  class="block px-0 py-2 text-sm font-semibold transition-all ease-nav-brand text-slate-500"
-                >
-                  <i class="fa fa-user sm:mr-1" aria-hidden="true"></i>
-                  <span class="hidden sm:inline">Sign In</span>
-                </a>
-              </li>
+              
               <li class="flex items-center pl-4 xl:hidden">
                 <a
                   href="javascript:;"
@@ -558,23 +513,19 @@ $current_page = $_GET['page'] ?? 'dashboard';
         <?php
             // LOGIKA: Cek apakah ini mode Edit atau Tambah
             $isEdit = isset($editData);
-            
-            // Tentukan Judul dan Link Action Form
             $formTitle = $isEdit ? "Edit Galeri" : "Tambah Galeri";
             $formAction = $isEdit 
                 ? "index.php?page=gallery&action=edit&id=" . $editData['id'] 
                 : "index.php?page=gallery&action=create";
-            
-            // Jika mode Edit, form langsung muncul. Jika tidak, sembunyikan.
             $popoverClass = $isEdit ? "" : "hidden";
         ?>
 
-        <div class="flex justify-start mb-4 relative">
+        <div class="relative inline-block text-left mb-4" style="z-index: 50;">
             
             <?php if (!$isEdit): ?>
             <button
               id="addGalleryBtn"
-              class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all"
+              class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all shadow-md"
               onclick="toggleGalleryPopover()"
             >
               + Tambah Galeri
@@ -583,32 +534,35 @@ $current_page = $_GET['page'] ?? 'dashboard';
 
             <div
               id="galleryPopover"
-              class="absolute left-0 top-12 z-50 <?= $popoverClass ?> bg-white rounded-lg shadow-lg p-6 w-full max-w-lg border border-gray-100"
-              style="min-width: 350px"
+              class="absolute left-0 mt-2 bg-white rounded-lg shadow-lg p-6 border border-gray-100 <?= $popoverClass ?>"
+              style="width: 400px; max-width: 90vw; z-index: 100;"
             >
-              <h3 class="text-lg font-bold mb-4 border-b pb-2"><?= $formTitle ?></h3>
+              <h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800"><?= $formTitle ?></h3>
               
               <form action="<?= $formAction ?>" method="POST" enctype="multipart/form-data">
                 
                 <?php if ($isEdit && !empty($editData['image'])): ?>
                 <div class="mb-4 text-center">
                     <p class="text-xs font-semibold mb-1 text-gray-500">Gambar Saat Ini:</p>
-                    <img src="<?= htmlspecialchars($editData['image']) ?>" class="h-24 w-auto mx-auto object-contain rounded border shadow-sm">
+                    <img src="<?= htmlspecialchars($editData['image']) ?>" 
+                         class="mx-auto rounded border shadow-sm object-contain bg-gray-100"
+                         style="height: 120px; width: auto; max-width: 100%; display: block;">
                 </div>
                 <?php endif; ?>
 
                 <div class="mb-4">
-                  <label class="block text-sm font-semibold mb-1">
+                  <label class="block text-sm font-semibold mb-1 text-gray-700">
                     <?= $isEdit ? "Ganti Gambar (Opsional)" : "Upload Gambar" ?>
                   </label>
                   
                   <input type="file" name="gambar" accept="image/*"
-                         class="w-full text-sm text-slate-500 
+                         class="block w-full text-sm text-slate-500 
                                 file:mr-4 file:py-2 file:px-4 
                                 file:rounded-full file:border-0 
                                 file:text-sm file:font-semibold 
                                 file:bg-purple-50 file:text-purple-700 
-                                hover:file:bg-purple-100 cursor-pointer" 
+                                hover:file:bg-purple-100
+                                border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none py-2 px-2"
                          <?= $isEdit ? '' : 'required' ?> >
                          
                   <p class="text-xs text-slate-400 mt-1">*Format: JPG, PNG, JPEG. Max: 2MB.</p>
@@ -616,33 +570,40 @@ $current_page = $_GET['page'] ?? 'dashboard';
 
                 <div class="flex justify-end pt-2">
                   <?php if ($isEdit): ?>
-                    <a href="index.php?page=gallery" class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 text-sm font-semibold flex items-center hover:bg-gray-300 transition-all">Batal</a>
+                    <a href="index.php?page=gallery" 
+                       class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all"
+                       style="margin-right: 15px;"> Batal
+                    </a>
                   <?php else: ?>
-                    <button type="button" class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" onclick="toggleGalleryPopover()">Batal</button>
+                    <button type="button" 
+                            class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" 
+                            style="margin-right: 15px;" onclick="toggleGalleryPopover()">
+                            Batal
+                    </button>
                   <?php endif; ?>
                   
-                  <button type="submit" class="px-4 py-2 rounded bg-purple-700 text-white text-sm font-semibold hover:bg-purple-600 transition-all shadow-md">Simpan</button>
+                  <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">Simpan</button>
                 </div>
               </form>
             </div>
         </div>
-      <script>
-        function toggleGalleryPopover() {
-          const popover = document.getElementById("galleryPopover");
-          popover.classList.toggle("hidden");
-        }
-        // Optional: tutup popover jika klik di luar
-        document.addEventListener("click", function (e) {
-          const btn = document.getElementById("addGalleryBtn");
-          const popover = document.getElementById("galleryPopover");
-          if (!popover.contains(e.target) && e.target !== btn) {
-            popover.classList.add("hidden");
-          }
-        });
-      </script>
+        
+        <script>
+            function toggleGalleryPopover() {
+              const popover = document.getElementById("galleryPopover");
+              popover.classList.toggle("hidden");
+            }
+            // Tutup jika klik di luar
+            document.addEventListener("click", function (e) {
+              const btn = document.getElementById("addGalleryBtn");
+              const popover = document.getElementById("galleryPopover");
+              if (popover && !popover.contains(e.target) && (!btn || e.target !== btn)) {
+                 // Hanya tutup otomatis jika bukan sedang mode edit (karena btn hilang saat edit)
+                 if(btn) popover.classList.add("hidden");
+              }
+            });
+        </script>
       <!-- ... MULAI TABEL... -->
-      <div class="w-full px-6 py-6 mx-auto">
-        <!-- table 1 -->
 
         <div class="flex flex-wrap -mx-3">
           <div class="flex-none w-full max-w-full px-3">
@@ -678,8 +639,10 @@ $current_page = $_GET['page'] ?? 'dashboard';
                           Diupload pada
                         </th>
                         <th
-                          class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-gray-200 border-solid shadow-none tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                          class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
                         >
+                          Aksi
+                        </th>
                           <!-- Aksi -->
                         </th>
                       </tr>
@@ -713,16 +676,16 @@ $current_page = $_GET['page'] ?? 'dashboard';
                                     <?= date('d M Y', strtotime($item['upload_date'] ?? 'now')) ?>
                                 </span>
                             </td>
-                            <td class="text-center">
+                            <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
                               <a href="index.php?page=gallery&action=edit&id=<?= $item['id'] ?>"
-                                class="text-xs font-semibold leading-tight text-blue-500 mr-2">
+                                class="inline-block mr-6 text-xs font-bold leading-tight text-blue-800 hover:text-blue-950 transition-all">
                                 Edit
                               </a>
 
                               <a href="index.php?page=gallery&action=delete&id=<?= $item['id'] ?>"
-                                class="text-xs font-semibold leading-tight text-red-500"
+                                class="inline-block text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all"
                                 onclick="return confirm('Yakin ingin menghapus data ini?')">
-                                Delete
+                                Hapus
                               </a>
                           </td>
                         </tr>
@@ -742,7 +705,6 @@ $current_page = $_GET['page'] ?? 'dashboard';
             </div>
           </div>
         </div>
-      </div>
     </main>
   </body>
 </html>
