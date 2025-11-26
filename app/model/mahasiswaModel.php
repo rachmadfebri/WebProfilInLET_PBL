@@ -1,11 +1,36 @@
 <?php
-class mahasiswaModel {
+// app/models/MahasiswaModel.php
+
+class MahasiswaModel {
     private $db;
 
     public function __construct() {
-        $this->db = require __DIR__ . '/../../config/connection.php';
+        // Pastikan path ke connection.php sudah benar
+        $this->db = (require __DIR__ . '/../../config/connection.php');
     }
 
+    /**
+     * Mengecek dan mengambil data mahasiswa berdasarkan user_id.
+     * @param int $user_id
+     * @return array|false
+     */
+   public function getStudentData(int $user_id) {
+    // Tambahkan kondisi 'AND nim IS NOT NULL' pada query
+    $sql = "SELECT * FROM students 
+            WHERE user_id = :id 
+            AND nim IS NOT NULL"; 
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([':id' => $user_id]);
+    
+    // Jika data ditemukan dan NIM sudah terisi, fetch data.
+    return $stmt->fetch();
+}
+
+    /**
+     * Melakukan INSERT atau UPDATE data mahasiswa.
+     * (Kode ini sudah Anda berikan)
+     */
     public function createOrUpdate(int $user_id, array $data) {
         $stmt = $this->db->prepare("SELECT user_id FROM students WHERE user_id = :id");
         $stmt->execute([':id' => $user_id]);

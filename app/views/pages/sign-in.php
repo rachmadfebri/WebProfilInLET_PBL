@@ -27,6 +27,7 @@ if (session_status() === PHP_SESSION_NONE) {
     
     <main class="mt-0 transition-all duration-200 ease-soft-in-out">
       <section>
+   
         <div class="relative flex items-center p-0 overflow-hidden bg-center bg-cover min-h-75-screen">
           <div class="container z-10">
             <div class="flex flex-wrap mt-0 -mx-3">
@@ -40,14 +41,14 @@ if (session_status() === PHP_SESSION_NONE) {
                   <div class="flex-auto p-6">
                     
                     <?php if (isset($_SESSION['error'])): ?>
-                        <div class="p-4 mb-4 text-sm text-white bg-red-500 rounded-lg" role="alert">
+                        <div class="inline-block px-8 mb-4 font-bold text-center text-white uppercase align-middle transition-all border-0 rounded-lg shadow-soft-md bg-150 bg-x-25 leading-pro text-sm bg-gradient-to-tl from-red-600 to-rose-400" role="alert">
                             <span class="font-bold">Error!</span> <?= $_SESSION['error']; ?>
                         </div>
                         <?php unset($_SESSION['error']); ?>
                     <?php endif; ?>
 
                     <?php if (isset($_SESSION['success'])): ?>
-                        <div class="p-4 mb-4 text-sm text-white bg-green-500 rounded-lg" role="alert">
+                        <div class="inline-block p-4 mb-4 text-sm  bg-green-500 rounded-lg" role="alert">
                             <span class="font-bold">Success!</span> <?= $_SESSION['success']; ?>
                         </div>
                         <?php unset($_SESSION['success']); ?>
@@ -65,10 +66,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <input type="password" name="password" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow" placeholder="Password" aria-label="Password" required />
                       </div>
                       
-                      <div class="min-h-6 mb-0.5 block pl-12">
-                        <input id="rememberMe" class="mt-0.54 rounded-10 duration-250 ease-soft-in-out after:rounded-circle after:shadow-soft-2xl after:duration-250 checked:after:translate-x-5.25 h-5 relative float-left -ml-12 w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-slate-800/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-slate-800/95 checked:bg-slate-800/95 checked:bg-none checked:bg-right" type="checkbox" checked="" />
-                        <label class="mb-2 ml-1 font-normal cursor-pointer select-none text-sm text-slate-700" for="rememberMe">Remember me</label>
-                      </div>
+                      
                       
                       <div class="text-center">
                         <button type="submit" class="inline-block w-full px-6 py-3 mt-6 mb-0 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer shadow-soft-md bg-x-25 bg-150 leading-pro text-xs ease-soft-in tracking-tight-soft bg-gradient-to-tl from-blue-600 to-cyan-400 hover:scale-102 hover:shadow-soft-xs active:opacity-85">Sign in</button>
