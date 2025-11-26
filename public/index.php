@@ -5,6 +5,8 @@ require_once __DIR__ . '/../config/connection.php';
 require_once __DIR__ . '/../app/controller/AuthController.php'; 
 require_once __DIR__ . '/../app/controller/AdminController.php'; 
 require_once __DIR__ . '/../app/controller/MahasiswaController.php'; 
+require_once __DIR__ . '/../app/controller/galleryController.php';
+require_once __DIR__ . '/../app/controller/NewsController.php';
 
 // Inisialisasi Database
 $db = new Database();
@@ -14,6 +16,8 @@ $pdo = $db->connect();
 $authController = new AuthController($pdo);
 $adminController = new AdminController(); 
 $mahasiswaController = new MahasiswaController();
+$galleryController = new galleryController($pdo);
+$newsController = new NewsController($pdo);
 
 // Ambil Parameter URL
 $page = $_GET['page'] ?? 'login';
@@ -28,6 +32,29 @@ if ($action) {
     } elseif ($action === 'logout') {
         $authController->logout();
     }
+}
+
+//routing gallery
+if ($page === 'gallery' && $action === 'create') {
+    $galleryController->create();
+    exit;
+} elseif ($page === 'gallery' && $action === 'edit') {
+    $galleryController->edit($_GET['id']);
+    exit;
+} elseif ($page === 'gallery' && $action === 'delete') {
+    $galleryController->delete($_GET['id']);
+    exit;
+}
+
+//routing news
+if ($page === 'news' && $action === 'create') {
+    $newsController->create();
+    exit;
+} elseif ($page === 'news' && $action === 'edit') {
+    $newsController->edit($_GET['id']);
+    exit;
+} elseif ($page === 'news' && $action === 'delete') {
+    $newsController->delete($_GET['id']);
     exit;
 }
 
@@ -51,37 +78,19 @@ switch ($page) {
         break;
     
     case 'gallery': 
-        require __DIR__ . '/../app/views/admin/gallery.php'; 
-        break;
-    case 'proses_galeri':
-        require __DIR__ . '/../app/views/admin/proses_galeri.php'; 
+        $galleryController->index();
         break;
     case 'news':
-        require __DIR__ . '/../app/views/admin/news.php';
-        break;
-    case 'proses_news':
-        require __DIR__ . '/../app/views/admin/proses_news.php';
+        $newsController->index(); 
         break;
     case 'products':
         require __DIR__ . '/../app/views/admin/products.php';
         break;
-    case 'proses_products':
-        require __DIR__ . '/../app/views/admin/proses_products.php';
-        break;
     case 'research':
         require __DIR__ . '/../app/views/admin/research.php';
         break;
-    case 'proses_research':
-        require __DIR__ . '/../app/views/admin/proses_research.php';
-        break;
-    case 'proses_research':
-        require __DIR__ . '/../app/views/admin/proses_research.php';
-        break;
     case 'team':
         require __DIR__ . '/../app/views/admin/team.php';
-        break;
-    case 'proses_team':
-        require __DIR__ . '/../app/views/admin/proses_team.php';
         break;
     default:
         echo "Page not found.";

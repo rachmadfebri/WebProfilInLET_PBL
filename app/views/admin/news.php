@@ -1,28 +1,30 @@
-<!-- filepath: c:\laragon\www\WebProfilInLET_PBL\app\views\admin\news.php -->
 <?php
-// Ambil data dari database
-require_once __DIR__ . '/../../../config/database.php'; // sesuaikan path
-
-$db = new Database();
-$conn = $db->connect();
-$stmt = $conn->query("SELECT * FROM news ORDER BY created_at DESC");
-$newsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+if (!isset($newsList) || !is_array($newsList)) {
+    $newsList = [];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png" />
-    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png" />
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
     <title>News - Lab InLET</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
-    <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
+    <link href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
+
   <body class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500">
+    
+    <?php 
+    // Anda bisa meng-include sidebar.php terpisah jika sudah dipisah
+    // Untuk saat ini saya biarkan struktur HTML sidebar yang ada di file Anda sebelumnya
+    ?>
     <!-- sidenav  -->
     <aside
       class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent"
@@ -375,47 +377,8 @@ $newsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
               >
             </a>
           </li>
-
-      <!-- <div class="mx-4">
-        load phantom colors for card after:
-        <p
-          class="invisible hidden text-gray-800 text-red-500 text-red-600 after:bg-gradient-to-tl after:from-gray-900 after:to-slate-800 after:bg-gradient-to-tl after:from-blue-600 after:to-cyan-400 after:bg-gradient-to-tl after:from-red-500 after:to-yellow-400 after:bg-gradient-to-tl after:from-green-600 after:to-lime-400 after:bg-gradient-to-tl after:from-red-600 after:to-rose-400 after:bg-gradient-to-tl after:from-slate-600 after:to-slate-300 text-lime-500 text-cyan-500 text-slate-400 text-fuchsia-500"
-        ></p>
-        <div
-          class="after:opacity-65 after:bg-gradient-to-tl after:from-slate-600 after:to-slate-300 relative flex min-w-0 flex-col items-center break-words rounded-2xl border-0 border-solid border-blue-900 bg-white bg-clip-border shadow-none after:absolute after:top-0 after:bottom-0 after:left-0 after:z-10 after:block after:h-full after:w-full after:rounded-2xl after:content-['']"
-          sidenav-card
-        >
-          <div
-            class="mb-7.5 absolute h-full w-full rounded-2xl bg-cover bg-center"
-            style="
-              background-image: url('assets/img/curved-images/white-curved.jpeg');
-            "
-          ></div>
-          <div class="relative z-20 flex-auto w-full p-4 text-left text-white">
-            <div
-              class="flex items-center justify-center w-8 h-8 mb-4 text-center bg-white bg-center rounded-lg icon shadow-soft-2xl"
-            >
-              <i
-                class="top-0 z-10 text-transparent ni leading-none ni-diamond text-lg bg-gradient-to-tl from-slate-600 to-slate-300 bg-clip-text opacity-80"
-                sidenav-card-icon
-              ></i>
-            </div>
-            
-          </div>
-        </div> -->
-        <!-- pro btn  -->
-        <!--
-        <a
-          class="inline-block w-full px-6 py-3 my-4 font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro text-xs bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102"
-          target="_blank"
-          href="https://www.creative-tim.com/product/soft-ui-dashboard-pro-tailwind?ref=sidebarfree"
-          >Upgrade to pro</a
-        >
-      </div>
-        -->
     </aside>
 
-    <!-- end sidenav -->
 
     <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
       <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="true">
@@ -427,117 +390,160 @@ $newsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
               </li>
               <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">News</li>
             </ol>
-            <h6 class="mb-0 font-bold capitalize">Form News Lab</h6>
+            <h6 class="mb-0 font-bold capitalize">Manajemen Berita</h6>
           </nav>
         </div>
       </nav>
+
       <div class="w-full px-6 py-6 mx-auto">
-        <!-- Tombol Tambah News -->
-        <div class="flex justify-end mb-4">
+        
+        <?php
+            $isEdit = isset($editData);
+            $formTitle = $isEdit ? "Edit Berita" : "Tambah Berita";
+            $formAction = $isEdit 
+                ? "index.php?page=news&action=edit&id=" . $editData['id'] 
+                : "index.php?page=news&action=create";
+            $popoverClass = $isEdit ? "" : "hidden";
+        ?>
+
+        <div class="flex justify-start mb-4 relative">
+          
+          <?php if (!$isEdit): ?>
           <button
             id="addNewsBtn"
             class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all"
             onclick="toggleNewsPopover()"
           >
-            + Tambah News
+            + Tambah Berita
           </button>
-        </div>
-        <!-- Pop Up Form Tambah News -->
-        <div
-          id="newsPopover"
-          class="absolute right-10 top-32 z-50 hidden bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
-          style="min-width:300px;"
-        >
-          <h3 class="text-lg font-bold mb-4">Tambah Artikel / News Lab</h3>
-          <form action="../app/views/admin/proses_news.php" method="POST" enctype="multipart/form-data">
-            <div class="mb-4">
-              <label class="block text-sm font-semibold mb-1">Judul Artikel</label>
-              <input type="text" name="judul" class="w-full border rounded px-3 py-2" required>
-            </div>
-            <div class="mb-4">
-              <label class="block text-sm font-semibold mb-1">Isi Konten</label>
-              <textarea name="konten" rows="5" class="w-full border rounded px-3 py-2" required></textarea>
-            </div>
-            <div class="mb-4">
-              <label class="block text-sm font-semibold mb-1">Upload Thumbnail</label>
-              <input type="file" name="thumbnail" accept="image/*" class="w-full border rounded px-3 py-2" required>
-            </div>
-            <div class="flex justify-end">
-              <button type="button" class="mr-2 px-4 py-2 rounded bg-gray-300" onclick="toggleNewsPopover()">Batal</button>
-              <button type="submit" class="px-4 py-2 rounded bg-purple-700 text-white">Simpan</button>
-            </div>
-          </form>
-        </div>
-        <!-- Tabel List News -->
-        <div class="overflow-x-auto bg-white rounded-2xl shadow-soft-xl p-6">
-          <table class="min-w-full text-slate-700">
-          <thead>
-            <tr>
-              <th class="px-4 py-2 text-center font-bold">Thumbnail</th>
-              <th class="px-4 py-2 text-center font-bold">Judul</th>
-              <th class="px-4 py-2 text-center font-bold">Published Date</th>
-              <th class="px-4 py-2 text-center font-bold">Created At</th>
-              <th class="px-4 py-2 text-center font-bold">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($newsList as $news): 
-              // safe mapping: use DB column names (title, content, thumbnail, published_date, created_at)
-              $thumb = !empty($news['thumbnail']) ? $news['thumbnail'] : '/assets/img/placeholder.png';
-              $title = $news['title'] ?? $news['judul'] ?? '';
-              $published = $news['published_date'] ?? '';
-              $created = $news['created_at'] ?? '';
-            ?>
-            <tr>
-              <td class="px-4 py-2 text-center">
-                <img src="<?= htmlspecialchars((string)$thumb) ?>" alt="thumb" class="h-16 w-24 object-cover rounded-lg mx-auto" />
-              </td>
-              <td class="px-4 py-2 text-center"><?= htmlspecialchars((string)$title) ?></td>
-              <td class="px-4 py-2 text-center"><?= htmlspecialchars((string)$published) ?></td>
-              <td class="px-4 py-2 text-center"><?= htmlspecialchars((string)$created) ?></td>
-              <td class="px-4 py-2 text-center">
-                <a href="edit_news.php?id=<?= urlencode($news['id']) ?>" class="text-xs font-semibold text-blue-500 mr-2">Edit</a>
-                <a href="delete_news.php?id=<?= urlencode($news['id']) ?>" class="text-xs font-semibold text-red-500" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a>
-              </td>
-            </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
-        </div>
-      </div>
-      <footer class="pt-4">
-        <div class="w-full px-6 mx-auto">
-          <div class="flex flex-wrap items-center -mx-3 lg:justify-between">
-            <div class="w-full max-w-full px-3 mt-0 mb-6 shrink-0 lg:mb-0 lg:w-1/2 lg:flex-none">
-              <div class="leading-normal text-center text-sm text-slate-500 lg:text-left">
-                ©
-                <script>
-                  document.write(new Date().getFullYear() + ",");
-                </script>
-                made with <i class="fa fa-heart"></i> by
-                <a href="https://www.creative-tim.com" class="font-semibold text-slate-700" target="_blank">Creative Tim</a>
-                for a better web.
+          <?php endif; ?>
+
+          <div
+            id="newsPopover"
+            class="absolute left-0 top-12 z-50 <?= $popoverClass ?> bg-white rounded-lg shadow-lg p-6 w-full max-w-lg border border-gray-100"
+            style="min-width:350px;"
+          >
+            <h3 class="text-lg font-bold mb-4 border-b pb-2"><?= $formTitle ?></h3>
+            
+            <form action="<?= $formAction ?>" method="POST" enctype="multipart/form-data">
+                <?php if ($isEdit && !empty($editData['thumbnail'])): ?>
+                <div class="mb-4 text-center">
+                    <p class="text-xs font-semibold mb-1 text-gray-500">Thumbnail Saat Ini:</p>
+                    <img src="<?= htmlspecialchars($editData['thumbnail']) ?>" class="h-24 w-auto mx-auto object-cover rounded border">
+                </div>
+              <?php endif; ?>
+
+              <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1">Judul Artikel</label>
+                <input type="text" name="title" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" 
+                       value="<?= $isEdit ? htmlspecialchars($editData['title']) : '' ?>" required>
               </div>
+
+              <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1">Tanggal Publish</label>
+                <input type="date" name="published_date" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" 
+                       value="<?= $isEdit ? htmlspecialchars($editData['published_date']) : date('Y-m-d') ?>" required>
+              </div>
+
+              <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1">Isi Konten</label>
+                <textarea name="content" rows="5" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" required><?= $isEdit ? htmlspecialchars($editData['content']) : '' ?></textarea>
+              </div>
+
+              <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1">
+                    <?= $isEdit ? "Ganti Thumbnail (Opsional)" : "Upload Thumbnail" ?>
+                </label>
+                <input type="file" name="thumbnail" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100" 
+                       <?= $isEdit ? '' : 'required' ?>>
+              </div>
+
+              <div class="flex justify-end pt-2">
+                <?php if ($isEdit): ?>
+                    <a href="index.php?page=news" class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 text-sm font-semibold flex items-center">Batal</a>
+                <?php else: ?>
+                    <button type="button" class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 text-sm font-semibold" onclick="toggleNewsPopover()">Batal</button>
+                <?php endif; ?>
+                
+                <button type="submit" class="px-4 py-2 rounded bg-purple-700 text-white text-sm font-semibold hover:bg-purple-600 transition-all">Simpan</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
+          <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+            <h6>Daftar Berita</h6>
+          </div>
+          <div class="flex-auto px-0 pt-0 pb-2">
+            <div class="p-0 overflow-x-auto">
+              <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                <thead class="align-bottom">
+                  <tr>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Thumbnail</th>
+                    <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Info Artikel</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php if (!empty($newsList)): ?>
+                      <?php foreach ($newsList as $news): ?>
+                      <tr>
+                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
+                          <img src="<?= htmlspecialchars($news['thumbnail']) ?>" class="h-16 w-24 object-cover rounded-lg mx-auto border" alt="thumb" />
+                        </td>
+                        
+                        <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
+                           <div class="flex flex-col px-2 py-1">
+                                <h6 class="mb-0 text-sm leading-normal font-bold"><?= htmlspecialchars($news['title']) ?></h6>
+                                <p class="mb-0 text-xs text-slate-400 overflow-hidden w-64 truncate">
+                                    <?= htmlspecialchars(substr($news['content'], 0, 100)) ?>...
+                                </p>
+                           </div>
+                        </td>
+
+                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                          <span class="text-xs font-semibold leading-tight text-slate-400">
+                            Pub: <?= date('d M Y', strtotime($news['published_date'])) ?><br>
+                            <span class="text-xxs">Created: <?= date('d/m/Y', strtotime($news['created_at'])) ?></span>
+                          </span>
+                        </td>
+
+                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                          <a href="index.php?page=news&action=edit&id=<?= $news['id'] ?>" class="text-xs font-semibold leading-tight text-blue-500 mr-3"> Edit </a>
+                          <a href="index.php?page=news&action=delete&id=<?= $news['id'] ?>" class="text-xs font-semibold leading-tight text-red-500" onclick="return confirm('Yakin ingin menghapus berita ini?')"> Hapus </a>
+                        </td>
+                      </tr>
+                      <?php endforeach; ?>
+                  <?php else: ?>
+                      <tr>
+                          <td colspan="4" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada berita.</td>
+                      </tr>
+                  <?php endif; ?>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-      </footer>
+      </div>
     </main>
+    
     <script>
       function toggleNewsPopover() {
         const popover = document.getElementById("newsPopover");
         popover.classList.toggle("hidden");
       }
+      // Tutup jika klik di luar
       document.addEventListener("click", function(e) {
         const btn = document.getElementById("addNewsBtn");
         const popover = document.getElementById("newsPopover");
-        if (!popover.contains(e.target) && e.target !== btn) {
+        // Cek jika btn ada (karena btn hilang saat mode edit)
+        if (btn && popover && !popover.contains(e.target) && e.target !== btn) {
           popover.classList.add("hidden");
         }
       });
     </script>
-    <script src="/assets/js/plugins/perfect-scrollbar.min.js" async></script>
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script src="/assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
   </body>
 </html>

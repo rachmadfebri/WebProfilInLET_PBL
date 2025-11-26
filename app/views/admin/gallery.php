@@ -553,49 +553,79 @@ $current_page = $_GET['page'] ?? 'dashboard';
         </div>
       </nav>
       <!-- ...TAMBAH GALERI... -->
-      <div class="p-6 relative">
-        <button
-          id="addGalleryBtn"
-          class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm mb-4 hover:scale-102 transition-all"
-          onclick="toggleGalleryPopover()"
-        >
-          Tambah Galeri
-        </button>
-        <!-- Popover Form -->
-        <div
-          id="galleryPopover"
-          class="absolute left-0 mt-2 z-50 hidden bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
-          style="min-width: 300px"
-        >
-          <h3 class="text-lg font-bold mb-4">Tambah Galeri</h3>
-          <form id="galleryForm" action="proses_galeri.php" method="POST">
-            <div class="mb-4">
-              <label class="block text-sm font-semibold mb-1">URL Gambar</label>
-              <input
-                type="url"
-                name="url_gambar"
-                class="w-full border rounded px-3 py-2"
-                required
-              />
+      <div class="w-full px-6 py-6 mx-auto">
+        
+        <?php
+            // LOGIKA: Cek apakah ini mode Edit atau Tambah
+            $isEdit = isset($editData);
+            
+            // Tentukan Judul dan Link Action Form
+            $formTitle = $isEdit ? "Edit Galeri" : "Tambah Galeri";
+            $formAction = $isEdit 
+                ? "index.php?page=gallery&action=edit&id=" . $editData['id'] 
+                : "index.php?page=gallery&action=create";
+            
+            // Jika mode Edit, form langsung muncul. Jika tidak, sembunyikan.
+            $popoverClass = $isEdit ? "" : "hidden";
+        ?>
+
+        <div class="flex justify-start mb-4 relative">
+            
+            <?php if (!$isEdit): ?>
+            <button
+              id="addGalleryBtn"
+              class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all"
+              onclick="toggleGalleryPopover()"
+            >
+              + Tambah Galeri
+            </button>
+            <?php endif; ?>
+
+            <div
+              id="galleryPopover"
+              class="absolute left-0 top-12 z-50 <?= $popoverClass ?> bg-white rounded-lg shadow-lg p-6 w-full max-w-lg border border-gray-100"
+              style="min-width: 350px"
+            >
+              <h3 class="text-lg font-bold mb-4 border-b pb-2"><?= $formTitle ?></h3>
+              
+              <form action="<?= $formAction ?>" method="POST" enctype="multipart/form-data">
+                
+                <?php if ($isEdit && !empty($editData['image'])): ?>
+                <div class="mb-4 text-center">
+                    <p class="text-xs font-semibold mb-1 text-gray-500">Gambar Saat Ini:</p>
+                    <img src="<?= htmlspecialchars($editData['image']) ?>" class="h-24 w-auto mx-auto object-contain rounded border shadow-sm">
+                </div>
+                <?php endif; ?>
+
+                <div class="mb-4">
+                  <label class="block text-sm font-semibold mb-1">
+                    <?= $isEdit ? "Ganti Gambar (Opsional)" : "Upload Gambar" ?>
+                  </label>
+                  
+                  <input type="file" name="gambar" accept="image/*"
+                         class="w-full text-sm text-slate-500 
+                                file:mr-4 file:py-2 file:px-4 
+                                file:rounded-full file:border-0 
+                                file:text-sm file:font-semibold 
+                                file:bg-purple-50 file:text-purple-700 
+                                hover:file:bg-purple-100 cursor-pointer" 
+                         <?= $isEdit ? '' : 'required' ?> >
+                         
+                  <p class="text-xs text-slate-400 mt-1">*Format: JPG, PNG, JPEG. Max: 2MB.</p>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                  <?php if ($isEdit): ?>
+                    <a href="index.php?page=gallery" class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 text-sm font-semibold flex items-center hover:bg-gray-300 transition-all">Batal</a>
+                  <?php else: ?>
+                    <button type="button" class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" onclick="toggleGalleryPopover()">Batal</button>
+                  <?php endif; ?>
+                  
+                  <button type="submit" class="px-4 py-2 rounded bg-purple-700 text-white text-sm font-semibold hover:bg-purple-600 transition-all shadow-md">Simpan</button>
+                </div>
+              </form>
             </div>
-            <div class="flex justify-end">
-              <button
-                type="button"
-                class="mr-2 px-4 py-2 rounded bg-gray-300"
-                onclick="toggleGalleryPopover()"
-              >
-                Batal
-              </button>
-              <button
-                type="submit"
-                class="px-4 py-2 rounded bg-purple-700 text-white"
-              >
-                Simpan
-              </button>
-            </div>
-          </form>
         </div>
-      </div>
       <script>
         function toggleGalleryPopover() {
           const popover = document.getElementById("galleryPopover");
@@ -667,16 +697,11 @@ $current_page = $_GET['page'] ?? 'dashboard';
                             </td>
                             <td class="text-center">
                                 <img
-                                    src="<?= htmlspecialchars($item['image_url'] ?? 'assets/img/default.jpg') ?>" 
+                                    src="<?= htmlspecialchars($item['image']) ?>" 
                                     class="h-16 w-24 object-cover rounded-lg mx-auto"
                                     alt="gambar"
                                 />
                                 <div class="mt-2">
-                                    <h6
-                                        class="mb-0 text-sm leading-normal font-semibold"
-                                    >
-                                        <?= htmlspecialchars($item['title'] ?? 'Tanpa Judul') ?>
-                                    </h6>
                                     <p
                                         class="mb-0 text-xs leading-tight text-slate-400"
                                     >
@@ -684,23 +709,22 @@ $current_page = $_GET['page'] ?? 'dashboard';
                                 </div>
                             </td>
                             <td class="text-center">
-                                <span
-                                    class="text-xs font-semibold leading-tight text-slate-400"
-                                >
-                                    <?= date('d M Y', strtotime($item['created_at'] ?? 'now')) ?>
+                                <span class="text-xs font-semibold leading-tight text-slate-400">
+                                    <?= date('d M Y', strtotime($item['upload_date'] ?? 'now')) ?>
                                 </span>
                             </td>
                             <td class="text-center">
-                                <a
-                                    href="?page=edit-gallery&id=<?= $item['id'] ?>"
-                                    class="text-xs font-semibold leading-tight text-blue-500 mr-2"
-                                >Edit</a>
-                                <a
-                                    href="?action=delete-gallery&id=<?= $item['id'] ?>"
-                                    class="text-xs font-semibold leading-tight text-red-500"
-                                    onclick="return confirm('Yakin ingin menghapus data ini?')"
-                                >Delete</a>
-                            </td>
+                              <a href="index.php?page=gallery&action=edit&id=<?= $item['id'] ?>"
+                                class="text-xs font-semibold leading-tight text-blue-500 mr-2">
+                                Edit
+                              </a>
+
+                              <a href="index.php?page=gallery&action=delete&id=<?= $item['id'] ?>"
+                                class="text-xs font-semibold leading-tight text-red-500"
+                                onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                Delete
+                              </a>
+                          </td>
                         </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
