@@ -62,10 +62,13 @@
   <body
     class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500"
   >
-    <!-- sidenav  -->
+    <!-- sidenav -->
     <aside
-      class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent"
+      id="sidenav-main"
+      class="fixed inset-y-0 left-0 w-full max-w-62.5 -translate-x-full p-0 antialiased shadow-2xl transition-transform duration-300 xl:ml-4 xl:my-4 xl:translate-x-0 xl:rounded-2xl xl:shadow-soft-xl xl:h-[calc(100vh-2rem)] h-full flex flex-col border-r border-gray-200 xl:border-0"
+      style="z-index: 9999 !important; background-color: white !important;"
     >
+    
       <!-- LOGO -->
       <div class="h-19.5 shrink-0 px-2 py-2">
         <i
@@ -73,7 +76,7 @@
           sidenav-close
         ></i>
         <a
-          class="block px-8 py-0 m-0 text-sm whitespace-nowrap text-slate-700"
+          class="block px-8 py-4 m-0 text-sm whitespace-nowrap text-slate-700"
           href="javascript:;"
           target="_blank"
         >
@@ -423,7 +426,7 @@
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="?page=team"
+              href="?page=collaboration"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -438,7 +441,7 @@
           </li>
         </ul>
       <!-- Tombol Log Out -->
-      <div class="mx-4 my-4 shrink-0">
+      <div class="mx-4 my-4 shrink-0 mt-auto">
         <a href="?action=logout" class="inline-block w-full px-8 py-2 mb-4 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
           Logout
         </a>
@@ -449,7 +452,6 @@
     <main
       class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200"
     >
-      <!-- Navbar -->
       <!-- Navbar -->
       <nav
         class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start"
