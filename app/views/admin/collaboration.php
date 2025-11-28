@@ -1,24 +1,20 @@
 <?php
 // app/views/admin/collaboration.php
-// FILE INI HARUS DI-LOAD OLEH CONTROLLER (CollaborationController::index/handleRequest)
-// AGAR VARIABEL $collaborationList dan $totalRecords TERSEDIA.
 
 if (!isset($collaborationList) || !is_array($collaborationList)) {
     $collaborationList = []; 
 }
-$totalRecords = $totalRecords ?? count($collaborationList);
+$totalRecords = isset($totalRecords) ? $totalRecords : count($collaborationList);
 
-// --- LOGIKA PAGINATION SEDERHANA (UI) ---
-// Menentukan halaman saat ini dari URL
+// --- LOGIKA PAGINATION ---
 $currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
-$limit = 5; // Jumlah data per halaman (sesuai permintaan sebelumnya 'lebih dari 5')
+$limit = 5; 
 $totalPages = ceil($totalRecords / $limit);
 
-// Logika slicing array untuk simulasi pagination di view 
-// (Idealnya ini dilakukan di Model/Controller dengan SQL LIMIT/OFFSET)
+// Slice array untuk simulasi pagination
 $offset = ($currentPage - 1) * $limit;
 $pagedData = array_slice($collaborationList, $offset, $limit);
-// ----------------------------------------
+// -------------------------
 
 $isEdit = isset($editData);
 $formTitle = $isEdit ? "Edit Mitra Kerjasama" : "Tambah Mitra Kerjasama";
@@ -33,144 +29,74 @@ $keyword = $_GET['keyword'] ?? '';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="apple-touch-icon"
-      sizes="76x76"
-      href="public/assets/img/apple-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      href="public/assets/img/favicon.png"
-    />
-    <title>Dashboard - Lab InLET</title>
-    <!--     Fonts and icons     -->
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
-      rel="stylesheet"
-    />
-    <!-- Font Awesome Icons -->
-    <script
-      src="https://kit.fontawesome.com/42d5adcbca.js"
-      crossorigin="anonymous"
-    ></script>
-     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
-  
-  <!-- Popper -->
-  <script src="https://unpkg.com/@popperjs/core@2"></script>
-  
-  <!-- Main Styling -->
-  <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
-    <link
-      href="assets/css/nucleo-icons.css"
-      rel="stylesheet"
-    />
-    <link
-      href="assets/css/nucleo-svg.css"
-      rel="stylesheet"
-    />
-    <!-- Popper -->
+    <title>Dashboard - Mitra Kerjasama</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
     <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <!-- Main Styling -->
-    <link
-      href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
-      rel="stylesheet"
-    />
-
-    <!-- Nepcha Analytics (nepcha.com) -->
-    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
-    <script
-      defer
-      data-site="YOUR_DOMAIN_HERE"
-      src="https://api.nepcha.com/js/nepcha-analytics.js"
-    ></script>
+    <link href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
   </head>
 
-  <body
-    class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500"
-  >
-    <!-- sidenav  -->
-    <aside
-      class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent"
-    >
+  <body class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500">
+    
+    <aside class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent">
       <div class="h-19.5">
-        <i
-          class="absolute top-0 right-0 hidden p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden"
-          sidenav-close
-        ></i>
-        <a
-          class="block px-8 py-0 m-0 text-sm whitespace-nowrap text-slate-700"
-          href="javascript:;"
-          target="_blank"
-        >
-          <img
-            src="assets/img/logo_inlet_horizontal-removebg.png"
-            class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-12"
-            style="margin-top: -36px; margin-left: -5px !important;"
-            alt="main_logo"
-          />
+        <i class="absolute top-0 right-0 hidden p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden" sidenav-close></i>
+        <a class="block px-8 py-0 m-0 text-sm whitespace-nowrap text-slate-700" href="javascript:;" target="_blank">
+          <img src="assets/img/logo_inlet_horizontal-removebg.png" class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-12" style="margin-top: -36px; margin-left: -5px !important;" alt="main_logo" />
         </a>
       </div>
-
-      <hr
-        class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent"
-      />
-
-      <div
-        class="items-center block w-auto max-h-screen overflow-hidden h-sidenav grow basis-full"
-      >
+      <hr class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
+      <div class="items-center block w-auto max-h-screen overflow-hidden h-sidenav grow basis-full">
         <ul class="flex flex-col pl-0 mb-0">
           <li class="mt-0.5 w-full">
-            <a
-              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="?page=admin-dashboard"
-            >
-              <div
-                class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
-              >
-                <svg
-                  width="12px"
-                  height="12px"
-                  viewBox="0 0 45 40"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                >
-                  <title>shop</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-1716.000000, -439.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
-                      <g transform="translate(1716.000000, 291.000000)">
-                        <g transform="translate(0.000000, 148.000000)">
-                          <path
-                            class="opacity-60"
-                            d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z"
-                          ></path>
-                          <path
-                            class=""
-                            d="M39.198,22.4912623 C37.3776246,22.4928106 35.5817531,22.0149171 33.951625,21.0951667 L33.92225,21.1107282 C31.1430221,22.6838032 27.9255001,22.9318916 24.9844167,21.7998837 C24.4750389,21.605469 23.9777983,21.3722567 23.4960833,21.1018359 L23.4745417,21.1129513 C20.6961809,22.6871153 17.4786145,22.9344611 14.5386667,21.7998837 C14.029926,21.6054643 13.533337,21.3722507 13.0522917,21.1018359 C11.4250962,22.0190609 9.63246555,22.4947009 7.81570833,22.4912623 C7.16510551,22.4842162 6.51607673,22.4173045 5.875,22.2911849 L5.875,44.7220845 C5.875,45.9498589 6.7517757,46.9451667 7.83333333,46.9451667 L19.5833333,46.9451667 L19.5833333,33.6066734 L27.4166667,33.6066734 L27.4166667,46.9451667 L39.1666667,46.9451667 C40.2482243,46.9451667 41.125,45.9498589 41.125,44.7220845 L41.125,22.2822926 C40.4887822,22.4116582 39.8442868,22.4815492 39.198,22.4912623 Z"
-                          ></path>
-                        </g>
-                      </g>
-                    </g>
-                  </g>
-                </svg>
-              </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Beranda</span
-              >
-            </a>
-          </li>
+  <a
+    class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+    href="?page=admin-dashboard"
+  >
+    <div
+      class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+    >
+      <svg
+        width="12px"
+        height="12px"
+        viewBox="0 0 45 40"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+        <title>shop</title>
+        <g
+          stroke="none"
+          stroke-width="1"
+          fill="none"
+          fill-rule="evenodd"
+        >
+          <g
+            transform="translate(-1716.000000, -439.000000)"
+            fill="#344767" 
+            fill-rule="nonzero"
+          >
+            <g transform="translate(1716.000000, 291.000000)">
+              <g transform="translate(0.000000, 148.000000)">
+                <path
+                  class="opacity-60"
+                  d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z"
+                ></path>
+                <path
+                  class=""
+                  d="M39.198,22.4912623 C37.3776246,22.4928106 35.5817531,22.0149171 33.951625,21.0951667 L33.92225,21.1107282 C31.1430221,22.6838032 27.9255001,22.9318916 24.9844167,21.7998837 C24.4750389,21.605469 23.9777983,21.3722567 23.4960833,21.1018359 L23.4745417,21.1129513 C20.6961809,22.6871153 17.4786145,22.9344611 14.5386667,21.7998837 C14.029926,21.6054643 13.533337,21.3722507 13.0522917,21.1018359 C11.4250962,22.0190609 9.63246555,22.4947009 7.81570833,22.4912623 C7.16510551,22.4842162 6.51607673,22.4173045 5.875,22.2911849 L5.875,44.7220845 C5.875,45.9498589 6.7517757,46.9451667 7.83333333,46.9451667 L19.5833333,46.9451667 L19.5833333,33.6066734 L27.4166667,33.6066734 L27.4166667,46.9451667 L39.1666667,46.9451667 C40.2482243,46.9451667 41.125,45.9498589 41.125,44.7220845 L41.125,22.2822926 C40.4887822,22.4116582 39.8442868,22.4815492 39.198,22.4912623 Z"
+                ></path>
+              </g>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Beranda</span>
+  </a>
+</li>
 
           <li class="mt-0.5 w-full">
             <a
@@ -439,27 +365,20 @@ $keyword = $_GET['keyword'] ?? '';
               >
             </a>
           </li>
-
           <li class="mt-0.5 w-full">
-            <a
-              class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
-              href="?page=collaboration"
-            >
-              <div
-                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
-              >
-                <i class="ni leading-none ni-paper-diploma text-xs relative top-2 text-gray"></i>
+            <a class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors" href="?page=collaboration">
+              <div class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                <i class="ni ni-paper-diploma text-white"></i>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Kerjasama</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kerjasama</span>
             </a>
           </li>
-      <div class="mx-4 my-4">
-        <a href="?action=logout" class="inline-block w-full px-8 py-2 mb-4 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
-          Logout
-        </a>
+        </ul>
+        <div class="mx-4 my-4">
+            <a href="?action=logout" class="inline-block w-full px-8 py-2 mb-4 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
+            Logout
+            </a>
+        </div>
       </div>
     </aside>
 
@@ -481,8 +400,6 @@ $keyword = $_GET['keyword'] ?? '';
           </div>
         </nav>
 
-        <!-- AREA TOMBOL TAMBAH (DI LUAR CARD) -->
-        <!-- PERBAIKAN: Ditambahkan class 'mx-6' agar sejajar dengan card di bawahnya -->
         <div class="mx-6 mt-6 relative"> 
             
             <?php if (!$isEdit): ?>
@@ -497,7 +414,6 @@ $keyword = $_GET['keyword'] ?? '';
             </div>
             <?php endif; ?>
 
-            <!-- POP UP FORM -->
             <div
               id="collabPopover"
               class="absolute left-0 top-12 z-50 <?= $popoverClass ?> bg-white rounded-2xl shadow-2xl p-6 border border-gray-100"
@@ -536,45 +452,32 @@ $keyword = $_GET['keyword'] ?? '';
                 <div class="mt-4 flex justify-end space-x-3">
                   <?php if ($isEdit): ?>
                       <a href="index.php?page=collaboration" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all flex items-center">Batal</a>
-                      <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">Simpan</button>
                   <?php else: ?>
                       <button type="button" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" onclick="toggleCollabPopover()">Batal</button>
-                      <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">Simpan</button>
                   <?php endif; ?>
+                  <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">Simpan</button>
                 </div>
               </form>
             </div>
         </div>
 
-        <!-- Container Card Utama (Tabel) -->
         <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-padding mx-6 mt-4">
           
           <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
-             
              <h6>Daftar Mitra Kerjasama</h6>
-
-             <!-- SEARCH BAR -->
              <form action="index.php" method="GET" class="flex items-center space-x-2">
                 <input type="hidden" name="page" value="collaboration">
-                <input 
-                    type="search" 
-                    name="keyword" 
-                    placeholder="Cari Mitra..." 
-                    value="<?= htmlspecialchars($keyword) ?>"
-                    class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all"
-                >
-                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">
-                    Cari
-                </button>
+                <input type="search" name="keyword" placeholder="Cari Mitra..." value="<?= htmlspecialchars($keyword) ?>" class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all">
+                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">Cari</button>
             </form>
           </div>
           
-          <!-- Tabel List Kerjasama -->
           <div class="flex-auto px-0 pt-0 pb-2">
             <div class="p-0 overflow-x-auto">
               <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                 <thead class="align-bottom">
                   <tr>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">No</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Logo</th>
                     <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Nama & Deskripsi</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Website</th>
@@ -582,9 +485,16 @@ $keyword = $_GET['keyword'] ?? '';
                   </tr>
                 </thead>
                 <tbody>
-                  <?php if (!empty($pagedData)): ?> 
+                  <?php 
+                  $no = $offset + 1; // Inisialisasi Nomor
+                  if (!empty($pagedData)): 
+                  ?> 
                       <?php foreach ($pagedData as $collab): ?>
                       <tr>
+                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
+                            <span class="text-xs font-semibold leading-tight text-slate-400"><?= $no++ ?></span>
+                        </td>
+
                         <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
                           <img src="<?= htmlspecialchars($collab['logo']) ?>" class="h-12 w-24 object-contain rounded-lg mx-auto border bg-gray-50 p-1" alt="Logo Mitra" />
                         </td>
@@ -605,24 +515,15 @@ $keyword = $_GET['keyword'] ?? '';
                           <p class="text-xxs text-slate-400 mt-1"><?= date('d M Y', strtotime($collab['created_at'])) ?></p>
                         </td>
 
-                        <!-- PERBAIKAN TOMBOL AKSI -->
-                        <!-- Menambahkan margin-right (mr-3) agar tombol tidak berdempetan -->
-                         <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
-                          <a href="index.php?page=collaboration&action=edit&id=<?= $collab['id'] ?>" 
-                             class="text-xs font-bold leading-tight text-blue-800 mr-6 hover:text-blue-950 transition-all"> 
-                             Edit 
-                          </a>
-                          
-                          <a href="index.php?page=collaboration&action=delete&id=<?= $collab['id'] ?>" 
-                             class="text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" 
-                             onclick="return confirm('Yakin ingin menghapus berita ini?')"> 
-                             Hapus 
-                          </a>
+                        <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
+                          <a href="index.php?page=collaboration&action=edit&id=<?= $collab['id'] ?>" class="text-xs font-bold leading-tight text-blue-800 mr-6 hover:text-blue-950 transition-all">Edit</a>
+                          <a href="index.php?page=collaboration&action=delete&id=<?= $collab['id'] ?>" class="text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" onclick="return confirm('Yakin ingin menghapus kerjasama ini?')">Hapus</a>
                         </td>
+                      </tr>
                       <?php endforeach; ?>
                   <?php else: ?>
                       <tr>
-                          <td colspan="4" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada data kolaborasi.</td>
+                          <td colspan="5" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada data kolaborasi.</td>
                       </tr>
                   <?php endif; ?>
                 </tbody>
@@ -631,27 +532,20 @@ $keyword = $_GET['keyword'] ?? '';
           </div>
         </div>
         
-        <!-- Pagination -->
         <?php if ($totalPages > 1): ?>
         <div class="flex justify-center mt-6 mb-6">
             <nav aria-label="Page navigation">
                 <ul class="inline-flex items-center -space-x-px">
                     <li class="mx-1">
-                        <a href="?page=collaboration&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
-                            <i class="fas fa-chevron-left"><</i>
-                        </a>
+                        <a href="?page=collaboration&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-left"><</i></a>
                     </li>
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                     <li class="mx-1">
-                        <a href="?page=collaboration&p=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>">
-                            <?= $i ?>
-                        </a>
+                        <a href="?page=collaboration&p=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>"><?= $i ?></a>
                     </li>
                     <?php endfor; ?>
                     <li class="mx-1">
-                        <a href="?page=collaboration&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
-                            <i class="fas fa-chevron-right">></i>
-                        </a>
+                        <a href="?page=collaboration&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-right">></i></a>
                     </li>
                 </ul>
             </nav>
