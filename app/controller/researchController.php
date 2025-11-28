@@ -17,7 +17,18 @@ class ResearchController {
             header("Location: ?page=login");
             exit;
         }
-        $researchList = $this->researchModel->getAll(); 
+        
+        // Ambil keyword dari URL (Fitur Pencarian)
+        $keyword = $_GET['keyword'] ?? '';
+        
+        // Ambil data riset dengan filter keyword
+        // (Pastikan ResearchModel sudah diupdate dengan kode sebelumnya)
+        $researchList = $this->researchModel->getAll($keyword); 
+        
+        // Hitung total data untuk pagination di view
+        $totalRecords = count($researchList);
+        
+        // Panggil View
         require __DIR__ . '/../views/admin/research.php'; 
     }
 

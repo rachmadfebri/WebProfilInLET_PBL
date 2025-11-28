@@ -11,9 +11,26 @@ class ResearchModel {
         $this->db = $pdo;
     }
 
-    public function getAll() {
-        $stmt = $this->db->prepare("SELECT * FROM {$this->table} ORDER BY created_at DESC");
-        $stmt->execute();
+    /**
+     * PERBAIKAN: Menambahkan parameter $keyword = ''
+     * Agar sesuai dengan Controller yang mengirim keyword pencarian.
+     */
+    public function getAll($keyword = '') {
+        $sql = "SELECT * FROM {$this->table}";
+        $params = [];
+
+        // Logika Pencarian (Search)
+        if ($keyword) {
+            // Menggunakan ILIKE untuk PostgreSQL (case-insensitive)
+            // Jika pakai MySQL ganti ILIKE menjadi LIKE
+            $sql .= " WHERE title ILIKE :keyword OR description ILIKE :keyword";
+            $params[':keyword'] = '%' . $keyword . '%';
+        }
+
+        $sql .= " ORDER BY created_at DESC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
