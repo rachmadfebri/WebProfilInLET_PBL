@@ -1,3 +1,12 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// 2. Ambil Data Pengguna dari Session
+// Fallback nama jika session belum diset
+$nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -88,11 +97,14 @@
           />
         </a>
       </div>
-
+      
       <hr
         class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent"
       />
 
+      <div class="mx-4 mt-2 mb-2 font-bold text-slate-700 text-base">
+        Utama
+      </div>
       <!-- Tombol Beranda -->
       <div
         class="items-center block w-auto max-h-screen overflow-hidden h-sidenav grow basis-full"
@@ -439,12 +451,68 @@
               >
             </a>
           </li>
+
+          <!-- menu mahasiswa -->
+      <div class="mx-4 my-6 shrink-0">
+        <div class="mb-2 font-bold text-slate-700 text-base">Mahasiswa</div>
+        <ul class="flex flex-col pl-0 mb-0">
+          <!-- Tombol Absensi -->
+          <li class="mt-0.5 w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=absensi"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <svg
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="12" cy="12" r="10" fill="#8B5CF6" />
+                  <path d="M8 12.5l2 2 4-4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Absensi</span>
+            </a>
+          </li>
+          <!-- Tombol Daftar Mahasiswa -->
+          <li class="mt-* w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=daftar-mahasiswa"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <!-- Icon kertas simpel -->
+                <svg
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect x="4" y="4" width="16" height="20" rx="3" fill="#8B5CF6" />
+                  <rect x="7" y="8" width="10" height="2" rx="1" fill="#fff"/>
+                  <rect x="7" y="12" width="10" height="2" rx="1" fill="#fff"/>
+                  <rect x="7" y="16" width="6" height="2" rx="1" fill="#fff"/>
+                </svg>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Daftar Mahasiswa</span>
+            </a>
+          </li>
+          <!-- Tombol Log Out -->
+          <li class="mt-6 w-full">
+            <a href="?action=logout"
+              class="inline-block w-full px-8 py-2 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
+              Logout
+            </a>
+          </li>
         </ul>
-      <!-- Tombol Log Out -->
-      <div class="mx-4 my-4 shrink-0 mt-auto">
-        <a href="?action=logout" class="inline-block w-full px-8 py-2 mb-4 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
-          Logout
-        </a>
       </div>
     </aside>
     <!-- end sidenav -->
@@ -484,22 +552,22 @@
           <div
             class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto"
           >
+            <!-- ...existing code... -->
             <div class="flex items-center md:ml-auto md:pr-4">
-              <div
-                class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft"
-              >
-                <span
-                  class="text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all"
-                >
-                  <i class="fas fa-search" aria-hidden="true"></i>
+              <div class="relative flex flex-wrap items-center w-full transition-all rounded-lg ease-soft">
+                <!-- Ganti search bar dengan info akun -->
+                <span class="flex items-center px-3 py-2 bg-white rounded-lg shadow-soft-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="#8B5CF6"/>
+                    <path stroke="#8B5CF6" stroke-width="2" d="M4 20c0-3.333 3.333-6 8-6s8 2.667 8 6" fill="none"/>
+                  </svg>
+                  <span class="font-semibold text-slate-700">
+                    <?php echo htmlspecialchars($nama_pengguna); ?>
+                  </span>
                 </span>
-                <input
-                  type="text"
-                  class="pl-8.75 text-sm focus:shadow-soft-primary-outline ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
-                  placeholder="Cari..."
-                />
               </div>
             </div>
+            
             <ul
               class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full"
             >
