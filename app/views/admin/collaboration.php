@@ -38,66 +38,100 @@ $keyword = $_GET['keyword'] ?? '';
     <link href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
   </head>
 
-  <body class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500">
+  <body
+    class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500"
+  >
+    <!-- sidenav -->
+    <aside
+      id="sidenav-main"
+      class="fixed inset-y-0 left-0 w-full max-w-62.5 -translate-x-full p-0 antialiased shadow-2xl transition-transform duration-300 xl:ml-4 xl:my-4 xl:translate-x-0 xl:rounded-2xl xl:shadow-soft-xl xl:h-[calc(100vh-2rem)] h-full flex flex-col border-r border-gray-200 xl:border-0"
+      style="z-index: 9999 !important; background-color: white !important;"
+    >
     
-    <aside class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent">
-      <div class="h-19.5">
-        <i class="absolute top-0 right-0 hidden p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden" sidenav-close></i>
-        <a class="block px-8 py-0 m-0 text-sm whitespace-nowrap text-slate-700" href="javascript:;" target="_blank">
-          <img src="assets/img/logo_inlet_horizontal-removebg.png" class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-12" style="margin-top: -36px; margin-left: -5px !important;" alt="main_logo" />
+      <!-- LOGO -->
+      <div class="h-19.5 shrink-0 px-2 py-2">
+        <i
+          class="absolute top-0 right-0 hidden p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden"
+          sidenav-close
+        ></i>
+        <a
+          class="block px-8 py-4 m-0 text-sm whitespace-nowrap text-slate-700"
+          href="javascript:;"
+          target="_blank"
+        >
+          <img
+            src="assets/img/logo_inlet_horizontal-removebg.png"
+            class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-12"
+            style="margin-top: -36px; margin-left: -5px !important;"
+            alt="main_logo"
+          />
         </a>
       </div>
-      <hr class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
-      <div class="items-center block w-auto max-h-screen overflow-hidden h-sidenav grow basis-full">
+      
+      <hr
+        class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent"
+      />
+
+      <div class="mx-4 mt-2 mb-2 font-bold text-slate-700 text-base">
+        Utama
+      </div>
+      <!-- Tombol Beranda -->
+      <div
+        class="items-center block w-auto max-h-screen overflow-y-auto h-sidenav grow basis-full"
+      >
         <ul class="flex flex-col pl-0 mb-0">
           <li class="mt-0.5 w-full">
-  <a
-    class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-    href="?page=admin-dashboard"
-  >
-    <div
-      class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
-    >
-      <svg
-        width="12px"
-        height="12px"
-        viewBox="0 0 45 40"
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-      >
-        <title>shop</title>
-        <g
-          stroke="none"
-          stroke-width="1"
-          fill="none"
-          fill-rule="evenodd"
-        >
-          <g
-            transform="translate(-1716.000000, -439.000000)"
-            fill="#344767" 
-            fill-rule="nonzero"
-          >
-            <g transform="translate(1716.000000, 291.000000)">
-              <g transform="translate(0.000000, 148.000000)">
-                <path
-                  class="opacity-60"
-                  d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z"
-                ></path>
-                <path
-                  class=""
-                  d="M39.198,22.4912623 C37.3776246,22.4928106 35.5817531,22.0149171 33.951625,21.0951667 L33.92225,21.1107282 C31.1430221,22.6838032 27.9255001,22.9318916 24.9844167,21.7998837 C24.4750389,21.605469 23.9777983,21.3722567 23.4960833,21.1018359 L23.4745417,21.1129513 C20.6961809,22.6871153 17.4786145,22.9344611 14.5386667,21.7998837 C14.029926,21.6054643 13.533337,21.3722507 13.0522917,21.1018359 C11.4250962,22.0190609 9.63246555,22.4947009 7.81570833,22.4912623 C7.16510551,22.4842162 6.51607673,22.4173045 5.875,22.2911849 L5.875,44.7220845 C5.875,45.9498589 6.7517757,46.9451667 7.83333333,46.9451667 L19.5833333,46.9451667 L19.5833333,33.6066734 L27.4166667,33.6066734 L27.4166667,46.9451667 L39.1666667,46.9451667 C40.2482243,46.9451667 41.125,45.9498589 41.125,44.7220845 L41.125,22.2822926 C40.4887822,22.4116582 39.8442868,22.4815492 39.198,22.4912623 Z"
-                ></path>
-              </g>
-            </g>
-          </g>
-        </g>
-      </svg>
-    </div>
-    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Beranda</span>
-  </a>
-</li>
+            <a
+              class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
+              href="?page=admin-dashboard"
+            >
+              <div
+                class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <svg
+                  width="12px"
+                  height="12px"
+                  viewBox="0 0 45 40"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                >
+                  <title>shop</title>
+                  <g
+                    stroke="none"
+                    stroke-width="1"
+                    fill="none"
+                    fill-rule="evenodd"
+                  >
+                    <g
+                      transform="translate(-1716.000000, -439.000000)"
+                      fill="#FFFFFF"
+                      fill-rule="nonzero"
+                    >
+                      <g transform="translate(1716.000000, 291.000000)">
+                        <g transform="translate(0.000000, 148.000000)">
+                          <path
+                            class="opacity-60"
+                            d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z"
+                          ></path>
+                          <path
+                            class=""
+                            d="M39.198,22.4912623 C37.3776246,22.4928106 35.5817531,22.0149171 33.951625,21.0951667 L33.92225,21.1107282 C31.1430221,22.6838032 27.9255001,22.9318916 24.9844167,21.7998837 C24.4750389,21.605469 23.9777983,21.3722567 23.4960833,21.1018359 L23.4745417,21.1129513 C20.6961809,22.6871153 17.4786145,22.9344611 14.5386667,21.7998837 C14.029926,21.6054643 13.533337,21.3722507 13.0522917,21.1018359 C11.4250962,22.0190609 9.63246555,22.4947009 7.81570833,22.4912623 C7.16510551,22.4842162 6.51607673,22.4173045 5.875,22.2911849 L5.875,44.7220845 C5.875,45.9498589 6.7517757,46.9451667 7.83333333,46.9451667 L19.5833333,46.9451667 L19.5833333,33.6066734 L27.4166667,33.6066734 L27.4166667,46.9451667 L39.1666667,46.9451667 C40.2482243,46.9451667 41.125,45.9498589 41.125,44.7220845 L41.125,22.2822926 C40.4887822,22.4116582 39.8442868,22.4815492 39.198,22.4912623 Z"
+                          ></path>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+              <span
+                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
+                >Beranda</span
+              >
+            </a>
+          </li>
 
+          <!-- Tombol Galeri -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
@@ -150,6 +184,7 @@ $keyword = $_GET['keyword'] ?? '';
             </a>
           </li>
 
+          <!-- Tombol News -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
@@ -201,6 +236,7 @@ $keyword = $_GET['keyword'] ?? '';
             </a>
           </li>
 
+          <!-- Tombol Produk -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
@@ -256,61 +292,31 @@ $keyword = $_GET['keyword'] ?? '';
             </a>
           </li>
 
+          <!-- Tombol Riset -->
           <li class="mt-0.5 w-full">
-            <a
-              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="?page=research"
-            >
-              <div
-                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
-              >
-                <svg
-                  width="12px"
-                  height="12px"
-                  viewBox="0 0 40 40"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                >
+            <a class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors" href="?page=research">
+              <div class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                <!-- MENGGANTI ICON DENGAN SVG SETTINGS SESUAI GAMBAR REFERENSI -->
+                <svg width="12px" height="12px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                   <title>settings</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-2020.000000, -442.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-2020.000000, -442.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(304.000000, 151.000000)">
-                          <polygon
-                            class="fill-slate-800 opacity-60"
-                            points="18.0883333 15.7316667 11.1783333 8.82166667 13.3333333 6.66666667 6.66666667 0 0 6.66666667 6.66666667 13.3333333 8.82166667 11.1783333 15.315 17.6716667"
-                          ></polygon>
-                          <path
-                            class="fill-slate-800 opacity-60"
-                            d="M31.5666667,23.2333333 C31.0516667,23.2933333 30.53,23.3333333 30,23.3333333 C29.4916667,23.3333333 28.9866667,23.3033333 28.48,23.245 L22.4116667,30.7433333 L29.9416667,38.2733333 C32.2433333,40.575 35.9733333,40.575 38.275,38.2733333 L38.275,38.2733333 C40.5766667,35.9716667 40.5766667,32.2416667 38.275,29.94 L31.5666667,23.2333333 Z"
-                          ></path>
-                          <path
-                            class="fill-slate-800"
-                            d="M33.785,11.285 L28.715,6.215 L34.0616667,0.868333333 C32.82,0.315 31.4483333,0 30,0 C24.4766667,0 20,4.47666667 20,10 C20,10.99 20.1483333,11.9433333 20.4166667,12.8466667 L2.435,27.3966667 C0.95,28.7083333 0.0633333333,30.595 0.00333333333,32.5733333 C-0.0583333333,34.5533333 0.71,36.4916667 2.11,37.89 C3.47,39.2516667 5.27833333,40 7.20166667,40 C9.26666667,40 11.2366667,39.1133333 12.6033333,37.565 L27.1533333,19.5833333 C28.0566667,19.8516667 29.01,20 30,20 C35.5233333,20 40,15.5233333 40,10 C40,8.55166667 39.685,7.18 39.1316667,5.93666667 L33.785,11.285 Z"
-                          ></path>
+                          <polygon class="opacity-60" points="18.0883333 15.7316667 11.1783333 8.82166667 13.3333333 6.66666667 6.66666667 0 0 6.66666667 6.66666667 13.3333333 8.82166667 11.1783333 15.315 17.6716667"></polygon>
+                          <path class="opacity-60" d="M31.5666667,23.2333333 C31.0516667,23.2933333 30.53,23.3333333 30,23.3333333 C29.4916667,23.3333333 28.9866667,23.3033333 28.48,23.245 L22.4116667,30.7433333 L29.9416667,38.2733333 C32.2433333,40.575 35.9733333,40.575 38.275,38.2733333 L38.275,38.2733333 C40.5766667,35.9716667 40.5766667,32.2416667 38.275,29.94 L31.5666667,23.2333333 Z"></path>
+                          <path class="" d="M33.785,11.285 L28.715,6.215 L34.0616667,0.868333333 C32.82,0.315 31.4483333,0 30,0 C24.4766667,0 20,4.47666667 20,10 C20,10.99 20.1483333,11.9433333 20.4166667,12.8466667 L2.435,27.3966667 C0.95,28.7083333 0.0633333333,30.595 0.00333333333,32.5733333 C-0.0583333333,34.5533333 0.71,36.4916667 2.11,37.89 C3.47,39.2516667 5.27833333,40 7.20166667,40 C9.26666667,40 11.2366667,39.1133333 12.6033333,37.565 L27.1533333,19.5833333 C28.0566667,19.8516667 29.01,20 30,20 C35.5233333,20 40,15.5233333 40,10 C40,8.55166667 39.685,7.18 39.1316667,5.93666667 L33.785,11.285 Z"></path>
                         </g>
                       </g>
                     </g>
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Riset</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Riset</span>
             </a>
           </li>
 
+          <!-- Tombol Tim -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
@@ -365,27 +371,93 @@ $keyword = $_GET['keyword'] ?? '';
               >
             </a>
           </li>
+
+          <!-- Tombol Kerjasama -->
           <li class="mt-0.5 w-full">
-            <a class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors" href="?page=collaboration">
-              <div class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
-                <i class="ni ni-paper-diploma text-white"></i>
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=collaboration"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <i class="ni leading-none ni-paper-diploma text-xs relative top-2 text-gray"></i>
               </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kerjasama</span>
+              <span
+                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
+                >Kerjasama</span
+              >
+            </a>
+          </li>
+
+          <!-- menu mahasiswa -->
+      <div class="mx-4 my-6 shrink-0">
+        <div class="mb-2 font-bold text-slate-700 text-base">Mahasiswa</div>
+        <ul class="flex flex-col pl-0 mb-0">
+          <!-- Tombol Absensi -->
+          <li class="mt-0.5 w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=absensi"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <svg
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="12" cy="12" r="10" fill="#8B5CF6" />
+                  <path d="M8 12.5l2 2 4-4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Absensi</span>
+            </a>
+          </li>
+          <!-- Tombol Daftar Mahasiswa -->
+          <li class="mt-* w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=daftar-mahasiswa"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <!-- Icon kertas simpel -->
+                <svg
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect x="4" y="4" width="16" height="20" rx="3" fill="#8B5CF6" />
+                  <rect x="7" y="8" width="10" height="2" rx="1" fill="#fff"/>
+                  <rect x="7" y="12" width="10" height="2" rx="1" fill="#fff"/>
+                  <rect x="7" y="16" width="6" height="2" rx="1" fill="#fff"/>
+                </svg>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Daftar Mahasiswa</span>
+            </a>
+          </li>
+          <!-- Tombol Log Out -->
+          <li class="mt-6 w-full">
+            <a href="?action=logout"
+              class="inline-block w-full px-8 py-2 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
+              Logout
             </a>
           </li>
         </ul>
-        <div class="mx-4 my-4">
-            <a href="?action=logout" class="inline-block w-full px-8 py-2 mb-4 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
-            Logout
-            </a>
-        </div>
       </div>
     </aside>
+    <!-- end sidenav -->
 
-  
-    <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
+   <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
       
-      <div class="w-full px-6 py-6 mx-auto">
+      <!-- Navbar -->
         <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="true">
           <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
             <nav>
@@ -393,12 +465,55 @@ $keyword = $_GET['keyword'] ?? '';
                 <li class="leading-normal text-sm">
                   <a class="opacity-50 text-slate-700" href="javascript:;">Pages</a>
                 </li>
-                <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">Kerjasama</li>
+                <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">Riset</li>
               </ol>
-              <h6 class="mb-0 font-bold capitalize">Manajemen Mitra Kerjasama</h6>
+              <h6 class="mb-0 font-bold capitalize">Manajemen Riset</h6>
             </nav>
+        </nav>
+
+          <div
+            class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto"
+          >
+            <ul
+              class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full"
+            >
+              
+              <li class="flex items-center pl-4 xl:hidden">
+                <a
+                  href="javascript:;"
+                  class="block p-0 text-sm transition-all ease-nav-brand text-slate-500"
+                  sidenav-trigger
+                >
+                  <div class="w-4.5 overflow-hidden">
+                    <i
+                      class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"
+                    ></i>
+                    <i
+                      class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"
+                    ></i>
+                    <i
+                      class="ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all"
+                    ></i>
+                  </div>
+                </a>
+              </li>
+              <li class="flex items-center px-4">
+                <a
+                  href="javascript:;"
+                  class="p-0 text-sm transition-all ease-nav-brand text-slate-500"
+                >
+                  <i
+                    fixed-plugin-button-nav
+                    class="cursor-pointer fa fa-cog"
+                    aria-hidden="true"
+                  ></i>
+                  <!-- fixed-plugin-button-nav  -->
+                </a>
+              </li>
+            </ul>
           </div>
         </nav>
+        <!-- end Navbar -->
 
         <div class="mx-6 mt-6 relative"> 
             

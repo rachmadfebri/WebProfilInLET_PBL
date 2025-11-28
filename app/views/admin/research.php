@@ -513,6 +513,7 @@ $keyword = $_GET['keyword'] ?? '';
             </ul>
           </div>
         </nav>
+        <!-- end Navbar -->
 
         <div class="mx-6 mt-6 relative"> 
             
