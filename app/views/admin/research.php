@@ -1,71 +1,41 @@
 <?php
+// app/views/admin/research.php
+
 if (!isset($researchList) || !is_array($researchList)) {
     $researchList = []; 
 }
+$totalRecords = count($researchList);
+
+// --- LOGIKA PAGINATION (Sama seperti Collaboration) ---
+$currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+$limit = 5; 
+$totalPages = ceil($totalRecords / $limit);
+
+// Slice array untuk simulasi pagination
+$offset = ($currentPage - 1) * $limit;
+$pagedData = array_slice($researchList, $offset, $limit);
+// -------------------------
+
 $isEdit = isset($editData);
 $formTitle = $isEdit ? "Edit Aktivitas Riset" : "Tambah Aktivitas Riset";
 $formAction = $isEdit 
     ? "index.php?page=research&action=edit&id=" . urlencode($editData['id'])
     : "index.php?page=research&action=create";
-$popoverClass = $isEdit ? "" : "hidden"; // Tampilkan form secara langsung jika sedang mode edit
+$popoverClass = $isEdit ? "" : "hidden";
+$keyword = $_GET['keyword'] ?? '';
 ?>
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="apple-touch-icon"
-      sizes="76x76"
-      href="public/assets/img/apple-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      href="public/assets/img/favicon.png"
-    />
-    <title>Dashboard - Lab InLET</title>
-    <!--     Fonts and icons     -->
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
-      rel="stylesheet"
-    />
-    <!-- Font Awesome Icons -->
-    <script
-      src="https://kit.fontawesome.com/42d5adcbca.js"
-      crossorigin="anonymous"
-    ></script>
-     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
-  
-  <!-- Popper -->
-  <script src="https://unpkg.com/@popperjs/core@2"></script>
-  
-  <!-- Main Styling -->
-  <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
-    <link
-      href="assets/css/nucleo-icons.css"
-      rel="stylesheet"
-    />
-    <link
-      href="assets/css/nucleo-svg.css"
-      rel="stylesheet"
-    />
-    <!-- Popper -->
+    <title>Dashboard - Riset</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
     <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <!-- Main Styling -->
-    <link
-      href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
-      rel="stylesheet"
-    />
-
-    <!-- Nepcha Analytics (nepcha.com) -->
-    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
-    <script
-      defer
-      data-site="YOUR_DOMAIN_HERE"
-      src="https://api.nepcha.com/js/nepcha-analytics.js"
-    ></script>
+    <link href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
   </head>
 
   <body
@@ -324,57 +294,25 @@ $popoverClass = $isEdit ? "" : "hidden"; // Tampilkan form secara langsung jika 
 
           <!-- Tombol Riset -->
           <li class="mt-0.5 w-full">
-            <a
-              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="?page=research"
-            >
-              <div
-                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
-              >
-                <svg
-                  width="12px"
-                  height="12px"
-                  viewBox="0 0 40 40"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                >
+            <a class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors" href="?page=research">
+              <div class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                <!-- MENGGANTI ICON DENGAN SVG SETTINGS SESUAI GAMBAR REFERENSI -->
+                <svg width="12px" height="12px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                   <title>settings</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-2020.000000, -442.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-2020.000000, -442.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(304.000000, 151.000000)">
-                          <polygon
-                            class="fill-slate-800 opacity-60"
-                            points="18.0883333 15.7316667 11.1783333 8.82166667 13.3333333 6.66666667 6.66666667 0 0 6.66666667 6.66666667 13.3333333 8.82166667 11.1783333 15.315 17.6716667"
-                          ></polygon>
-                          <path
-                            class="fill-slate-800 opacity-60"
-                            d="M31.5666667,23.2333333 C31.0516667,23.2933333 30.53,23.3333333 30,23.3333333 C29.4916667,23.3333333 28.9866667,23.3033333 28.48,23.245 L22.4116667,30.7433333 L29.9416667,38.2733333 C32.2433333,40.575 35.9733333,40.575 38.275,38.2733333 L38.275,38.2733333 C40.5766667,35.9716667 40.5766667,32.2416667 38.275,29.94 L31.5666667,23.2333333 Z"
-                          ></path>
-                          <path
-                            class="fill-slate-800"
-                            d="M33.785,11.285 L28.715,6.215 L34.0616667,0.868333333 C32.82,0.315 31.4483333,0 30,0 C24.4766667,0 20,4.47666667 20,10 C20,10.99 20.1483333,11.9433333 20.4166667,12.8466667 L2.435,27.3966667 C0.95,28.7083333 0.0633333333,30.595 0.00333333333,32.5733333 C-0.0583333333,34.5533333 0.71,36.4916667 2.11,37.89 C3.47,39.2516667 5.27833333,40 7.20166667,40 C9.26666667,40 11.2366667,39.1133333 12.6033333,37.565 L27.1533333,19.5833333 C28.0566667,19.8516667 29.01,20 30,20 C35.5233333,20 40,15.5233333 40,10 C40,8.55166667 39.685,7.18 39.1316667,5.93666667 L33.785,11.285 Z"
-                          ></path>
+                          <polygon class="opacity-60" points="18.0883333 15.7316667 11.1783333 8.82166667 13.3333333 6.66666667 6.66666667 0 0 6.66666667 6.66666667 13.3333333 8.82166667 11.1783333 15.315 17.6716667"></polygon>
+                          <path class="opacity-60" d="M31.5666667,23.2333333 C31.0516667,23.2933333 30.53,23.3333333 30,23.3333333 C29.4916667,23.3333333 28.9866667,23.3033333 28.48,23.245 L22.4116667,30.7433333 L29.9416667,38.2733333 C32.2433333,40.575 35.9733333,40.575 38.275,38.2733333 L38.275,38.2733333 C40.5766667,35.9716667 40.5766667,32.2416667 38.275,29.94 L31.5666667,23.2333333 Z"></path>
+                          <path class="" d="M33.785,11.285 L28.715,6.215 L34.0616667,0.868333333 C32.82,0.315 31.4483333,0 30,0 C24.4766667,0 20,4.47666667 20,10 C20,10.99 20.1483333,11.9433333 20.4166667,12.8466667 L2.435,27.3966667 C0.95,28.7083333 0.0633333333,30.595 0.00333333333,32.5733333 C-0.0583333333,34.5533333 0.71,36.4916667 2.11,37.89 C3.47,39.2516667 5.27833333,40 7.20166667,40 C9.26666667,40 11.2366667,39.1133333 12.6033333,37.565 L27.1533333,19.5833333 C28.0566667,19.8516667 29.01,20 30,20 C35.5233333,20 40,15.5233333 40,10 C40,8.55166667 39.685,7.18 39.1316667,5.93666667 L33.785,11.285 Z"></path>
                         </g>
                       </g>
                     </g>
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Riset</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Riset</span>
             </a>
           </li>
 
@@ -574,83 +512,86 @@ $popoverClass = $isEdit ? "" : "hidden"; // Tampilkan form secara langsung jika 
               </li>
             </ul>
           </div>
-        </div>
-      </nav>
-      <!-- End Navbar -->
-      <!-- Tombol Tambah Riset -->
-     <div class="w-full px-6 py-6 mx-auto">
-        <div class="flex justify-start mb-4 relative">
-          
-          <?php if (!$isEdit): ?>
-          <button
-            id="addResearchBtn"
-            class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all"
-            onclick="toggleResearchPopover()"
-          >
-            + Tambah Riset
-          </button>
-          <?php endif; ?>
+        </nav>
 
-          <!-- Pop Up Form Tambah/Edit Riset -->
-          <div
-            id="researchPopover"
-            class="absolute left-0 top-12 z-50 <?= $popoverClass ?> bg-white rounded-2xl shadow-soft-xl p-6 w-full max-w-lg border border-gray-100"
-            style="min-width:350px;"
-          >
-            <h3 class="text-lg font-bold mb-4 border-b pb-2"><?= $formTitle ?></h3>
+        <div class="mx-6 mt-6 relative"> 
             
-            <form action="<?= $formAction ?>" method="POST" enctype="multipart/form-data">
+            <?php if (!$isEdit): ?>
+            <div class="relative">
+                <button
+                  id="addResearchBtn"
+                  class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all shadow-md"
+                  onclick="toggleResearchPopover()"
+                >
+                  + Tambah Riset
+                </button>
+            </div>
+            <?php endif; ?>
+
+            <div
+              id="researchPopover"
+              class="absolute left-0 top-12 z-50 <?= $popoverClass ?> bg-white rounded-2xl shadow-2xl p-6 border border-gray-100"
+              style="width: 100%; max-width: 500px;"
+            >
+              <h3 class="text-lg font-bold mb-4 border-b pb-2"><?= $formTitle ?></h3>
+              
+              <form action="<?= $formAction ?>" method="POST" enctype="multipart/form-data">
                 
                 <?php if ($isEdit && !empty($editData['image'])): ?>
                 <div class="mb-4 text-center">
                     <p class="text-xs font-semibold mb-1 text-gray-500">Gambar Saat Ini:</p>
-                    <img src="<?= htmlspecialchars($editData['image']) ?>" class="h-24 w-auto mx-auto object-cover rounded border">
+                    <img src="<?= htmlspecialchars($editData['image']) ?>" class="h-24 w-auto mx-auto object-cover rounded border bg-gray-50 p-1">
                 </div>
                 <?php endif; ?>
 
-              <div class="mb-4">
-                <label class="block text-sm font-semibold mb-1">Judul Riset</label>
-                <input type="text" name="title" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" 
-                       value="<?= $isEdit ? htmlspecialchars($editData['title']) : '' ?>" required>
-              </div>
+                <div class="mb-4">
+                  <label class="block text-sm font-semibold mb-1">Judul Riset</label>
+                  <input type="text" name="title" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" 
+                         value="<?= $isEdit ? htmlspecialchars($editData['title']) : '' ?>" required>
+                </div>
 
-              <div class="mb-4">
-                <label class="block text-sm font-semibold mb-1">Deskripsi Aktivitas</label>
-                <textarea name="description" rows="5" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" required><?= $isEdit ? htmlspecialchars($editData['description']) : '' ?></textarea>
-              </div>
+                <div class="mb-4">
+                  <label class="block text-sm font-semibold mb-1">Deskripsi Aktivitas</label>
+                  <textarea name="description" rows="5" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" required><?= $isEdit ? htmlspecialchars($editData['description']) : '' ?></textarea>
+                </div>
 
-              <div class="mb-4">
-                <label class="block text-sm font-semibold mb-1">
-                    <?= $isEdit ? "Ganti Gambar (Opsional)" : "Upload Gambar Utama" ?>
-                </label>
-                <input type="file" name="image" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100" 
-                       <?= $isEdit ? '' : 'required' ?>>
-              </div>
+                <div class="mb-4">
+                  <label class="block text-sm font-semibold mb-1">
+                      <?= $isEdit ? "Ganti Gambar (Opsional)" : "Upload Gambar Utama" ?>
+                  </label>
+                  <input type="file" name="image" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 cursor-pointer" 
+                         <?= $isEdit ? '' : 'required' ?>>
+                </div>
 
-              <div class="flex justify-end pt-2">
-                <?php if ($isEdit): ?>
-                    <a href="index.php?page=research" class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 text-sm font-semibold flex items-center">Batal</a>
-                <?php else: ?>
-                    <button type="button" class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 text-sm font-semibold" onclick="toggleResearchPopover()">Batal</button>
-                <?php endif; ?>
-                
-                 <button type="submit" class="px-4 py-2 rounded bg-purple-700 text-white text-sm font-semibold hover:bg-purple-600 transition-all">Simpan</button>
-              </div>
-
-            </form>
-          </div>
+                <div class="mt-4 flex justify-end space-x-3">
+                  <?php if ($isEdit): ?>
+                      <a href="index.php?page=research" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all flex items-center">Batal</a>
+                  <?php else: ?>
+                      <button type="button" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" onclick="toggleResearchPopover()">Batal</button>
+                  <?php endif; ?>
+                  <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">Simpan</button>
+                </div>
+              </form>
+            </div>
         </div>
 
-        <!-- Tabel List Riset -->
-        <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-          <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-            <h6>Daftar Aktivitas Riset</h6>
+        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-padding mx-6 mt-4">
+          
+          <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
+             <h6>Daftar Aktivitas Riset</h6>
+             <form action="index.php" method="GET" class="flex items-center space-x-2">
+                <input type="hidden" name="page" value="research">
+                <input type="search" name="keyword" placeholder="Cari Riset..." value="<?= htmlspecialchars($keyword) ?>" class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all">
+                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">Cari</button>
+            </form>
           </div>
+          
           <div class="flex-auto px-0 pt-0 pb-2">
             <div class="p-0 overflow-x-auto">
               <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                 <thead class="align-bottom">
                   <tr>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">No</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Gambar</th>
                     <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Judul & Deskripsi</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Dibuat Pada</th>
@@ -658,16 +599,23 @@ $popoverClass = $isEdit ? "" : "hidden"; // Tampilkan form secara langsung jika 
                   </tr>
                 </thead>
                 <tbody>
-                  <?php if (!empty($researchList)): ?>
-                      <?php foreach ($researchList as $research): ?>
+                  <?php 
+                  $no = $offset + 1;
+                  if (!empty($pagedData)): 
+                  ?> 
+                      <?php foreach ($pagedData as $research): ?>
                       <tr>
                         <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
-                          <img src="<?= htmlspecialchars($research['image']) ?>" class="h-16 w-24 object-cover rounded-lg mx-auto border" alt="Riset Gambar" />
+                            <span class="text-xs font-semibold leading-tight text-slate-400"><?= $no++ ?></span>
+                        </td>
+
+                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
+                          <img src="<?= htmlspecialchars($research['image']) ?>" class="h-12 w-24 object-cover rounded-lg mx-auto border bg-gray-50 p-1" alt="Riset Gambar" />
                         </td>
                         
                         <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
                            <div class="flex flex-col px-2 py-1">
-                                <h6 class="mb-0 text-sm leading-normal font-bold"><?= htmlspecialchars($research['title']) ?></h6>
+                                <h6 class="mb-0 text-sm leading-normal font-bold text-slate-700"><?= htmlspecialchars($research['title']) ?></h6>
                                 <p class="mb-0 text-xs text-slate-400 overflow-hidden w-64 truncate">
                                     <?= htmlspecialchars(substr($research['description'], 0, 100)) ?>...
                                 </p>
@@ -680,15 +628,15 @@ $popoverClass = $isEdit ? "" : "hidden"; // Tampilkan form secara langsung jika 
                           </span>
                         </td>
 
-                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <a href="index.php?page=research&action=edit&id=<?= $research['id'] ?>" class="text-xs font-semibold leading-tight text-blue-500 mr-3"> Edit </a>
-                          <a href="index.php?page=research&action=delete&id=<?= $research['id'] ?>" class="text-xs font-semibold leading-tight text-red-500" onclick="return confirm('Yakin ingin menghapus riset ini?')"> Hapus </a>
+                        <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
+                          <a href="index.php?page=research&action=edit&id=<?= $research['id'] ?>" class="text-xs font-bold leading-tight text-blue-800 mr-6 hover:text-blue-950 transition-all">Edit</a>
+                          <a href="index.php?page=research&action=delete&id=<?= $research['id'] ?>" class="text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" onclick="return confirm('Yakin ingin menghapus riset ini?')">Hapus</a>
                         </td>
                       </tr>
                       <?php endforeach; ?>
                   <?php else: ?>
                       <tr>
-                          <td colspan="4" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada aktivitas riset.</td>
+                          <td colspan="5" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada aktivitas riset.</td>
                       </tr>
                   <?php endif; ?>
                 </tbody>
@@ -696,6 +644,27 @@ $popoverClass = $isEdit ? "" : "hidden"; // Tampilkan form secara langsung jika 
             </div>
           </div>
         </div>
+        
+        <?php if ($totalPages > 1): ?>
+        <div class="flex justify-center mt-6 mb-6">
+            <nav aria-label="Page navigation">
+                <ul class="inline-flex items-center -space-x-px">
+                    <li class="mx-1">
+                        <a href="?page=research&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-left"><</i></a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <li class="mx-1">
+                        <a href="?page=research&p=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>"><?= $i ?></a>
+                    </li>
+                    <?php endfor; ?>
+                    <li class="mx-1">
+                        <a href="?page=research&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-right">></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <?php endif; ?>
+        
       </div>
     </main>
     
@@ -704,15 +673,13 @@ $popoverClass = $isEdit ? "" : "hidden"; // Tampilkan form secara langsung jika 
         const popover = document.getElementById("researchPopover");
         popover.classList.toggle("hidden");
       }
-      // Tutup jika klik di luar
       document.addEventListener("click", function(e) {
         const btn = document.getElementById("addResearchBtn");
         const popover = document.getElementById("researchPopover");
-        // Cek jika btn ada (karena btn hilang saat mode edit)
         if (btn && popover && !popover.contains(e.target) && e.target !== btn) {
           popover.classList.add("hidden");
         }
       });
     </script>
-  </body>
+</body>
 </html>
