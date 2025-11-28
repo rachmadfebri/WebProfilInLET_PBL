@@ -1,124 +1,54 @@
 <?php
-// app/views/admin/gallery.php
+// app/views/admin/collaboration.php
 
-if (!isset($galleries) || !is_array($galleries)) {
-    $galleries = [];
+if (!isset($collaborationList) || !is_array($collaborationList)) {
+    $collaborationList = []; 
 }
-$totalRecords = count($galleries);
-// --- LOGIKA PAGINATION (Meniru style Collaboration) ---
+$totalRecords = isset($totalRecords) ? $totalRecords : count($collaborationList);
+
+// --- LOGIKA PAGINATION ---
 $currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
-$limit = 5; // Jumlah data per halaman
+$limit = 5; 
 $totalPages = ceil($totalRecords / $limit);
 
-// Slice array untuk pagination
+// Slice array untuk simulasi pagination
 $offset = ($currentPage - 1) * $limit;
-$pagedData = array_slice($galleries, $offset, $limit);
-// ------------------------------------------------------
+$pagedData = array_slice($collaborationList, $offset, $limit);
+// -------------------------
 
-// Logika Edit/Tambah
 $isEdit = isset($editData);
-$formTitle = $isEdit ? "Edit Galeri" : "Tambah Galeri";
+$formTitle = $isEdit ? "Edit Mitra Kerjasama" : "Tambah Mitra Kerjasama";
 $formAction = $isEdit 
-    ? "index.php?page=gallery&action=edit&id=" . $editData['id'] 
-    : "index.php?page=gallery&action=create";
+    ? "index.php?page=collaboration&action=edit&id=" . urlencode($editData['id'])
+    : "index.php?page=collaboration&action=create";
 $popoverClass = $isEdit ? "" : "hidden";
 $keyword = $_GET['keyword'] ?? '';
-
-// Untuk active link di sidebar
-$current_page = $_GET['page'] ?? 'gallery'; 
 ?>
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="apple-touch-icon"
-      sizes="76x76"
-      href="public/assets/img/apple-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      href="public/assets/img/favicon.png"
-    />
-    <title>Dashboard - Lab InLET</title>
-    <!--     Fonts and icons     -->
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
-      rel="stylesheet"
-    />
-    <!-- Font Awesome Icons -->
-    <script
-      src="https://kit.fontawesome.com/42d5adcbca.js"
-      crossorigin="anonymous"
-    ></script>
-     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
-  
-  <!-- Popper -->
-  <script src="https://unpkg.com/@popperjs/core@2"></script>
-  
-  <!-- Main Styling -->
-  <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
-    <link
-      href="assets/css/nucleo-icons.css"
-      rel="stylesheet"
-    />
-    <link
-      href="assets/css/nucleo-svg.css"
-      rel="stylesheet"
-    />
-    <!-- Popper -->
+    <title>Dashboard - Mitra Kerjasama</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
     <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <!-- Main Styling -->
-    <link
-      href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
-      rel="stylesheet"
-    />
-
-    <!-- Nepcha Analytics (nepcha.com) -->
-    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
-    <script
-      defer
-      data-site="YOUR_DOMAIN_HERE"
-      src="https://api.nepcha.com/js/nepcha-analytics.js"
-    ></script>
+    <link href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
   </head>
 
-  <body
-    class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500"
-  >
-    <!-- sidenav  -->
-    <aside
-      class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent"
-    >
+  <body class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500">
+    
+    <aside class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent">
       <div class="h-19.5">
-        <i
-          class="absolute top-0 right-0 hidden p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden"
-          sidenav-close
-        ></i>
-        <a
-          class="block px-8 py-0 m-0 text-sm whitespace-nowrap text-slate-700"
-          href="javascript:;"
-          target="_blank"
-        >
-          <img
-            src="assets/img/logo_inlet_horizontal-removebg.png"
-            class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-12"
-            style="margin-top: -36px; margin-left: -5px !important;"
-            alt="main_logo"
-          />
+        <i class="absolute top-0 right-0 hidden p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden" sidenav-close></i>
+        <a class="block px-8 py-0 m-0 text-sm whitespace-nowrap text-slate-700" href="javascript:;" target="_blank">
+          <img src="assets/img/logo_inlet_horizontal-removebg.png" class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-12" style="margin-top: -36px; margin-left: -5px !important;" alt="main_logo" />
         </a>
       </div>
-
-      <hr
-        class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent"
-      />
-
-      <div
-        class="items-center block w-auto max-h-screen overflow-hidden h-sidenav grow basis-full"
-      >
+      <hr class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
+      <div class="items-center block w-auto max-h-screen overflow-hidden h-sidenav grow basis-full">
         <ul class="flex flex-col pl-0 mb-0">
           <li class="mt-0.5 w-full">
   <a
@@ -169,25 +99,56 @@ $current_page = $_GET['page'] ?? 'gallery';
 </li>
 
           <li class="mt-0.5 w-full">
-  <a class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors" href="?page=gallery">
-    <div class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
-      <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <title>gallery</title>
-        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-          <g transform="translate(-1869.000000, -293.000000)" fill="#FFFFFF" fill-rule="nonzero">
-            <g transform="translate(1716.000000, 291.000000)">
-              <g transform="translate(153.000000, 2.000000)">
-                <path d="M12.25,17.5 L8.75,17.5 L8.75,1.75 C8.75,0.78225 9.53225,0 10.5,0 L31.5,0 C32.46775,0 33.25,0.78225 33.25,1.75 L33.25,12.25 L29.75,12.25 L29.75,3.5 L12.25,3.5 L12.25,17.5 Z"></path>
-                <path d="M40.25,14 L24.5,14 C23.53225,14 22.75,14.78225 22.75,15.75 L22.75,38.5 L19.25,38.5 L19.25,22.75 C19.25,21.78225 18.46775,21 17.5,21 L1.75,21 C0.78225,21 0,21.78225 0,22.75 L0,40.25 C0,41.21775 0.78225,42 1.75,42 L40.25,42 C41.21775,42 42,41.21775 42,40.25 L42,15.75 C42,14.78225 41.21775,14 40.25,14 Z M12.25,36.75 L7,36.75 L7,33.25 L12.25,33.25 L12.25,36.75 Z M12.25,29.75 L7,29.75 L7,26.25 L12.25,26.25 L12.25,29.75 Z M35,36.75 L29.75,36.75 L29.75,33.25 L35,33.25 L35,36.75 Z M35,29.75 L29.75,29.75 L29.75,26.25 L35,26.25 L35,29.75 Z M35,22.75 L29.75,22.75 L29.75,19.25 L35,19.25 L35,22.75 Z"></path>
-              </g>
-            </g>
-          </g>
-        </g>
-      </svg>
-    </div>
-    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Galeri</span>
-  </a>
-</li>
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=gallery"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <svg
+                  width="12px"
+                  height="12px"
+                  viewBox="0 0 42 42"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                >
+                  <title>office</title>
+                  <g
+                    stroke="none"
+                    stroke-width="1"
+                    fill="none"
+                    fill-rule="evenodd"
+                  >
+                    <g
+                      transform="translate(-1869.000000, -293.000000)"
+                      fill="#FFFFFF"
+                      fill-rule="nonzero"
+                    >
+                      <g transform="translate(1716.000000, 291.000000)">
+                        <g transform="translate(153.000000, 2.000000)">
+                          <path
+                            class="fill-slate-800 opacity-60"
+                            d="M12.25,17.5 L8.75,17.5 L8.75,1.75 C8.75,0.78225 9.53225,0 10.5,0 L31.5,0 C32.46775,0 33.25,0.78225 33.25,1.75 L33.25,12.25 L29.75,12.25 L29.75,3.5 L12.25,3.5 L12.25,17.5 Z"
+                          ></path>
+                          <path
+
+                            class="fill-slate-800"
+                            d="M40.25,14 L24.5,14 C23.53225,14 22.75,14.78225 22.75,15.75 L22.75,38.5 L19.25,38.5 L19.25,22.75 C19.25,21.78225 18.46775,21 17.5,21 L1.75,21 C0.78225,21 0,21.78225 0,22.75 L0,40.25 C0,41.21775 0.78225,42 1.75,42 L40.25,42 C41.21775,42 42,41.21775 42,40.25 L42,15.75 C42,14.78225 41.21775,14 40.25,14 Z M12.25,36.75 L7,36.75 L7,33.25 L12.25,33.25 L12.25,36.75 Z M12.25,29.75 L7,29.75 L7,26.25 L12.25,26.25 L12.25,29.75 Z M35,36.75 L29.75,36.75 L29.75,33.25 L35,33.25 L35,36.75 Z M35,29.75 L29.75,29.75 L29.75,26.25 L35,26.25 L35,29.75 Z M35,22.75 L29.75,22.75 L29.75,19.25 L35,19.25 L35,22.75 Z"
+                          ></path>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+              <span
+                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
+                >Galeri</span
+              >
+            </a>
+          </li>
 
           <li class="mt-0.5 w-full">
             <a
@@ -404,33 +365,25 @@ $current_page = $_GET['page'] ?? 'gallery';
               >
             </a>
           </li>
-
           <li class="mt-0.5 w-full">
-            <a
-              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="?page=collaboration"
-            >
-              <div
-                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
-              >
-                <i class="ni leading-none ni-paper-diploma text-xs relative top-2 text-gray"></i>
+            <a class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors" href="?page=collaboration">
+              <div class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                <i class="ni ni-paper-diploma text-white"></i>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Kerjasama</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kerjasama</span>
             </a>
           </li>
-      <div class="mx-4 my-4">
-        <a href="?action=logout" class="inline-block w-full px-8 py-2 mb-4 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
-          Logout
-        </a>
+        </ul>
+        <div class="mx-4 my-4">
+            <a href="?action=logout" class="inline-block w-full px-8 py-2 mb-4 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
+            Logout
+            </a>
+        </div>
       </div>
     </aside>
 
-    <!-- end sidenav -->
-
-   <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
+  
+    <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
       
       <div class="w-full px-6 py-6 mx-auto">
         <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="true">
@@ -440,9 +393,9 @@ $current_page = $_GET['page'] ?? 'gallery';
                 <li class="leading-normal text-sm">
                   <a class="opacity-50 text-slate-700" href="javascript:;">Pages</a>
                 </li>
-                <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">Galeri</li>
+                <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">Kerjasama</li>
               </ol>
-              <h6 class="mb-0 font-bold capitalize">Manajemen Galeri</h6>
+              <h6 class="mb-0 font-bold capitalize">Manajemen Mitra Kerjasama</h6>
             </nav>
           </div>
         </nav>
@@ -452,64 +405,56 @@ $current_page = $_GET['page'] ?? 'gallery';
             <?php if (!$isEdit): ?>
             <div class="relative">
                 <button
-                  id="addGalleryBtn"
+                  id="addCollabBtn"
                   class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all shadow-md"
-                  onclick="toggleGalleryPopover()"
+                  onclick="toggleCollabPopover()"
                 >
-                  + Tambah Galeri
+                  + Tambah Kerjasama
                 </button>
             </div>
             <?php endif; ?>
 
             <div
-              id="galleryPopover"
+              id="collabPopover"
               class="absolute left-0 top-12 z-50 <?= $popoverClass ?> bg-white rounded-2xl shadow-2xl p-6 border border-gray-100"
-              style="width: 100%; max-width: 400px;"
+              style="width: 100%; max-width: 500px;"
             >
               <h3 class="text-lg font-bold mb-4 border-b pb-2"><?= $formTitle ?></h3>
-              
               <form action="<?= $formAction ?>" method="POST" enctype="multipart/form-data">
-                
-                <?php if ($isEdit && !empty($editData['image'])): ?>
-                <div class="mb-4 text-center">
-                    <p class="text-xs font-semibold mb-1 text-gray-500">Gambar Saat Ini:</p>
-                    <img src="<?= htmlspecialchars($editData['image']) ?>" 
-                         class="h-16 mx-auto rounded border shadow-sm object-contain bg-gray-100"
-                         style="width: auto; max-width: 100%; display: block;">
-                </div>
-                <?php endif; ?>
+                  <?php if ($isEdit && !empty($editData['logo'])): ?>
+                  <div class="mb-4 text-center">
+                      <p class="text-xs font-semibold mb-1 text-gray-500">Logo Saat Ini:</p>
+                      <img src="<?= htmlspecialchars($editData['logo']) ?>" class="h-16 w-auto mx-auto object-contain rounded border bg-gray-50 p-1">
+                  </div>
+                  <?php endif; ?>
 
                 <div class="mb-4">
-                  <label class="block text-sm font-semibold mb-1">
-                    <?= $isEdit ? "Ganti Gambar (Opsional)" : "Upload Gambar" ?>
-                  </label>
-                  
-                  <input type="file" name="gambar" accept="image/*"
-                         class="w-full text-sm text-slate-500 
-                                file:mr-4 file:py-2 file:px-4 
-                                file:rounded-full file:border-0 
-                                file:text-sm file:font-semibold 
-                                file:bg-purple-50 file:text-purple-700 
-                                hover:file:bg-purple-100 cursor-pointer"
-                         <?= $isEdit ? '' : 'required' ?> >
-                         
-                  <p class="text-xs text-slate-400 mt-2">*Format: JPG, PNG, JPEG. Max: 2MB.</p>
+                  <label class="block text-sm font-semibold mb-1">Nama Mitra</label>
+                  <input type="text" name="name" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" 
+                         value="<?= $isEdit ? htmlspecialchars($editData['name']) : '' ?>" required>
                 </div>
-
+                <div class="mb-4">
+                  <label class="block text-sm font-semibold mb-1">Website (URL)</label>
+                  <input type="url" name="website" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" 
+                         value="<?= $isEdit ? htmlspecialchars($editData['website']) : '' ?>" placeholder="Contoh: https://example.com" required>
+                </div>
+                <div class="mb-4">
+                  <label class="block text-sm font-semibold mb-1">Deskripsi Singkat</label>
+                  <textarea name="description" rows="3" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" required><?= $isEdit ? htmlspecialchars($editData['description']) : '' ?></textarea>
+                </div>
+                <div class="mb-4">
+                  <label class="block text-sm font-semibold mb-1">
+                      <?= $isEdit ? "Ganti Logo (Opsional)" : "Upload Logo" ?>
+                  </label>
+                  <input type="file" name="logo" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 cursor-pointer" 
+                         <?= $isEdit ? '' : 'required' ?>>
+                </div>
                 <div class="mt-4 flex justify-end space-x-3">
                   <?php if ($isEdit): ?>
-                    <a href="index.php?page=gallery" 
-                       class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all flex items-center">
-                       Batal
-                    </a>
+                      <a href="index.php?page=collaboration" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all flex items-center">Batal</a>
                   <?php else: ?>
-                    <button type="button" 
-                            class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" 
-                            onclick="toggleGalleryPopover()">
-                            Batal
-                    </button>
+                      <button type="button" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" onclick="toggleCollabPopover()">Batal</button>
                   <?php endif; ?>
-                  
                   <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">Simpan</button>
                 </div>
               </form>
@@ -519,21 +464,11 @@ $current_page = $_GET['page'] ?? 'gallery';
         <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-padding mx-6 mt-4">
           
           <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
-             
-             <h6>Daftar Galeri Foto</h6>
-
+             <h6>Daftar Mitra Kerjasama</h6>
              <form action="index.php" method="GET" class="flex items-center space-x-2">
-                <input type="hidden" name="page" value="gallery">
-                <input 
-                    type="search" 
-                    name="keyword" 
-                    placeholder="Cari..." 
-                    value="<?= htmlspecialchars($keyword) ?>"
-                    class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all"
-                >
-                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">
-                    Cari
-                </button>
+                <input type="hidden" name="page" value="collaboration">
+                <input type="search" name="keyword" placeholder="Cari Mitra..." value="<?= htmlspecialchars($keyword) ?>" class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all">
+                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">Cari</button>
             </form>
           </div>
           
@@ -543,49 +478,52 @@ $current_page = $_GET['page'] ?? 'gallery';
                 <thead class="align-bottom">
                   <tr>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">No</th>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Gambar</th>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Upload</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Logo</th>
+                    <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Nama & Deskripsi</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Website</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php 
-                  $no = $offset + 1;
+                  $no = $offset + 1; // Inisialisasi Nomor
                   if (!empty($pagedData)): 
                   ?> 
-                      <?php foreach ($pagedData as $item): ?>
+                      <?php foreach ($pagedData as $collab): ?>
                       <tr>
                         <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
                             <span class="text-xs font-semibold leading-tight text-slate-400"><?= $no++ ?></span>
                         </td>
-                        
+
                         <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
-                          <img src="<?= htmlspecialchars($item['image']) ?>" class="h-12 w-24 object-cover rounded-lg mx-auto border bg-gray-50 p-1" alt="Galeri Image" />
+                          <img src="<?= htmlspecialchars($collab['logo']) ?>" class="h-12 w-24 object-contain rounded-lg mx-auto border bg-gray-50 p-1" alt="Logo Mitra" />
+                        </td>
+                        
+                        <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
+                           <div class="flex flex-col px-2 py-1">
+                                <h6 class="mb-0 text-sm leading-normal font-bold text-slate-700"><?= htmlspecialchars($collab['name']) ?></h6>
+                                <p class="mb-0 text-xs text-slate-400 overflow-hidden w-64 truncate">
+                                    <?= htmlspecialchars(substr($collab['description'], 0, 80)) ?>...
+                                </p>
+                           </div>
                         </td>
 
                         <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <span class="text-xs font-semibold leading-tight text-slate-400">
-                            <?= date('d M Y', strtotime($item['upload_date'] ?? 'now')) ?>
-                          </span>
+                          <a href="<?= htmlspecialchars($collab['website']) ?>" target="_blank" class="text-xs font-semibold leading-tight text-blue-500 hover:text-blue-700 underline">
+                            <?= htmlspecialchars(parse_url($collab['website'], PHP_URL_HOST) ?: $collab['website']) ?>
+                          </a>
+                          <p class="text-xxs text-slate-400 mt-1"><?= date('d M Y', strtotime($collab['created_at'])) ?></p>
                         </td>
 
                         <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
-                          <a href="index.php?page=gallery&action=edit&id=<?= $item['id'] ?>" 
-                             class="text-xs font-bold leading-tight text-blue-800 mr-6 hover:text-blue-950 transition-all"> 
-                             Edit 
-                          </a>
-                          
-                          <a href="index.php?page=gallery&action=delete&id=<?= $item['id'] ?>" 
-                             class="text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" 
-                             onclick="return confirm('Yakin ingin menghapus gambar ini?')"> 
-                             Hapus 
-                          </a>
+                          <a href="index.php?page=collaboration&action=edit&id=<?= $collab['id'] ?>" class="text-xs font-bold leading-tight text-blue-800 mr-6 hover:text-blue-950 transition-all">Edit</a>
+                          <a href="index.php?page=collaboration&action=delete&id=<?= $collab['id'] ?>" class="text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" onclick="return confirm('Yakin ingin menghapus kerjasama ini?')">Hapus</a>
                         </td>
                       </tr>
                       <?php endforeach; ?>
                   <?php else: ?>
                       <tr>
-                          <td colspan="4" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada data galeri.</td>
+                          <td colspan="5" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada data kolaborasi.</td>
                       </tr>
                   <?php endif; ?>
                 </tbody>
@@ -599,21 +537,15 @@ $current_page = $_GET['page'] ?? 'gallery';
             <nav aria-label="Page navigation">
                 <ul class="inline-flex items-center -space-x-px">
                     <li class="mx-1">
-                        <a href="?page=gallery&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
-                            <i class="fas fa-chevron-left"><</i>
-                        </a>
+                        <a href="?page=collaboration&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-left"><</i></a>
                     </li>
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                     <li class="mx-1">
-                        <a href="?page=gallery&p=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>">
-                            <?= $i ?>
-                        </a>
+                        <a href="?page=collaboration&p=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>"><?= $i ?></a>
                     </li>
                     <?php endfor; ?>
                     <li class="mx-1">
-                        <a href="?page=gallery&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
-                            <i class="fas fa-chevron-right">></i>
-                        </a>
+                        <a href="?page=collaboration&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-right">></i></a>
                     </li>
                 </ul>
             </nav>
@@ -624,16 +556,15 @@ $current_page = $_GET['page'] ?? 'gallery';
     </main>
     
     <script>
-      function toggleGalleryPopover() {
-        const popover = document.getElementById("galleryPopover");
+      function toggleCollabPopover() {
+        const popover = document.getElementById("collabPopover");
         popover.classList.toggle("hidden");
       }
       document.addEventListener("click", function(e) {
-        const btn = document.getElementById("addGalleryBtn");
-        const popover = document.getElementById("galleryPopover");
+        const btn = document.getElementById("addCollabBtn");
+        const popover = document.getElementById("collabPopover");
         if (btn && popover && !popover.contains(e.target) && e.target !== btn) {
-            // Cek apakah tombol Edit sedang aktif (jika btn tidak ada di DOM saat mode edit, abaikan)
-            if(btn) popover.classList.add("hidden");
+          popover.classList.add("hidden");
         }
       });
     </script>
