@@ -107,7 +107,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
       </div>
       <!-- Tombol Beranda -->
       <div
-        class="items-center block w-auto max-h-screen overflow-hidden h-sidenav grow basis-full"
+        class="items-center block w-auto max-h-screen overflow-y-auto h-sidenav grow basis-full"
       >
         <ul class="flex flex-col pl-0 mb-0">
           <li class="mt-0.5 w-full">

@@ -3,6 +3,7 @@
 if (!isset($newsList) || !is_array($newsList)) {
     $newsList = [];
 }
+$keyword = $_GET['keyword'] ?? '';
 ?>
 <!DOCTYPE html>
 <html>
@@ -66,17 +67,21 @@ if (!isset($newsList) || !is_array($newsList)) {
   <body
     class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500"
   >
-    <!-- sidenav  -->
+    <!-- sidenav -->
     <aside
-      class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent"
+      id="sidenav-main"
+      class="fixed inset-y-0 left-0 w-full max-w-62.5 -translate-x-full p-0 antialiased shadow-2xl transition-transform duration-300 xl:ml-4 xl:my-4 xl:translate-x-0 xl:rounded-2xl xl:shadow-soft-xl xl:h-[calc(100vh-2rem)] h-full flex flex-col border-r border-gray-200 xl:border-0"
+      style="z-index: 9999 !important; background-color: white !important;"
     >
-      <div class="h-19.5">
+    
+      <!-- LOGO -->
+      <div class="h-19.5 shrink-0 px-2 py-2">
         <i
           class="absolute top-0 right-0 hidden p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden"
           sidenav-close
         ></i>
         <a
-          class="block px-8 py-0 m-0 text-sm whitespace-nowrap text-slate-700"
+          class="block px-8 py-4 m-0 text-sm whitespace-nowrap text-slate-700"
           href="javascript:;"
           target="_blank"
         >
@@ -88,13 +93,17 @@ if (!isset($newsList) || !is_array($newsList)) {
           />
         </a>
       </div>
-
+      
       <hr
         class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent"
       />
 
+      <div class="mx-4 mt-2 mb-2 font-bold text-slate-700 text-base">
+        Utama
+      </div>
+      <!-- Tombol Beranda -->
       <div
-        class="items-center block w-auto max-h-screen overflow-hidden h-sidenav grow basis-full"
+        class="items-center block w-auto max-h-screen overflow-y-auto h-sidenav grow basis-full"
       >
         <ul class="flex flex-col pl-0 mb-0">
           <li class="mt-0.5 w-full">
@@ -148,6 +157,7 @@ if (!isset($newsList) || !is_array($newsList)) {
             </a>
           </li>
 
+          <!-- Tombol Galeri -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
@@ -200,6 +210,7 @@ if (!isset($newsList) || !is_array($newsList)) {
             </a>
           </li>
 
+          <!-- Tombol News -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
@@ -251,6 +262,7 @@ if (!isset($newsList) || !is_array($newsList)) {
             </a>
           </li>
 
+          <!-- Tombol Produk -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
@@ -306,6 +318,7 @@ if (!isset($newsList) || !is_array($newsList)) {
             </a>
           </li>
 
+          <!-- Tombol Riset -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
@@ -361,6 +374,7 @@ if (!isset($newsList) || !is_array($newsList)) {
             </a>
           </li>
 
+          <!-- Tombol Tim -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
@@ -416,10 +430,11 @@ if (!isset($newsList) || !is_array($newsList)) {
             </a>
           </li>
 
+          <!-- Tombol Kerjasama -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="?page=team"
+              href="?page=collaboration"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -432,107 +447,148 @@ if (!isset($newsList) || !is_array($newsList)) {
               >
             </a>
           </li>
-      <div class="mx-4 my-4">
-        <a href="?action=logout" class="inline-block w-full px-8 py-2 mb-4 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
-          Logout
-        </a>
+
+          <!-- menu mahasiswa -->
+      <div class="mx-4 my-6 shrink-0">
+        <div class="mb-2 font-bold text-slate-700 text-base">Mahasiswa</div>
+        <ul class="flex flex-col pl-0 mb-0">
+          <!-- Tombol Absensi -->
+          <li class="mt-0.5 w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=absensi"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <svg
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="12" cy="12" r="10" fill="#8B5CF6" />
+                  <path d="M8 12.5l2 2 4-4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Absensi</span>
+            </a>
+          </li>
+          <!-- Tombol Daftar Mahasiswa -->
+          <li class="mt-* w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=daftar-mahasiswa"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <!-- Icon kertas simpel -->
+                <svg
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect x="4" y="4" width="16" height="20" rx="3" fill="#8B5CF6" />
+                  <rect x="7" y="8" width="10" height="2" rx="1" fill="#fff"/>
+                  <rect x="7" y="12" width="10" height="2" rx="1" fill="#fff"/>
+                  <rect x="7" y="16" width="6" height="2" rx="1" fill="#fff"/>
+                </svg>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Daftar Mahasiswa</span>
+            </a>
+          </li>
+          <!-- Tombol Log Out -->
+          <li class="mt-6 w-full">
+            <a href="?action=logout"
+              class="inline-block w-full px-8 py-2 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
+              Logout
+            </a>
+          </li>
+        </ul>
       </div>
     </aside>
-
     <!-- end sidenav -->
 
     <main
       class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200"
     >
-      <!-- Navbar -->
-      <!-- Navbar -->
-      <nav
-        class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start"
-        navbar-main
-        navbar-scroll="true"
-      >
-        <div
-          class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit"
+        <!-- Navbar -->
+        <nav
+          class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start"
+          navbar-main
+          navbar-scroll="true"
         >
-          <nav>
-            <!-- breadcrumb -->
-            <ol
-              class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16"
-            >
-              <li class="leading-normal text-sm">
-                <a class="opacity-50 text-slate-700" href="javascript:;"
-                  >Pages</a
-                >
-              </li>
-              <li
-                class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
-                aria-current="page"
-              >
-                Galeri
-              </li>
-            </ol>
-            <h6 class="mb-0 font-bold capitalize">Manajemen Galeri</h6>
-          </nav>
-
           <div
-            class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto"
+            class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit"
           >
-            <div class="flex items-center md:ml-auto md:pr-4">
-              <div
-                class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft"
+            <nav>
+              <!-- breadcrumb -->
+              <ol
+                class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16"
               >
-                <span
-                  class="text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all"
+                <li class="leading-normal text-sm">
+                  <a class="opacity-50 text-slate-700" href="javascript:;"
+                    >Pages</a
+                  >
+                </li>
+                <li
+                  class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
+                  aria-current="page"
                 >
-                  <i class="fas fa-search" aria-hidden="true"></i>
-                </span>
-                <input
-                  type="text"
-                  class="pl-8.75 text-sm focus:shadow-soft-primary-outline ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
-                  placeholder="Cari..."
-                />
-              </div>
-            </div>
-            <ul
-              class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full"
+                  Berita
+                </li>
+              </ol>
+              <h6 class="mb-0 font-bold capitalize">Manajemen Berita</h6>
+            </nav>
+
+            <div
+              class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto"
             >
               
-              <li class="flex items-center pl-4 xl:hidden">
-                <a
-                  href="javascript:;"
-                  class="block p-0 text-sm transition-all ease-nav-brand text-slate-500"
-                  sidenav-trigger
-                >
-                  <div class="w-4.5 overflow-hidden">
+              <ul
+                class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full"
+              >
+                
+                <li class="flex items-center pl-4 xl:hidden">
+                  <a
+                    href="javascript:;"
+                    class="block p-0 text-sm transition-all ease-nav-brand text-slate-500"
+                    sidenav-trigger
+                  >
+                    <div class="w-4.5 overflow-hidden">
+                      <i
+                        class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"
+                      ></i>
+                      <i
+                        class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"
+                      ></i>
+                      <i
+                        class="ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all"
+                      ></i>
+                    </div>
+                  </a>
+                </li>
+                <li class="flex items-center px-4">
+                  <a
+                    href="javascript:;"
+                    class="p-0 text-sm transition-all ease-nav-brand text-slate-500"
+                  >
                     <i
-                      class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"
+                      fixed-plugin-button-nav
+                      class="cursor-pointer fa fa-cog"
+                      aria-hidden="true"
                     ></i>
-                    <i
-                      class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"
-                    ></i>
-                    <i
-                      class="ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all"
-                    ></i>
-                  </div>
-                </a>
-              </li>
-              <li class="flex items-center px-4">
-                <a
-                  href="javascript:;"
-                  class="p-0 text-sm transition-all ease-nav-brand text-slate-500"
-                >
-                  <i
-                    fixed-plugin-button-nav
-                    class="cursor-pointer fa fa-cog"
-                    aria-hidden="true"
-                  ></i>
-                  <!-- fixed-plugin-button-nav  -->
-                </a>
-              </li>
-            </ul>
+                    <!-- fixed-plugin-button-nav  -->
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
       <!-- End Navbar -->
       <div class="w-full px-6 py-6 mx-auto">
         
@@ -634,14 +690,27 @@ if (!isset($newsList) || !is_array($newsList)) {
                     Simpan
                 </button>
               </div>
-
             </form>
           </div>
         </div>
 
-        <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-          <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
+          <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
             <h6>Daftar Berita</h6>
+
+            <form action="index.php" method="GET" class="flex items-center space-x-2">
+                <input type="hidden" name="page" value="news">
+                <input 
+                    type="search" 
+                    name="keyword" 
+                    placeholder="Cari..." 
+                    value="<?= htmlspecialchars($keyword) ?>"
+                    class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all"
+                >
+                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">
+                    Cari
+                </button>
+            </form>
           </div>
           <div class="flex-auto px-0 pt-0 pb-2">
             <div class="p-0 overflow-x-auto">
@@ -702,8 +771,8 @@ if (!isset($newsList) || !is_array($newsList)) {
             </div>
           </div>
         </div>
-
       </div>
+      
     </main>
     
     <script>

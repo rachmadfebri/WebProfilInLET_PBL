@@ -7,6 +7,7 @@ require_once __DIR__ . '/../app/controller/AdminController.php';
 require_once __DIR__ . '/../app/controller/MahasiswaController.php';
 require_once __DIR__ . '/../app/controller/galleryController.php';
 require_once __DIR__ . '/../app/controller/NewsController.php';
+require_once __DIR__ . '/../app/controller/ProductsController.php';
 require_once __DIR__ . '/../app/controller/Collaborationcontroller.php';
 require_once __DIR__ . '/../app/controller/ResearchController.php';
 // --- TAMBAH CONTROLLER ABSENSI (ATTENDANCE) ---
@@ -22,6 +23,7 @@ $adminController = new AdminController();
 $mahasiswaController = new MahasiswaController();
 $galleryController = new galleryController($pdo);
 $newsController = new NewsController($pdo);
+$productsController = new ProductsController($pdo);
 $researchController = new ResearchController($pdo);
 $collaborationController = new CollaborationController($pdo);
 // --- TAMBAH INIALISASI ATTENDANCE CONTROLLER ---
@@ -78,6 +80,18 @@ if ($page === 'news' && $action === 'create') {
   exit;
 }
 
+//routing products
+if ($page === 'products' && $action === 'create') {
+  $productsController->create();
+  exit;
+} elseif ($page === 'products' && $action === 'edit') {
+  $productsController->edit($_GET['id']);
+  exit;
+} elseif ($page === 'products' && $action === 'delete') {
+  $productsController->delete($_GET['id']);
+  exit;
+}
+
 //routing riset
 if ($page === 'research' && $action === 'create') {
   $researchController->create();
@@ -126,7 +140,7 @@ switch ($page) {
     $newsController->index();
     break;
   case 'products':
-    require __DIR__ . '/../app/views/admin/products.php';
+    $productsController->index();
     break;
   case 'research':
     $researchController->index();
