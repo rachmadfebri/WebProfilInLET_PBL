@@ -7,6 +7,7 @@ require_once __DIR__ . '/../app/controller/AdminController.php';
 require_once __DIR__ . '/../app/controller/MahasiswaController.php';
 require_once __DIR__ . '/../app/controller/galleryController.php';
 require_once __DIR__ . '/../app/controller/NewsController.php';
+require_once __DIR__ . '/../app/controller/Collaborationcontroller.php';
 require_once __DIR__ . '/../app/controller/ResearchController.php';
 // --- TAMBAH CONTROLLER ABSENSI (ATTENDANCE) ---
 require_once __DIR__ . '/../app/controller/AttendanceController.php';
@@ -22,6 +23,7 @@ $mahasiswaController = new MahasiswaController();
 $galleryController = new galleryController($pdo);
 $newsController = new NewsController($pdo);
 $researchController = new ResearchController($pdo);
+$collaborationController = new CollaborationController($pdo);
 // --- TAMBAH INIALISASI ATTENDANCE CONTROLLER ---
 $attendanceController = new AttendanceController();
 
@@ -87,6 +89,16 @@ if ($page === 'research' && $action === 'create') {
   $researchController->delete($_GET['id']);
   exit;
 }
+if ($page === 'collaboration' && $action === 'create') {
+  $collaborationController->create();
+  exit;
+} elseif ($page === 'collaboration' && $action === 'edit') {
+  $collaborationController->edit($_GET['id']);
+  exit;
+} elseif ($page === 'collaboration' && $action === 'delete') {
+  $collaborationController->delete($_GET['id']);
+  exit;
+}
 
 switch ($page) {
   case 'login':
@@ -121,6 +133,9 @@ switch ($page) {
     break;
   case 'team':
     require __DIR__ . '/../app/views/admin/team.php';
+    break;
+  case 'collaboration':
+    $collaborationController->index();
     break;
   default:
     echo "Page not found.";
