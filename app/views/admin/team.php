@@ -8,6 +8,7 @@ $conn = $db->connect();
 $stmt = $conn->query("SELECT * FROM team_members ORDER BY created_at DESC");
 $productsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $keyword = $_GET['keyword'] ?? '';
+$nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,8 +25,8 @@ $keyword = $_GET['keyword'] ?? '';
       type="image/png"
       href="public/assets/img/favicon.png"
     />
-    <title>Dashboard - Lab InLET</title>
-    <!--     Fonts and icons     -->
+    <title>Team Members - Lab InLET</title>
+    <!-- Fonts and icons -->
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
       rel="stylesheet"
@@ -33,26 +34,29 @@ $keyword = $_GET['keyword'] ?? '';
     <!-- Font Awesome Icons -->
     <script
       src="https://kit.fontawesome.com/42d5adcbca.js"
-      crossorigin="anonymous"
-    ></script>
+      crossorigin="anonymous">
+    </script>
      <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
-  
-  <!-- Popper -->
-  <script src="https://unpkg.com/@popperjs/core@2"></script>
-  
-  <!-- Main Styling -->
-  <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
-    <link
-      href="assets/css/nucleo-icons.css"
-      rel="stylesheet"
+    <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
+    
+    <!-- Popper -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    
+    <!-- Main Styling -->
+    <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
+      <link
+        href="assets/css/nucleo-icons.css"
+        rel="stylesheet"
     />
+    
     <link
       href="assets/css/nucleo-svg.css"
       rel="stylesheet"
     />
+    
     <!-- Popper -->
     <script src="https://unpkg.com/@popperjs/core@2"></script>
+    
     <!-- Main Styling -->
     <link
       href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
@@ -60,12 +64,11 @@ $keyword = $_GET['keyword'] ?? '';
     />
 
     <!-- Nepcha Analytics (nepcha.com) -->
-    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
     <script
       defer
       data-site="YOUR_DOMAIN_HERE"
-      src="https://api.nepcha.com/js/nepcha-analytics.js"
-    ></script>
+      src="https://api.nepcha.com/js/nepcha-analytics.js">
+    </script>
   </head>
 
   <body
@@ -112,11 +115,11 @@ $keyword = $_GET['keyword'] ?? '';
         <ul class="flex flex-col pl-0 mb-0">
           <li class="mt-0.5 w-full">
             <a
-              class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
               href="?page=admin-dashboard"
             >
               <div
-                class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
               >
                 <svg
                   width="12px"
@@ -127,25 +130,16 @@ $keyword = $_GET['keyword'] ?? '';
                   xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
                   <title>shop</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-1716.000000, -439.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-1716.000000, -439.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(0.000000, 148.000000)">
                           <path
-                            class="opacity-60"
+                            class="fill-slate-800 opacity-60"
                             d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z"
                           ></path>
                           <path
-                            class=""
+                            class="fill-slate-800"
                             d="M39.198,22.4912623 C37.3776246,22.4928106 35.5817531,22.0149171 33.951625,21.0951667 L33.92225,21.1107282 C31.1430221,22.6838032 27.9255001,22.9318916 24.9844167,21.7998837 C24.4750389,21.605469 23.9777983,21.3722567 23.4960833,21.1018359 L23.4745417,21.1129513 C20.6961809,22.6871153 17.4786145,22.9344611 14.5386667,21.7998837 C14.029926,21.6054643 13.533337,21.3722507 13.0522917,21.1018359 C11.4250962,22.0190609 9.63246555,22.4947009 7.81570833,22.4912623 C7.16510551,22.4842162 6.51607673,22.4173045 5.875,22.2911849 L5.875,44.7220845 C5.875,45.9498589 6.7517757,46.9451667 7.83333333,46.9451667 L19.5833333,46.9451667 L19.5833333,33.6066734 L27.4166667,33.6066734 L27.4166667,46.9451667 L39.1666667,46.9451667 C40.2482243,46.9451667 41.125,45.9498589 41.125,44.7220845 L41.125,22.2822926 C40.4887822,22.4116582 39.8442868,22.4815492 39.198,22.4912623 Z"
                           ></path>
                         </g>
@@ -154,10 +148,7 @@ $keyword = $_GET['keyword'] ?? '';
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Beranda</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Beranda</span>
             </a>
           </li>
 
@@ -381,11 +372,11 @@ $keyword = $_GET['keyword'] ?? '';
           <!-- Tombol Tim -->
           <li class="mt-0.5 w-full">
             <a
-              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+              class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
               href="?page=team"
             >
               <div
-                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+                class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
               >
                 <svg
                   width="12px"
@@ -396,29 +387,20 @@ $keyword = $_GET['keyword'] ?? '';
                   xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
                   <title>customer-support</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-1717.000000, -291.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-1717.000000, -291.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(1.000000, 0.000000)">
                           <path
-                            class="fill-slate-800 opacity-60"
+                            class="opacity-60"
                             d="M45,0 L26,0 C25.447,0 25,0.447 25,1 L25,20 C25,20.379 25.214,20.725 25.553,20.895 C25.694,20.965 25.848,21 26,21 C26.212,21 26.424,20.933 26.6,20.8 L34.333,15 L45,15 C45.553,15 46,14.553 46,14 L46,1 C46,0.447 45.553,0 45,0 Z"
                           ></path>
                           <path
-                            class="fill-slate-800"
+                            class=""
                             d="M22.883,32.86 C20.761,32.012 17.324,31 13,31 C8.676,31 5.239,32.012 3.116,32.86 C1.224,33.619 0,35.438 0,37.494 L0,41 C0,41.553 0.447,42 1,42 L25,42 C25.553,42 26,41.553 26,41 L26,37.494 C26,35.438 24.776,33.619 22.883,32.86 Z"
                           ></path>
                           <path
-                            class="fill-slate-800"
+                            class=""
                             d="M13,28 C17.432,28 21,22.529 21,18 C21,13.589 17.411,10 13,10 C8.589,10 5,13.589 5,18 C5,22.529 8.568,28 13,28 Z"
                           ></path>
                         </g>
@@ -427,10 +409,7 @@ $keyword = $_GET['keyword'] ?? '';
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Tim</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Tim</span>
             </a>
           </li>
 
@@ -517,25 +496,57 @@ $keyword = $_GET['keyword'] ?? '';
     </aside>
     <!-- end sidenav -->
 
-   <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
-      
+    <main
+      class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200"
+    >
       <!-- Navbar -->
-        <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="true">
-          <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
-            <nav>
-              <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
-                <li class="leading-normal text-sm">
-                  <a class="opacity-50 text-slate-700" href="javascript:;">Pages</a>
-                </li>
-                <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">Anggota</li>
-              </ol>
-              <h6 class="mb-0 font-bold capitalize">Manajemen Anggota</h6>
-            </nav>
-        </nav>
+      <nav
+        class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start"
+        navbar-main
+        navbar-scroll="true"
+      >
+        <div
+          class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit"
+        >
+          <nav>
+            <!-- breadcrumb -->
+            <ol
+              class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16"
+            >
+              <li class="leading-normal text-sm">
+                <a class="opacity-50 text-slate-700" href="javascript:;"
+                  >Pages</a
+                >
+              </li>
+              <li
+                class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
+                aria-current="page"
+              >
+                Anggota Tim
+              </li>
+            </ol>
+            <h6 class="mb-0 font-bold capitalize">Anggota Tim</h6>
+          </nav>
 
           <div
             class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto"
           >
+            <!-- ...existing code... -->
+            <div class="flex items-center md:ml-auto md:pr-4">
+              <div class="relative flex flex-wrap items-center w-full transition-all rounded-lg ease-soft">
+                <!-- Ganti search bar dengan info akun -->
+                <span class="flex items-center px-3 py-2 bg-white rounded-lg shadow-soft-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="#8B5CF6"/>
+                    <path stroke="#8B5CF6" stroke-width="2" d="M4 20c0-3.333 3.333-6 8-6s8 2.667 8 6" fill="none"/>
+                  </svg>
+                  <span class="font-semibold text-slate-700">
+                    <?php echo htmlspecialchars($nama_pengguna); ?>
+                  </span>
+                </span>
+              </div>
+            </div>
+            
             <ul
               class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full"
             >
@@ -768,5 +779,7 @@ $keyword = $_GET['keyword'] ?? '';
         }
       });
       </script>
+      <script src="assets/js/plugins/perfect-scrollbar.min.js" async></script>
+      <script src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
   </body>
 </html>
