@@ -630,7 +630,7 @@ $current_page = $_GET['page'] ?? 'gallery';
                 <input 
                     type="search" 
                     name="keyword" 
-                    placeholder="Cari..." 
+                    placeholder="Cari Foto..." 
                     value="<?= htmlspecialchars($keyword) ?>"
                     class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all"
                 >

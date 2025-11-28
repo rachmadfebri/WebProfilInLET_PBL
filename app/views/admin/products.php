@@ -685,8 +685,22 @@ $keyword = $_GET['keyword'] ?? '';
 
         <!-- TABEL DATA PRODUK -->
         <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-          <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+          <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
             <h6>Daftar Produk</h6>
+
+            <form action="index.php" method="GET" class="flex items-center space-x-2">
+                <input type="hidden" name="page" value="products">
+                <input 
+                    type="search" 
+                    name="keyword" 
+                    placeholder="Cari Produk..." 
+                    value="<?= htmlspecialchars($keyword) ?>"
+                    class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all"
+                >
+                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">
+                    Cari
+                </button>
+            </form>
           </div>
           <div class="flex-auto px-0 pt-0 pb-2">
             <div class="p-0 overflow-x-auto">
@@ -694,8 +708,8 @@ $keyword = $_GET['keyword'] ?? '';
                 <thead class="align-bottom">
                   <tr>
                     <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Thumbnail</th>
-                    <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Nama Produk</th>
-                    <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">URL Produk</th>
+                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Nama Produk</th>
+                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">URL Produk</th>
                     <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal</th>
                     <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
                   </tr>
@@ -714,14 +728,14 @@ $keyword = $_GET['keyword'] ?? '';
                         </td>
                         
                         <!-- 2. Nama Produk -->
-                        <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
+                        <td class="p-2 align-middle bg-transparent border-b shadow-transparent text-center">
                             <h6 class="mb-0 text-sm leading-normal font-bold text-slate-700">
                                 <?= htmlspecialchars($item['title'] ?? '') ?>
                             </h6>
                         </td>
 
                         <!-- 3. URL Produk -->
-                        <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
+                        <td class="p-2 align-middle bg-transparent border-b shadow-transparent text-center">
                             <?php if(!empty($item['url'])): ?>
                                 <a href="<?= htmlspecialchars($item['url']) ?>" target="_blank" class="text-xs text-blue-500 hover:underline truncate w-48 block">
                                     <?= htmlspecialchars($item['url']) ?>

@@ -10,6 +10,7 @@ require_once __DIR__ . '/../app/controller/NewsController.php';
 require_once __DIR__ . '/../app/controller/ProductsController.php';
 require_once __DIR__ . '/../app/controller/Collaborationcontroller.php';
 require_once __DIR__ . '/../app/controller/ResearchController.php';
+require_once __DIR__ . '/../app/controller/TeamMembersController.php';
 // --- TAMBAH CONTROLLER ABSENSI (ATTENDANCE) ---
 require_once __DIR__ . '/../app/controller/AttendanceController.php';
 
@@ -26,6 +27,7 @@ $newsController = new NewsController($pdo);
 $productsController = new ProductsController($pdo);
 $researchController = new ResearchController($pdo);
 $collaborationController = new CollaborationController($pdo);
+$teamMembersController = new TeamMembersController($pdo);
 // --- TAMBAH INIALISASI ATTENDANCE CONTROLLER ---
 $attendanceController = new AttendanceController();
 
@@ -103,6 +105,20 @@ if ($page === 'research' && $action === 'create') {
   $researchController->delete($_GET['id']);
   exit;
 }
+
+//routing tim
+if ($page === 'team' && $action === 'create') {
+  $teamMembersController->create();
+  exit;
+} elseif ($page === 'team' && $action === 'edit') {
+  $teamMembersController->edit($_GET['id']);
+  exit;
+} elseif ($page === 'team' && $action === 'delete') {
+  $teamMembersController->delete($_GET['id']);
+  exit;
+}
+
+//routing collaboration
 if ($page === 'collaboration' && $action === 'create') {
   $collaborationController->create();
   exit;
@@ -146,7 +162,7 @@ switch ($page) {
     $researchController->index();
     break;
   case 'team':
-    require __DIR__ . '/../app/views/admin/team.php';
+    $teamMembersController->index();
     break;
   case 'collaboration':
     $collaborationController->index();

@@ -594,7 +594,7 @@ $keyword = $_GET['keyword'] ?? '';
                   <tr>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">No</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Gambar</th>
-                    <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Judul & Deskripsi</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Judul & Deskripsi</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Dibuat Pada</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
                   </tr>
@@ -616,8 +616,8 @@ $keyword = $_GET['keyword'] ?? '';
                         
                         <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
                            <div class="flex flex-col px-2 py-1">
-                                <h6 class="mb-0 text-sm leading-normal font-bold text-slate-700"><?= htmlspecialchars($research['title']) ?></h6>
-                                <p class="mb-0 text-xs text-slate-400 overflow-hidden w-64 truncate">
+                                <h6 class="mb-0 text-sm text-center leading-normal font-bold text-slate-700"><?= htmlspecialchars($research['title']) ?></h6>
+                                <p class="mb-0 text-xs text-center text-slate-400 overflow-hidden w-64 truncate">
                                     <?= htmlspecialchars(substr($research['description'], 0, 100)) ?>...
                                 </p>
                            </div>
