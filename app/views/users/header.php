@@ -3,7 +3,7 @@
 
 <header>
     <div class="logo">
-        <img src="img/logo.png" alt="Logo" class="img-logo">
+        <img src="assets/img/logo lab tanpa bg.png" alt="Logo" class="img-logo">
     </div>
 
     <nav class="nav-pill">
