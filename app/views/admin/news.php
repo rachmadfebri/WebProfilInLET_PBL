@@ -493,7 +493,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
     <!-- end sidenav -->
 
     <main
-      class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200"
+      class="ease-soft-in-out xl:ml-68.5 relative min-h-screen rounded-xl transition-all duration-200"
     >
       <!-- Navbar -->
       <nav
