@@ -1,10 +1,13 @@
+<!-- filepath: c:\laragon\www\WebProfilInLET_PBL\app\views\admin\products.php -->
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+// Ambil data dari database
+require_once __DIR__ . '/../../../config/database.php'; // sesuaikan path
 
-// 2. Ambil Data Pengguna dari Session
-// Fallback nama jika session belum diset
+$db = new Database();
+$conn = $db->connect();
+$stmt = $conn->query("SELECT * FROM team_members ORDER BY created_at DESC");
+$productsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$keyword = $_GET['keyword'] ?? '';
 $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
 ?>
 <!DOCTYPE html>
@@ -22,7 +25,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
       type="image/png"
       href="public/assets/img/favicon.png"
     />
-    <title>Dashboard - Lab InLET</title>
+    <title>Team Members - Lab InLET</title>
     <!-- Fonts and icons -->
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
@@ -112,11 +115,11 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
         <ul class="flex flex-col pl-0 mb-0">
           <li class="mt-0.5 w-full">
             <a
-              class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
               href="?page=admin-dashboard"
             >
               <div
-                class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
               >
                 <svg
                   width="12px"
@@ -127,25 +130,16 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
                   <title>shop</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-1716.000000, -439.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-1716.000000, -439.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(0.000000, 148.000000)">
                           <path
-                            class="opacity-60"
+                            class="fill-slate-800 opacity-60"
                             d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z"
                           ></path>
                           <path
-                            class=""
+                            class="fill-slate-800"
                             d="M39.198,22.4912623 C37.3776246,22.4928106 35.5817531,22.0149171 33.951625,21.0951667 L33.92225,21.1107282 C31.1430221,22.6838032 27.9255001,22.9318916 24.9844167,21.7998837 C24.4750389,21.605469 23.9777983,21.3722567 23.4960833,21.1018359 L23.4745417,21.1129513 C20.6961809,22.6871153 17.4786145,22.9344611 14.5386667,21.7998837 C14.029926,21.6054643 13.533337,21.3722507 13.0522917,21.1018359 C11.4250962,22.0190609 9.63246555,22.4947009 7.81570833,22.4912623 C7.16510551,22.4842162 6.51607673,22.4173045 5.875,22.2911849 L5.875,44.7220845 C5.875,45.9498589 6.7517757,46.9451667 7.83333333,46.9451667 L19.5833333,46.9451667 L19.5833333,33.6066734 L27.4166667,33.6066734 L27.4166667,46.9451667 L39.1666667,46.9451667 C40.2482243,46.9451667 41.125,45.9498589 41.125,44.7220845 L41.125,22.2822926 C40.4887822,22.4116582 39.8442868,22.4815492 39.198,22.4912623 Z"
                           ></path>
                         </g>
@@ -154,10 +148,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Beranda</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Beranda</span>
             </a>
           </li>
 
@@ -381,11 +372,11 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
           <!-- Tombol Tim -->
           <li class="mt-0.5 w-full">
             <a
-              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+              class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
               href="?page=team"
             >
               <div
-                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+                class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
               >
                 <svg
                   width="12px"
@@ -396,29 +387,20 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
                   <title>customer-support</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-1717.000000, -291.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-1717.000000, -291.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(1.000000, 0.000000)">
                           <path
-                            class="fill-slate-800 opacity-60"
+                            class="opacity-60"
                             d="M45,0 L26,0 C25.447,0 25,0.447 25,1 L25,20 C25,20.379 25.214,20.725 25.553,20.895 C25.694,20.965 25.848,21 26,21 C26.212,21 26.424,20.933 26.6,20.8 L34.333,15 L45,15 C45.553,15 46,14.553 46,14 L46,1 C46,0.447 45.553,0 45,0 Z"
                           ></path>
                           <path
-                            class="fill-slate-800"
+                            class=""
                             d="M22.883,32.86 C20.761,32.012 17.324,31 13,31 C8.676,31 5.239,32.012 3.116,32.86 C1.224,33.619 0,35.438 0,37.494 L0,41 C0,41.553 0.447,42 1,42 L25,42 C25.553,42 26,41.553 26,41 L26,37.494 C26,35.438 24.776,33.619 22.883,32.86 Z"
                           ></path>
                           <path
-                            class="fill-slate-800"
+                            class=""
                             d="M13,28 C17.432,28 21,22.529 21,18 C21,13.589 17.411,10 13,10 C8.589,10 5,13.589 5,18 C5,22.529 8.568,28 13,28 Z"
                           ></path>
                         </g>
@@ -427,10 +409,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Tim</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Tim</span>
             </a>
           </li>
 
@@ -518,7 +497,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
     <!-- end sidenav -->
 
     <main
-      class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200"
+      class="ease-soft-in-out xl:ml-68.5 relative min-h-screen rounded-xl transition-all duration-200"
     >
       <!-- Navbar -->
       <nav
@@ -543,10 +522,10 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                 class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
                 aria-current="page"
               >
-                Beranda
+                Anggota Tim
               </li>
             </ol>
-            <h6 class="mb-0 font-bold capitalize">Beranda</h6>
+            <h6 class="mb-0 font-bold capitalize">Anggota Tim</h6>
           </nav>
 
           <div
@@ -610,174 +589,197 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
       </nav>
       <!-- End Navbar -->
 
-      <!-- cards -->
-      <div class="w-full px-6 py-6 mx-auto">
-        <!-- row 1 -->
-        <div class="flex flex-wrap -mx-3">
-          <!-- card1 -->
-          <div
-            class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4"
-          >
-            <div
-              class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border"
-            >
-              <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                  <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                      <p
-                        class="mb-0 font-sans font-semibold leading-normal text-sm"
-                      >
-                        Today's Money
-                      </p>
-                      <h5 class="mb-0 font-bold">
-                        $53,000
-                        <span
-                          class="leading-normal text-sm font-weight-bolder text-lime-500"
-                          >+55%</span
-                        >
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="px-3 text-right basis-1/3">
-                    <div
-                      class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500"
-                    >
-                      <i
-                        class="ni leading-none ni-money-coins text-lg relative top-3.5 text-white"
-                      ></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- Tombol Tambah Anggota -->
+        <div class="w-full px-6 py-6 mx-auto">
+        
+        <?php
+            // Logika View
+            $isEdit = isset($editData);
+            $formTitle = $isEdit ? "Edit Anggota Tim" : "Tambah Anggota Tim";
+            $formAction = $isEdit 
+                ? "index.php?page=team&action=edit&id=" . $editData['id'] 
+                : "index.php?page=team&action=create";
+            $popoverClass = $isEdit ? "" : "hidden";
+        ?>
 
-          <!-- card2 -->
-          <div
-            class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4"
-          >
-            <div
-              class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border"
-            >
-              <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                  <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                      <p
-                        class="mb-0 font-sans font-semibold leading-normal text-sm"
-                      >
-                        Today's Users
-                      </p>
-                      <h5 class="mb-0 font-bold">
-                        2,300
-                        <span
-                          class="leading-normal text-sm font-weight-bolder text-lime-500"
-                          >+3%</span
-                        >
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="px-3 text-right basis-1/3">
-                    <div
-                      class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500"
-                    >
-                      <i
-                        class="ni leading-none ni-world text-lg relative top-3.5 text-white"
-                      ></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- Tombol & Popup -->
+        <div class="relative inline-block text-left mb-4" style="z-index: 50;">
+          <?php if (!$isEdit): ?>
+          <button id="addTeamBtn" class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all shadow-md" onclick="toggleTeamPopover()">+ Tambah Anggota</button>
+          <?php endif; ?>
 
-          <!-- card3 -->
-          <div
-            class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4"
-          >
-            <div
-              class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border"
-            >
-              <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                  <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                      <p
-                        class="mb-0 font-sans font-semibold leading-normal text-sm"
-                      >
-                        New Clients
-                      </p>
-                      <h5 class="mb-0 font-bold">
-                        +3,462
-                        <span
-                          class="leading-normal text-red-600 text-sm font-weight-bolder"
-                          >-2%</span
-                        >
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="px-3 text-right basis-1/3">
-                    <div
-                      class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500"
-                    >
-                      <i
-                        class="ni leading-none ni-paper-diploma text-lg relative top-3.5 text-white"
-                      ></i>
-                    </div>
-                  </div>
+          <div id="teamPopover" class="absolute left-0 mt-2 bg-white rounded-lg shadow-lg p-6 border border-gray-100 <?= $popoverClass ?>" style="width: 400px; max-width: 90vw; z-index: 100;">
+            <h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800"><?= $formTitle ?></h3>
+            
+            <form action="<?= $formAction ?>" method="POST" enctype="multipart/form-data">
+              
+              <?php if ($isEdit && !empty($editData['photo'])): ?>
+                <div class="mb-4 text-center">
+                    <p class="text-xs font-semibold mb-1 text-gray-500">Foto Saat Ini:</p>
+                    <img src="<?= htmlspecialchars($editData['photo']) ?>" class="mx-auto rounded-full border shadow-sm object-cover bg-gray-100" style="height: 100px; width: 100px; display: block;">
                 </div>
-              </div>
-            </div>
-          </div>
+              <?php endif; ?>
 
-          <!-- card4 -->
-          <div class="w-full max-w-full px-3 sm:w-1/2 sm:flex-none xl:w-1/4">
-            <div
-              class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border"
-            >
-              <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                  <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                      <p
-                        class="mb-0 font-sans font-semibold leading-normal text-sm"
-                      >
-                        Sales
-                      </p>
-                      <h5 class="mb-0 font-bold">
-                        $103,430
-                        <span
-                          class="leading-normal text-sm font-weight-bolder text-lime-500"
-                          >+5%</span
-                        >
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="px-3 text-right basis-1/3">
-                    <div
-                      class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500"
-                    >
-                      <i
-                        class="ni leading-none ni-cart text-lg relative top-3.5 text-white"
-                      ></i>
-                    </div>
-                  </div>
-                </div>
+              <!-- Nama Lengkap -->
+              <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1 text-gray-700">Nama Lengkap</label>
+                <input type="text" name="name" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 transition-all" 
+                       value="<?= $isEdit ? htmlspecialchars($editData['name'] ?? '') : '' ?>" required>
               </div>
+
+              <!-- Posisi / Jabatan -->
+              <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1 text-gray-700">Posisi / Jabatan</label>
+                <input type="text" name="position" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 transition-all" 
+                       value="<?= $isEdit ? htmlspecialchars($editData['position'] ?? '') : '' ?>" placeholder="Contoh: Dosen, Peneliti">
+              </div>
+
+              <!-- Email -->
+              <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1 text-gray-700">Email</label>
+                <input type="email" name="email" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 transition-all" 
+                       value="<?= $isEdit ? htmlspecialchars($editData['email'] ?? '') : '' ?>">
+              </div>
+
+              <!-- Google Scholar -->
+              <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1 text-gray-700">Link Google Scholar</label>
+                <input type="text" name="google_scholar" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 transition-all" 
+                       value="<?= $isEdit ? htmlspecialchars($editData['google_scholar'] ?? '') : '' ?>">
+              </div>
+
+              <!-- Social Media (Grid) -->
+              <div class="grid grid-cols-2 gap-2 mb-4">
+                  <div>
+                    <label class="block text-sm font-semibold mb-1 text-gray-700">Twitter (X)</label>
+                    <input type="text" name="twitter" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 transition-all" 
+                           value="<?= $isEdit ? htmlspecialchars($editData['twitter'] ?? '') : '' ?>" placeholder="Link Profil">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-semibold mb-1 text-gray-700">Instagram</label>
+                    <input type="text" name="instagram" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 transition-all" 
+                           value="<?= $isEdit ? htmlspecialchars($editData['instagram'] ?? '') : '' ?>" placeholder="Link Profil">
+                  </div>
+              </div>
+
+              <!-- Upload Foto -->
+              <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1 text-gray-700">
+                    <?= $isEdit ? "Ganti Foto" : "Upload Foto" ?>
+                </label>
+                <input type="file" name="photo" accept="image/*" 
+                       class="w-full text-sm text-slate-500
+                              file:mr-4 file:py-2 file:px-4
+                              file:rounded-full file:border-0
+                              file:text-sm file:font-semibold
+                              file:!bg-purple-700 file:!text-white
+                              hover:file:!bg-purple-600
+                              cursor-pointer focus:outline-none"
+                       <?= $isEdit ? '' : 'required' ?>>
+              </div>
+
+              <div class="flex justify-end pt-2">
+                <?php if ($isEdit): ?>
+                    <a href="index.php?page=team" class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" style="margin-right: 15px;">Batal</a>
+                <?php else: ?>
+                    <button type="button" class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" style="margin-right: 15px;" onclick="toggleTeamPopover()">Batal</button>
+                <?php endif; ?>
+                <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">Simpan</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- TABEL DATA TIM -->
+        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
+          <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
+            <h6>Daftar Anggota</h6>
+
+            <form action="index.php" method="GET" class="flex items-center space-x-2">
+                <input type="hidden" name="page" value="team">
+                <input 
+                    type="search" 
+                    name="keyword" 
+                    placeholder="Cari Anggota..." 
+                    value="<?= htmlspecialchars($keyword) ?>"
+                    class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all"
+                >
+                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">
+                    Cari
+                </button>
+            </form>
+          </div>
+          <div class="flex-auto px-0 pt-0 pb-2">
+            <div class="p-0 overflow-x-auto">
+              <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                <thead class="align-bottom">
+                  <tr>
+                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Foto</th>
+                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Nama & Posisi</th>
+                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Kontak & Sosmed</th>
+                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php if (!empty($teamList)): ?>
+                      <?php foreach ($teamList as $item): ?>
+                      <tr>
+                        <!-- Foto -->
+                        <td class="p-2 py-3 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
+                          <?php if(!empty($item['photo'])): ?>
+                            <img src="<?= htmlspecialchars($item['photo']) ?>" class="h-16 w-24 object-cover rounded-lg mx-auto border" alt="foto" />
+                          <?php else: ?>
+                             <div class="h-16 w-16 rounded-full bg-gray-200 mx-auto flex items-center justify-center text-xs text-gray-500">No Pic</div>
+                          <?php endif; ?>
+                        </td>
+                        
+                        <!-- Info -->
+                        <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
+                            <h6 class="mb-0 text-sm text-center leading-normal font-bold text-slate-700"><?= htmlspecialchars($item['name']) ?></h6>
+                            <p class="mb-0 text-xs text-center leading-tight text-slate-400"><?= htmlspecialchars($item['position'] ?? '-') ?></p>
+                        </td>
+
+                        <!-- Kontak -->
+                        <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
+                            <p class="mb-0 text-xs text-center leading-tight text-slate-400"><?= htmlspecialchars($item['email'] ?? '-') ?></p>
+                            <p class="mb-0 text-xs text-center leading-tight text-slate-400"><?= htmlspecialchars($item['google_scholar'] ?? '-') ?></p>
+                            <p class="mb-0 text-xs text-center leading-tight text-slate-400"><?= htmlspecialchars($item['twitter'] ?? '-') ?></p>
+                            <p class="mb-0 text-xs text-center leading-tight text-slate-400"><?= htmlspecialchars($item['instagram'] ?? '-') ?></p>
+                        </td>
+
+                        <!-- Aksi -->
+                        <td class="p-2 py-3 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
+                          <a href="index.php?page=team&action=edit&id=<?= $item['id'] ?>" class="inline-block mr-6 text-xs font-bold leading-tight text-blue-800 hover:text-blue-950 transition-all">Edit</a>
+                          <a href="index.php?page=team&action=delete&id=<?= $item['id'] ?>" class="inline-block text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" onclick="return confirm('Yakin ingin menghapus anggota ini?')">Hapus</a>
+                        </td>
+                      </tr>
+                      <?php endforeach; ?>
+                  <?php else: ?>
+                      <tr>
+                          <td colspan="4" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada anggota tim.</td>
+                      </tr>
+                  <?php endif; ?>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
+      </div>
+
+      <script>
+      function toggleTeamPopover() {
+        const popover = document.getElementById("teamPopover");
+        if(popover) popover.classList.toggle("hidden");
+      }
+      document.addEventListener("click", function(e) {
+        const btn = document.getElementById("addTeamBtn");
+        const popover = document.getElementById("teamPopover");
+        if (popover && !popover.contains(e.target) && (!btn || e.target !== btn)) {
+           if(btn) popover.classList.add("hidden");
+        }
+      });
+      </script>
+      <script src="assets/js/plugins/perfect-scrollbar.min.js" async></script>
+      <script src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
   </body>
-  <!-- plugin for charts  -->
-  <script src="assets/js/plugins/chartjs.min.js" async></script>
-  <!-- plugin for scrollbar  -->
-  <script src="assets/js/plugins/perfect-scrollbar.min.js" async></script>
-  <!-- github button -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <!-- main script file  -->
-  <script
-    src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5"
-    async
-  ></script>
 </html>

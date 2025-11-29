@@ -1,35 +1,50 @@
-<!--
-=========================================================
-* Soft UI Dashboard Tailwind - v1.0.5
-=========================================================
+<?php
+// app/views/admin/gallery.php
 
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-tailwind
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
+if (!isset($galleries) || !is_array($galleries)) {
+    $galleries = [];
+}
+$totalRecords = count($galleries);
+// --- LOGIKA PAGINATION (Meniru style Collaboration) ---
+$currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+$limit = 5; // Jumlah data per halaman
+$totalPages = ceil($totalRecords / $limit);
 
-=========================================================
+// Slice array untuk pagination
+$offset = ($currentPage - 1) * $limit;
+$pagedData = array_slice($galleries, $offset, $limit);
+// ------------------------------------------------------
 
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
+// Logika Edit/Tambah
+$isEdit = isset($editData);
+$formTitle = $isEdit ? "Edit Galeri" : "Tambah Galeri";
+$formAction = $isEdit 
+    ? "index.php?page=gallery&action=edit&id=" . $editData['id'] 
+    : "index.php?page=gallery&action=create";
+$popoverClass = $isEdit ? "" : "hidden";
+$keyword = $_GET['keyword'] ?? '';
+
+// Untuk active link di sidebar
+$current_page = $_GET['page'] ?? 'gallery'; 
+$nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="apple-touch-icon"
       sizes="76x76"
-      href="../../../../public/assets/img/apple-icon.png"
+      href="public/assets/img/apple-icon.png"
     />
     <link
       rel="icon"
       type="image/png"
-      href="../../../../public/assets/img/favicon.png"
+      href="public/assets/img/favicon.png"
     />
-    <title>Soft UI Dashboard Tailwind</title>
-    <!--     Fonts and icons     -->
+    <title>Gallery - Lab InLET</title>
+    <!-- Fonts and icons -->
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
       rel="stylesheet"
@@ -37,71 +52,89 @@
     <!-- Font Awesome Icons -->
     <script
       src="https://kit.fontawesome.com/42d5adcbca.js"
-      crossorigin="anonymous"
-    ></script>
-    <!-- Nucleo Icons -->
-    <link
-      href="../../../../public/assets/css/nucleo-icons.css"
-      rel="stylesheet"
-    />
-    <link
-      href="../../../../public/assets/css/nucleo-svg.css"
-      rel="stylesheet"
-    />
+      crossorigin="anonymous">
+    </script>
+     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
+    
+    <!-- Popper -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    
     <!-- Main Styling -->
-<<<<<<< HEAD:app/views/admin/tables.php
-    <link href="../../../../assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
-=======
+    <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
+      <link
+        href="assets/css/nucleo-icons.css"
+        rel="stylesheet"
+    />
+    
     <link
-      href="../../../../public/assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
+      href="assets/css/nucleo-svg.css"
       rel="stylesheet"
     />
->>>>>>> 4ae8a1c7f20522c3271a903c4cb86cf5c56ee7e4:app/views/admin/pages/tables.html
+    
+    <!-- Popper -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    
+    <!-- Main Styling -->
+    <link
+      href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
+      rel="stylesheet"
+    />
 
     <!-- Nepcha Analytics (nepcha.com) -->
-    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
     <script
       defer
       data-site="YOUR_DOMAIN_HERE"
-      src="https://api.nepcha.com/js/nepcha-analytics.js"
-    ></script>
+      src="https://api.nepcha.com/js/nepcha-analytics.js">
+    </script>
   </head>
 
   <body
-    class="m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500"
+    class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500"
   >
+    <!-- sidenav -->
     <aside
-      class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent"
+      id="sidenav-main"
+      class="fixed inset-y-0 left-0 w-full max-w-62.5 -translate-x-full p-0 antialiased shadow-2xl transition-transform duration-300 xl:ml-4 xl:my-4 xl:translate-x-0 xl:rounded-2xl xl:shadow-soft-xl xl:h-[calc(100vh-2rem)] h-full flex flex-col border-r border-gray-200 xl:border-0"
+      style="z-index: 9999 !important; background-color: white !important;"
     >
-      <div class="h-19.5">
+    
+      <!-- LOGO -->
+      <div class="h-19.5 shrink-0 px-2 py-2">
         <i
           class="absolute top-0 right-0 hidden p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden"
           sidenav-close
         ></i>
         <a
-          class="block px-8 py-6 m-0 text-sm whitespace-nowrap text-slate-700"
-          href="../pages/dashboard.html"
+          class="block px-8 py-4 m-0 text-sm whitespace-nowrap text-slate-700"
+          href="javascript:;"
           target="_blank"
         >
-          <span
-            class="ml-1 font-semibold transition-all duration-200 ease-nav-brand"
-            >Soft UI Dashboard</span
-          >
+          <img
+            src="assets/img/logo_inlet_horizontal-removebg.png"
+            class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-12"
+            style="margin-top: -36px; margin-left: -5px !important;"
+            alt="main_logo"
+          />
         </a>
       </div>
-
+      
       <hr
         class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent"
       />
 
+      <div class="mx-4 mt-2 mb-2 font-bold text-slate-700 text-base">
+        Utama
+      </div>
+      <!-- Tombol Beranda -->
       <div
-        class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full"
+        class="items-center block w-auto max-h-screen overflow-y-auto h-sidenav grow basis-full"
       >
         <ul class="flex flex-col pl-0 mb-0">
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../index.html"
+              href="?page=admin-dashboard"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -115,17 +148,8 @@
                   xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
                   <title>shop</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-1716.000000, -439.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-1716.000000, -439.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(0.000000, 148.000000)">
                           <path
@@ -142,17 +166,15 @@
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Dashboard</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Beranda</span>
             </a>
           </li>
 
+          <!-- Tombol Galeri -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
-              href="../pages/tables.html"
+              href="?page=gallery"
             >
               <div
                 class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -166,17 +188,8 @@
                   xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
                   <title>office</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-1869.000000, -293.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-1869.000000, -293.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(153.000000, 2.000000)">
                           <path
@@ -193,17 +206,15 @@
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Galeri</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Galeri</span>
             </a>
           </li>
 
+          <!-- Tombol News -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/billing.html"
+              href="?page=news"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center fill-current stroke-0 text-center xl:p-2.5"
@@ -246,15 +257,16 @@
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Billing</span
+                >Berita</span
               >
             </a>
           </li>
 
+          <!-- Tombol Produk -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/virtual-reality.html"
+              href="?page=products"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -301,15 +313,16 @@
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Virtual Reality</span
+                >Produk</span
               >
             </a>
           </li>
 
+          <!-- Tombol Riset -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/rtl.html"
+              href="?page=research"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -356,23 +369,16 @@
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >RTL</span
+                >Riset</span
               >
             </a>
           </li>
 
-          <li class="w-full mt-4">
-            <h6
-              class="pl-6 ml-2 text-xs font-bold leading-tight uppercase opacity-60"
-            >
-              Account pages
-            </h6>
-          </li>
-
+          <!-- Tombol Tim -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/profile.html"
+              href="?page=team"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -419,174 +425,96 @@
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Profile</span
+                >Tim</span
               >
             </a>
           </li>
 
+          <!-- Tombol Kerjasama -->
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/sign-in.html"
+              href="?page=collaboration"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
               >
-                <svg
-                  width="12px"
-                  height="12px"
-                  viewBox="0 0 40 44"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                >
-                  <title>document</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-1870.000000, -591.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
-                      <g transform="translate(1716.000000, 291.000000)">
-                        <g transform="translate(154.000000, 300.000000)">
-                          <path
-                            class="fill-slate-800 opacity-60"
-                            d="M40,40 L36.3636364,40 L36.3636364,3.63636364 L5.45454545,3.63636364 L5.45454545,0 L38.1818182,0 C39.1854545,0 40,0.814545455 40,1.81818182 L40,40 Z"
-                          ></path>
-                          <path
-                            class="fill-slate-800"
-                            d="M30.9090909,7.27272727 L1.81818182,7.27272727 C0.814545455,7.27272727 0,8.08727273 0,9.09090909 L0,41.8181818 C0,42.8218182 0.814545455,43.6363636 1.81818182,43.6363636 L30.9090909,43.6363636 C31.9127273,43.6363636 32.7272727,42.8218182 32.7272727,41.8181818 L32.7272727,9.09090909 C32.7272727,8.08727273 31.9127273,7.27272727 30.9090909,7.27272727 Z M18.1818182,34.5454545 L7.27272727,34.5454545 L7.27272727,30.9090909 L18.1818182,30.9090909 L18.1818182,34.5454545 Z M25.4545455,27.2727273 L7.27272727,27.2727273 L7.27272727,23.6363636 L25.4545455,23.6363636 L25.4545455,27.2727273 Z M25.4545455,20 L7.27272727,20 L7.27272727,16.3636364 L25.4545455,16.3636364 L25.4545455,20 Z"
-                          ></path>
-                        </g>
-                      </g>
-                    </g>
-                  </g>
-                </svg>
+                <i class="ni leading-none ni-paper-diploma text-xs relative top-2 text-gray"></i>
               </div>
               <span
                 class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Sign In</span
+                >Kerjasama</span
               >
             </a>
           </li>
 
+          <!-- menu mahasiswa -->
+      <div class="mx-4 my-6 shrink-0">
+        <div class="mb-2 font-bold text-slate-700 text-base">Mahasiswa</div>
+        <ul class="flex flex-col pl-0 mb-0">
+          <!-- Tombol Absensi -->
           <li class="mt-0.5 w-full">
             <a
-              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="../pages/sign-up.html"
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=absensi"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
               >
                 <svg
-                  width="12px"
+                  width="20px"
                   height="20px"
-                  viewBox="0 0 40 40"
-                  version="1.1"
+                  viewBox="0 0 24 24"
+                  fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
-                  <title>spaceship</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-1720.000000, -592.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
-                      <g transform="translate(1716.000000, 291.000000)">
-                        <g transform="translate(4.000000, 301.000000)">
-                          <path
-                            class="fill-slate-800"
-                            d="M39.3,0.706666667 C38.9660984,0.370464027 38.5048767,0.192278529 38.0316667,0.216666667 C14.6516667,1.43666667 6.015,22.2633333 5.93166667,22.4733333 C5.68236407,23.0926189 5.82664679,23.8009159 6.29833333,24.2733333 L15.7266667,33.7016667 C16.2013871,34.1756798 16.9140329,34.3188658 17.535,34.065 C17.7433333,33.98 38.4583333,25.2466667 39.7816667,1.97666667 C39.8087196,1.50414529 39.6335979,1.04240574 39.3,0.706666667 Z M25.69,19.0233333 C24.7367525,19.9768687 23.3029475,20.2622391 22.0572426,19.7463614 C20.8115377,19.2304837 19.9992882,18.0149658 19.9992882,16.6666667 C19.9992882,15.3183676 20.8115377,14.1028496 22.0572426,13.5869719 C23.3029475,13.0710943 24.7367525,13.3564646 25.69,14.31 C26.9912731,15.6116662 26.9912731,17.7216672 25.69,19.0233333 L25.69,19.0233333 Z"
-                          ></path>
-                          <path
-                            class="fill-slate-800 opacity-60"
-                            d="M1.855,31.4066667 C3.05106558,30.2024182 4.79973884,29.7296005 6.43969145,30.1670277 C8.07964407,30.6044549 9.36054508,31.8853559 9.7979723,33.5253085 C10.2353995,35.1652612 9.76258177,36.9139344 8.55833333,38.11 C6.70666667,39.9616667 0,40 0,40 C0,40 0,33.2566667 1.855,31.4066667 Z"
-                          ></path>
-                          <path
-                            class="fill-slate-800 opacity-60"
-                            d="M17.2616667,3.90166667 C12.4943643,3.07192755 7.62174065,4.61673894 4.20333333,8.04166667 C3.31200265,8.94126033 2.53706177,9.94913142 1.89666667,11.0416667 C1.5109569,11.6966059 1.61721591,12.5295394 2.155,13.0666667 L5.47,16.3833333 C8.55036617,11.4946947 12.5559074,7.25476565 17.2616667,3.90166667 L17.2616667,3.90166667 Z"
-                          ></path>
-                          <path
-                            class="fill-slate-800 opacity-60"
-                            d="M36.0983333,22.7383333 C36.9280725,27.5056357 35.3832611,32.3782594 31.9583333,35.7966667 C31.0587397,36.6879974 30.0508686,37.4629382 28.9583333,38.1033333 C28.3033941,38.4890431 27.4704606,38.3827841 26.9333333,37.845 L23.6166667,34.53 C28.5053053,31.4496338 32.7452344,27.4440926 36.0983333,22.7383333 L36.0983333,22.7383333 Z"
-                          ></path>
-                        </g>
-                      </g>
-                    </g>
-                  </g>
+                  <circle cx="12" cy="12" r="10" fill="#8B5CF6" />
+                  <path d="M8 12.5l2 2 4-4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Sign Up</span
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Absensi</span>
+            </a>
+          </li>
+          <!-- Tombol Daftar Mahasiswa -->
+          <li class="mt-* w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=daftar-mahasiswa"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
               >
+                <!-- Icon kertas simpel -->
+                <svg
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect x="4" y="4" width="16" height="20" rx="3" fill="#8B5CF6" />
+                  <rect x="7" y="8" width="10" height="2" rx="1" fill="#fff"/>
+                  <rect x="7" y="12" width="10" height="2" rx="1" fill="#fff"/>
+                  <rect x="7" y="16" width="6" height="2" rx="1" fill="#fff"/>
+                </svg>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Daftar Mahasiswa</span>
+            </a>
+          </li>
+          <!-- Tombol Log Out -->
+          <li class="mt-6 w-full">
+            <a href="?action=logout"
+              class="inline-block w-full px-8 py-2 font-bold text-center text-white uppercase transition-all ease-in border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro text-xs bg-gradient-to-tl from-slate-600 to-slate-300 hover:shadow-soft-2xl hover:scale-102">
+              Logout
             </a>
           </li>
         </ul>
       </div>
-
-      <div class="mx-4">
-        <!-- load phantom colors for card after: -->
-        <p
-          class="invisible hidden text-gray-800 text-red-500 text-red-600 after:bg-gradient-to-tl after:from-gray-900 after:to-slate-800 after:from-blue-600 after:to-cyan-400 after:from-red-500 after:to-yellow-400 after:from-green-600 after:to-lime-400 after:from-red-600 after:to-rose-400 after:from-slate-600 after:to-slate-300 text-lime-500 text-cyan-500 text-slate-400 text-fuchsia-500"
-        ></p>
-        <div
-          class="after:opacity-65 after:bg-gradient-to-tl after:from-slate-600 after:to-slate-300 relative flex min-w-0 flex-col items-center break-words rounded-2xl border-0 border-solid border-blue-900 bg-white bg-clip-border shadow-none after:absolute after:top-0 after:bottom-0 after:left-0 after:z-10 after:block after:h-full after:w-full after:rounded-2xl after:content-['']"
-          sidenav-card
-        >
-          <div
-            class="mb-7.5 absolute h-full w-full rounded-2xl bg-cover bg-center"
-            style="
-              background-image: url('../assets/img/curved-images/white-curved.jpeg');
-            "
-          ></div>
-          <div class="relative z-20 flex-auto w-full p-4 text-left text-white">
-            <div
-              class="flex items-center justify-center w-8 h-8 mb-4 text-center bg-white bg-center rounded-lg icon shadow-soft-2xl"
-            >
-              <i
-                class="top-0 z-10 text-lg leading-none text-transparent ni ni-diamond bg-gradient-to-tl from-slate-600 to-slate-300 bg-clip-text opacity-80"
-                aria-hidden="true"
-                sidenav-card-icon
-              ></i>
-            </div>
-            <div class="transition-all duration-200 ease-nav-brand">
-              <h6 class="mb-0 text-white">Need help?</h6>
-              <p class="mt-0 mb-4 text-xs font-semibold leading-tight">
-                Please check our docs
-              </p>
-              <a
-                href="https://www.creative-tim.com/learning-lab/tailwind/html/quick-start/soft-ui-dashboard/"
-                target="_blank"
-                class="inline-block w-full px-8 py-2 mb-0 text-xs font-bold text-center text-black uppercase transition-all ease-in bg-white border-0 border-white rounded-lg shadow-soft-md bg-150 leading-pro hover:shadow-soft-2xl hover:scale-102"
-                >Documentation</a
-              >
-            </div>
-          </div>
-        </div>
-        <!-- pro btn  -->
-        <a
-          class="inline-block w-full px-6 py-3 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102"
-          target="_blank"
-          href="https://www.creative-tim.com/product/soft-ui-dashboard-pro-tailwind?ref=sidebarfree"
-          >Upgrade to pro</a
-        >
-      </div>
     </aside>
+    <!-- end sidenav -->
 
     <main
-      class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200"
+      class="ease-soft-in-out xl:ml-68.5 relative min-h-screen rounded-xl transition-all duration-200"
     >
       <!-- Navbar -->
       <nav
@@ -602,7 +530,7 @@
             <ol
               class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16"
             >
-              <li class="text-sm leading-normal">
+              <li class="leading-normal text-sm">
                 <a class="opacity-50 text-slate-700" href="javascript:;"
                   >Pages</a
                 >
@@ -614,43 +542,32 @@
                 Galeri
               </li>
             </ol>
+            <h6 class="mb-0 font-bold capitalize">Galeri</h6>
           </nav>
 
           <div
             class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto"
           >
+            <!-- ...existing code... -->
             <div class="flex items-center md:ml-auto md:pr-4">
-              <div
-                class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft"
-              >
-                <span
-                  class="text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all"
-                >
-                  <i class="fas fa-search" aria-hidden="true"></i>
+              <div class="relative flex flex-wrap items-center w-full transition-all rounded-lg ease-soft">
+                <!-- Ganti search bar dengan info akun -->
+                <span class="flex items-center px-3 py-2 bg-white rounded-lg shadow-soft-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="#8B5CF6"/>
+                    <path stroke="#8B5CF6" stroke-width="2" d="M4 20c0-3.333 3.333-6 8-6s8 2.667 8 6" fill="none"/>
+                  </svg>
+                  <span class="font-semibold text-slate-700">
+                    <?php echo htmlspecialchars($nama_pengguna); ?>
+                  </span>
                 </span>
-                <input
-                  type="text"
-                  class="pl-8.75 text-sm focus:shadow-soft-primary-outline ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
-                  placeholder="Type here..."
-                />
               </div>
             </div>
+            
             <ul
               class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full"
             >
-              <!-- online builder btn  -->
-              <!-- <li class="flex items-center">
-                <a class="inline-block px-8 py-2 mb-0 mr-4 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro border-fuchsia-500 ease-soft-in hover:scale-102 active:shadow-soft-xs text-fuchsia-500 hover:border-fuchsia-500 active:bg-fuchsia-500 active:hover:text-fuchsia-500 hover:text-fuchsia-500 tracking-tight-soft hover:bg-transparent hover:opacity-75 hover:shadow-none active:text-white active:hover:bg-transparent" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
-              </li> -->
-              <li class="flex items-center">
-                <a
-                  href="../pages/sign-in.html"
-                  class="block px-0 py-2 text-sm font-semibold transition-all ease-nav-brand text-slate-500"
-                >
-                  <i class="fa fa-user sm:mr-1" aria-hidden="true"></i>
-                  <span class="hidden sm:inline">Sign In</span>
-                </a>
-              </li>
+              
               <li class="flex items-center pl-4 xl:hidden">
                 <a
                   href="javascript:;"
@@ -687,164 +604,201 @@
           </div>
         </div>
       </nav>
-      <!-- ...TAMBAH GALERI... -->
-      <div class="p-6 relative">
-        <button
-          id="addGalleryBtn"
-          class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm mb-4 hover:scale-102 transition-all"
-          onclick="toggleGalleryPopover()"
-        >
-          Tambah Galeri
-        </button>
-        <!-- Popover Form -->
-        <div
-          id="galleryPopover"
-          class="absolute left-0 mt-2 z-50 hidden bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
-          style="min-width: 300px"
-        >
-          <h3 class="text-lg font-bold mb-4">Tambah Galeri</h3>
-          <form id="galleryForm" action="proses_galeri.php" method="POST">
-            <div class="mb-4">
-              <label class="block text-sm font-semibold mb-1">URL Gambar</label>
-              <input
-                type="url"
-                name="url_gambar"
-                class="w-full border rounded px-3 py-2"
-                required
-              />
-            </div>
-            <div class="flex justify-end">
-              <button
-                type="button"
-                class="mr-2 px-4 py-2 rounded bg-gray-300"
-                onclick="toggleGalleryPopover()"
-              >
-                Batal
-              </button>
-              <button
-                type="submit"
-                class="px-4 py-2 rounded bg-purple-700 text-white"
-              >
-                Simpan
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <script>
-        function toggleGalleryPopover() {
-          const popover = document.getElementById("galleryPopover");
-          popover.classList.toggle("hidden");
-        }
-        // Optional: tutup popover jika klik di luar
-        document.addEventListener("click", function (e) {
-          const btn = document.getElementById("addGalleryBtn");
-          const popover = document.getElementById("galleryPopover");
-          if (!popover.contains(e.target) && e.target !== btn) {
-            popover.classList.add("hidden");
-          }
-        });
-      </script>
-      <!-- ... MULAI TABEL... -->
-      <div class="w-full px-6 py-6 mx-auto">
-        <!-- table 1 -->
+      <!-- End Navbar -->
 
-        <div class="flex flex-wrap -mx-3">
-          <div class="flex-none w-full max-w-full px-3">
+        <div class="mx-6 mt-6 relative"> 
+            
+            <?php if (!$isEdit): ?>
+            <div class="relative">
+                <button
+                  id="addGalleryBtn"
+                  class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all shadow-md"
+                  onclick="toggleGalleryPopover()"
+                >
+                  + Tambah Galeri
+                </button>
+            </div>
+            <?php endif; ?>
+
             <div
-              class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border"
+              id="galleryPopover"
+              class="absolute left-0 top-12 z-50 <?= $popoverClass ?> bg-white rounded-2xl shadow-2xl p-6 border border-gray-100"
+              style="width: 100%; max-width: 400px;"
             >
-              <div
-                class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent"
-              >
-                <h6>Galeri</h6>
+              <h3 class="text-lg font-bold mb-4 border-b pb-2"><?= $formTitle ?></h3>
+              
+              <form action="<?= $formAction ?>" method="POST" enctype="multipart/form-data">
+                
+                <?php if ($isEdit && !empty($editData['image'])): ?>
+                <div class="mb-4 text-center">
+                    <p class="text-xs font-semibold mb-1 text-gray-500">Gambar Saat Ini:</p>
+                    <img src="<?= htmlspecialchars($editData['image']) ?>" 
+                         class="h-16 mx-auto rounded border shadow-sm object-contain bg-gray-100"
+                         style="width: auto; max-width: 100%; display: block;">
+                </div>
+                <?php endif; ?>
+
+                <div class="mb-4">
+                  <label class="block text-sm font-semibold mb-1">
+                    <?= $isEdit ? "Ganti Gambar (Opsional)" : "Upload Gambar" ?>
+                  </label>
+                  
+                  <input type="file" name="gambar" accept="image/*"
+                         class="w-full text-sm text-slate-500 
+                                file:mr-4 file:py-2 file:px-4 
+                                file:rounded-full file:border-0 
+                                file:text-sm file:font-semibold 
+                                file:bg-purple-50 file:text-purple-700 
+                                hover:file:bg-purple-100 cursor-pointer"
+                         <?= $isEdit ? '' : 'required' ?> >
+                         
+                  <p class="text-xs text-slate-400 mt-2">*Format: JPG, PNG, JPEG. Max: 2MB.</p>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                
+                <?php if ($isEdit): ?>
+                    <a href="index.php?page=gallery" 
+                       class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all">
+                       Batal
+                    </a>
+                <?php else: ?>
+                    <button type="button" 
+                            class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" 
+                            onclick="toggleGalleryPopover()">
+                            Batal
+                    </button>
+                <?php endif; ?>
+                
+                <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">
+                    Simpan
+                </button>
               </div>
-              <div class="flex-auto px-0 pt-0 pb-2">
-                <div class="p-0 overflow-x-auto">
-                  <!-- ...existing code... -->
-                  <table
-                    class="items-center w-full mb-0 align-top border-gray-200 text-slate-500"
-                  >
-                    <thead class="align-bottom">
+              </form>
+            </div>
+        </div>
+
+        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-padding mx-6 mt-4">
+          <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
+             
+             <h6>Daftar Galeri Foto</h6>
+
+             <form action="index.php" method="GET" class="flex items-center space-x-2">
+                <input type="hidden" name="page" value="gallery">
+                <input 
+                    type="search" 
+                    name="keyword" 
+                    placeholder="Cari Foto..." 
+                    value="<?= htmlspecialchars($keyword) ?>"
+                    class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all"
+                >
+                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">
+                    Cari
+                </button>
+            </form>
+          </div>
+          
+          <div class="flex-auto px-0 pt-0 pb-2">
+            <div class="p-0 overflow-x-auto">
+              <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                <thead class="align-bottom">
+                  <tr>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">No</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Gambar</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Upload</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php 
+                  $no = $offset + 1;
+                  if (!empty($pagedData)): 
+                  ?> 
+                      <?php foreach ($pagedData as $item): ?>
                       <tr>
-                        <th
-                          class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
-                        >
-                          No.
-                        </th>
-                        <th
-                          class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
-                        >
-                          Gambar
-                        </th>
-                        <th
-                          class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
-                        >
-                          Diupload pada
-                        </th>
-                        <th
-                          class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-gray-200 border-solid shadow-none tracking-none whitespace-nowrap text-slate-400 opacity-70"
-                        >
-                          <!-- Aksi -->
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php $no = 1; foreach ($galeri as $item): ?>
-                      <tr>
-                        <td class="text-center">
-                          <?= $no++ ?>
+                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
+                            <span class="text-xs font-semibold leading-tight text-slate-400"><?= $no++ ?></span>
                         </td>
-                        <td class="text-center">
-                          <img
-                            src="<?= htmlspecialchars($item['url_gambar']) ?>"
-                            class="h-16 w-24 object-cover rounded-lg mx-auto"
-                            alt="gambar"
-                          />
-                          <div class="mt-2">
-                            <h6
-                              class="mb-0 text-sm leading-normal font-semibold"
-                            >
-                              <?= htmlspecialchars($item['judul']) ?>
-                            </h6>
-                            <p
-                              class="mb-0 text-xs leading-tight text-slate-400"
-                            >
-                              <?= htmlspecialchars($item['kategori']) ?>
-                            </p>
-                          </div>
+                        
+                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
+                          <img src="<?= htmlspecialchars($item['image']) ?>" class="h-12 w-24 object-cover rounded-lg mx-auto border bg-gray-50 p-1" alt="Galeri Image" />
                         </td>
-                        <td class="text-center">
-                          <span
-                            class="text-xs font-semibold leading-tight text-slate-400"
-                          >
-                            <?= htmlspecialchars($item['created_at']) ?>
+
+                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                          <span class="text-xs font-semibold leading-tight text-slate-400">
+                            <?= date('d M Y', strtotime($item['upload_date'] ?? 'now')) ?>
                           </span>
                         </td>
-                        <td class="text-center">
-                          <a
-                            href="edit.php?id=<?= $item['id'] ?>"
-                            class="text-xs font-semibold leading-tight text-blue-500 mr-2"
-                            >Edit</a
-                          >
-                          <a
-                            href="delete.php?id=<?= $item['id'] ?>"
-                            class="text-xs font-semibold leading-tight text-red-500"
-                            onclick="return confirm('Yakin ingin menghapus data ini?')"
-                            >Delete</a
-                          >
+
+                        <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
+                          <a href="index.php?page=gallery&action=edit&id=<?= $item['id'] ?>" 
+                             class="text-xs font-bold leading-tight text-blue-800 mr-6 hover:text-blue-950 transition-all"> 
+                             Edit 
+                          </a>
+                          
+                          <a href="index.php?page=gallery&action=delete&id=<?= $item['id'] ?>" 
+                             class="text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" 
+                             onclick="return confirm('Yakin ingin menghapus gambar ini?')"> 
+                             Hapus 
+                          </a>
                         </td>
                       </tr>
                       <?php endforeach; ?>
-                    </tbody>
-                  </table>
-                  <!-- ...existing code... -->
-                </div>
-              </div>
+                  <?php else: ?>
+                      <tr>
+                          <td colspan="4" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada data galeri.</td>
+                      </tr>
+                  <?php endif; ?>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
+        
+        <?php if ($totalPages > 1): ?>
+        <div class="flex justify-center mt-6 mb-6">
+            <nav aria-label="Page navigation">
+                <ul class="inline-flex items-center -space-x-px">
+                    <li class="mx-1">
+                        <a href="?page=gallery&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
+                            <i class="fas fa-chevron-left"><</i>
+                        </a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <li class="mx-1">
+                        <a href="?page=gallery&p=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>">
+                            <?= $i ?>
+                        </a>
+                    </li>
+                    <?php endfor; ?>
+                    <li class="mx-1">
+                        <a href="?page=gallery&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
+                            <i class="fas fa-chevron-right">></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <?php endif; ?>
+        
       </div>
     </main>
-  </body>
+    
+    <script>
+      function toggleGalleryPopover() {
+        const popover = document.getElementById("galleryPopover");
+        popover.classList.toggle("hidden");
+      }
+      document.addEventListener("click", function(e) {
+        const btn = document.getElementById("addGalleryBtn");
+        const popover = document.getElementById("galleryPopover");
+        if (btn && popover && !popover.contains(e.target) && e.target !== btn) {
+            // Cek apakah tombol Edit sedang aktif (jika btn tidak ada di DOM saat mode edit, abaikan)
+            if(btn) popover.classList.add("hidden");
+        }
+      });
+    </script>
+    <script src="assets/js/plugins/perfect-scrollbar.min.js" async></script>
+    <script src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
+</body>
 </html>

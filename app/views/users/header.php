@@ -46,39 +46,4 @@
             </div>
         </a>
     </div>
-
-    <script>
-                    const navPill = document.querySelector('.nav-pill');
-            const indicator = document.querySelector('.nav-indicator');
-            const navItems = document.querySelectorAll('.nav-item');
-
-            if (navPill && indicator && navItems.length) {
-                const handleIndicator = (el) => {
-                    navItems.forEach((item) => {
-                        item.classList.remove('active');
-                        item.style.color = '';
-                    });
-
-                    const parentRect = navPill.getBoundingClientRect();
-                    const elementRect = el.getBoundingClientRect();
-                    indicator.style.width = `${elementRect.width}px`;
-                    indicator.style.left = `${elementRect.left - parentRect.left}px`;
-                    indicator.style.top = `${elementRect.top - parentRect.top}px`;
-                    indicator.style.opacity = '1';
-
-                    el.classList.add('active');
-                    el.style.color = 'white';
-                };
-
-                navItems.forEach((item) => {
-                    item.addEventListener('mouseenter', () => handleIndicator(item));
-                    item.addEventListener('focus', () => handleIndicator(item));
-                });
-
-                const activeItem = document.querySelector('.nav-item.active') || navItems[0];
-                if (activeItem) {
-                    handleIndicator(activeItem);
-                }
-            }
-    </script>
 </header>

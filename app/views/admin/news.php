@@ -1,10 +1,9 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+// Pastikan variabel ada
+if (!isset($newsList) || !is_array($newsList)) {
+    $newsList = [];
 }
-
-// 2. Ambil Data Pengguna dari Session
-// Fallback nama jika session belum diset
+$keyword = $_GET['keyword'] ?? '';
 $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
 ?>
 <!DOCTYPE html>
@@ -22,7 +21,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
       type="image/png"
       href="public/assets/img/favicon.png"
     />
-    <title>Dashboard - Lab InLET</title>
+    <title>News - Lab InLET</title>
     <!-- Fonts and icons -->
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
@@ -112,11 +111,11 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
         <ul class="flex flex-col pl-0 mb-0">
           <li class="mt-0.5 w-full">
             <a
-              class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
               href="?page=admin-dashboard"
             >
               <div
-                class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
               >
                 <svg
                   width="12px"
@@ -127,25 +126,16 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
                   <title>shop</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-1716.000000, -439.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-1716.000000, -439.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(0.000000, 148.000000)">
                           <path
-                            class="opacity-60"
+                            class="fill-slate-800 opacity-60"
                             d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z"
                           ></path>
                           <path
-                            class=""
+                            class="fill-slate-800"
                             d="M39.198,22.4912623 C37.3776246,22.4928106 35.5817531,22.0149171 33.951625,21.0951667 L33.92225,21.1107282 C31.1430221,22.6838032 27.9255001,22.9318916 24.9844167,21.7998837 C24.4750389,21.605469 23.9777983,21.3722567 23.4960833,21.1018359 L23.4745417,21.1129513 C20.6961809,22.6871153 17.4786145,22.9344611 14.5386667,21.7998837 C14.029926,21.6054643 13.533337,21.3722507 13.0522917,21.1018359 C11.4250962,22.0190609 9.63246555,22.4947009 7.81570833,22.4912623 C7.16510551,22.4842162 6.51607673,22.4173045 5.875,22.2911849 L5.875,44.7220845 C5.875,45.9498589 6.7517757,46.9451667 7.83333333,46.9451667 L19.5833333,46.9451667 L19.5833333,33.6066734 L27.4166667,33.6066734 L27.4166667,46.9451667 L39.1666667,46.9451667 C40.2482243,46.9451667 41.125,45.9498589 41.125,44.7220845 L41.125,22.2822926 C40.4887822,22.4116582 39.8442868,22.4815492 39.198,22.4912623 Z"
                           ></path>
                         </g>
@@ -154,10 +144,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Beranda</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Beranda</span>
             </a>
           </li>
 
@@ -217,11 +204,11 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
           <!-- Tombol News -->
           <li class="mt-0.5 w-full">
             <a
-              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+              class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
               href="?page=news"
             >
               <div
-                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center fill-current stroke-0 text-center xl:p-2.5"
+                class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center fill-current stroke-0 text-center xl:p-2.5"
               >
                 <svg
                   width="12px"
@@ -232,25 +219,16 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
                   <title>credit-card</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-2169.000000, -745.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(453.000000, 454.000000)">
                           <path
-                            class="fill-slate-800 opacity-60"
+                            class="opacity-60"
                             d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"
                           ></path>
                           <path
-                            class="fill-slate-800"
+                            class=""
                             d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"
                           ></path>
                         </g>
@@ -259,10 +237,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Berita</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Berita</span>
             </a>
           </li>
 
@@ -518,7 +493,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
     <!-- end sidenav -->
 
     <main
-      class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200"
+      class="ease-soft-in-out xl:ml-68.5 relative min-h-screen rounded-xl transition-all duration-200"
     >
       <!-- Navbar -->
       <nav
@@ -543,10 +518,10 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                 class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
                 aria-current="page"
               >
-                Beranda
+                Berita
               </li>
             </ol>
-            <h6 class="mb-0 font-bold capitalize">Beranda</h6>
+            <h6 class="mb-0 font-bold capitalize">Berita</h6>
           </nav>
 
           <div
@@ -610,174 +585,207 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
       </nav>
       <!-- End Navbar -->
 
-      <!-- cards -->
       <div class="w-full px-6 py-6 mx-auto">
-        <!-- row 1 -->
-        <div class="flex flex-wrap -mx-3">
-          <!-- card1 -->
-          <div
-            class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4"
-          >
-            <div
-              class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border"
-            >
-              <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                  <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                      <p
-                        class="mb-0 font-sans font-semibold leading-normal text-sm"
-                      >
-                        Today's Money
-                      </p>
-                      <h5 class="mb-0 font-bold">
-                        $53,000
-                        <span
-                          class="leading-normal text-sm font-weight-bolder text-lime-500"
-                          >+55%</span
-                        >
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="px-3 text-right basis-1/3">
-                    <div
-                      class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500"
-                    >
-                      <i
-                        class="ni leading-none ni-money-coins text-lg relative top-3.5 text-white"
-                      ></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        
+        <?php
+            // Logika View
+            $isEdit = isset($editData);
+            $formTitle = $isEdit ? "Edit Berita" : "Tambah Berita";
+            $formAction = $isEdit 
+                ? "index.php?page=news&action=edit&id=" . $editData['id'] 
+                : "index.php?page=news&action=create";
+            
+            // Logika Visibilitas
+            $popoverClass = $isEdit ? "" : "hidden";
+        ?>
 
-          <!-- card2 -->
-          <div
-            class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4"
+        <div class="relative inline-block text-left mb-4" style="z-index: 50;">
+          
+          <?php if (!$isEdit): ?>
+          <button
+            id="addNewsBtn"
+            class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all shadow-md"
+            onclick="toggleNewsPopover()"
           >
-            <div
-              class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border"
-            >
-              <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                  <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                      <p
-                        class="mb-0 font-sans font-semibold leading-normal text-sm"
-                      >
-                        Today's Users
-                      </p>
-                      <h5 class="mb-0 font-bold">
-                        2,300
-                        <span
-                          class="leading-normal text-sm font-weight-bolder text-lime-500"
-                          >+3%</span
-                        >
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="px-3 text-right basis-1/3">
-                    <div
-                      class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500"
-                    >
-                      <i
-                        class="ni leading-none ni-world text-lg relative top-3.5 text-white"
-                      ></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            + Tambah Berita
+          </button>
+          <?php endif; ?>
 
-          <!-- card3 -->
           <div
-            class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4"
+            id="newsPopover"
+            class="absolute left-0 mt-2 bg-white rounded-lg shadow-lg p-6 border border-gray-100 <?= $popoverClass ?>"
+            style="width: 400px; max-width: 90vw; z-index: 100;"
           >
-            <div
-              class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border"
-            >
-              <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                  <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                      <p
-                        class="mb-0 font-sans font-semibold leading-normal text-sm"
-                      >
-                        New Clients
-                      </p>
-                      <h5 class="mb-0 font-bold">
-                        +3,462
-                        <span
-                          class="leading-normal text-red-600 text-sm font-weight-bolder"
-                          >-2%</span
-                        >
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="px-3 text-right basis-1/3">
-                    <div
-                      class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500"
-                    >
-                      <i
-                        class="ni leading-none ni-paper-diploma text-lg relative top-3.5 text-white"
-                      ></i>
-                    </div>
-                  </div>
+            <h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800"><?= $formTitle ?></h3>
+            
+            <form action="<?= $formAction ?>" method="POST" enctype="multipart/form-data">
+              
+              <?php if ($isEdit && !empty($editData['thumbnail'])): ?>
+                <div class="mb-4 text-center">
+                    <p class="text-xs font-semibold mb-1 text-gray-500">Thumbnail Saat Ini:</p>
+                    
+                    <img src="<?= htmlspecialchars($editData['thumbnail']) ?>" 
+                         class="mx-auto rounded border shadow-sm object-contain bg-gray-100"
+                         style="height: 120px; width: auto; max-width: 100%; display: block;">
+                         
                 </div>
-              </div>
-            </div>
-          </div>
+              <?php endif; ?>
 
-          <!-- card4 -->
-          <div class="w-full max-w-full px-3 sm:w-1/2 sm:flex-none xl:w-1/4">
-            <div
-              class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border"
-            >
-              <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                  <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                      <p
-                        class="mb-0 font-sans font-semibold leading-normal text-sm"
-                      >
-                        Sales
-                      </p>
-                      <h5 class="mb-0 font-bold">
-                        $103,430
-                        <span
-                          class="leading-normal text-sm font-weight-bolder text-lime-500"
-                          >+5%</span
-                        >
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="px-3 text-right basis-1/3">
-                    <div
-                      class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500"
-                    >
-                      <i
-                        class="ni leading-none ni-cart text-lg relative top-3.5 text-white"
-                      ></i>
-                    </div>
-                  </div>
-                </div>
+              <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1 text-gray-700">Judul Artikel</label>
+                <input type="text" name="title" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all" 
+                       value="<?= $isEdit ? htmlspecialchars($editData['title']) : '' ?>" required>
               </div>
+
+              <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1 text-gray-700">Tanggal Publish</label>
+                <input type="date" name="published_date" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all" 
+                       value="<?= $isEdit ? htmlspecialchars($editData['published_date']) : date('Y-m-d') ?>" required>
+              </div>
+
+              <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1 text-gray-700">Isi Konten</label>
+                <textarea name="content" rows="4" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all" required><?= $isEdit ? htmlspecialchars($editData['content']) : '' ?></textarea>
+              </div>
+
+              <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1 text-gray-700">
+                    <?= $isEdit ? "Ganti Thumbnail" : "Upload Thumbnail" ?>
+                </label>
+                
+                <input type="file" name="thumbnail" accept="image/*" 
+                       class="w-full text-sm text-slate-500
+                              file:mr-4 file:py-2 file:px-4
+                              file:rounded-full file:border-0
+                              file:text-sm file:font-semibold
+                              file:bg-purple-700 file:text-white
+                              hover:file:bg-purple-600
+                              cursor-pointer focus:outline-none"
+                       <?= $isEdit ? '' : 'required' ?>>
+                       
+                <p class="text-xs text-slate-400 mt-1">*Format: JPG, PNG, JPEG. Max: 2MB.</p>
+              </div>
+
+              <div class="flex justify-end pt-2">
+                
+                <?php if ($isEdit): ?>
+                    <a href="index.php?page=news" 
+                       class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all">
+                       Batal
+                    </a>
+                <?php else: ?>
+                    <button type="button" 
+                            class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" 
+                            onclick="toggleNewsPopover()">
+                            Batal
+                    </button>
+                <?php endif; ?>
+                
+                <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">
+                    Simpan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
+          <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
+            <h6>Daftar Berita</h6>
+
+            <form action="index.php" method="GET" class="flex items-center space-x-2">
+                <input type="hidden" name="page" value="news">
+                <input 
+                    type="search" 
+                    name="keyword" 
+                    placeholder="Cari Berita..." 
+                    value="<?= htmlspecialchars($keyword) ?>"
+                    class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all"
+                >
+                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">
+                    Cari
+                </button>
+            </form>
+          </div>
+          <div class="flex-auto px-0 pt-0 pb-2">
+            <div class="p-0 overflow-x-auto">
+              <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                <thead class="align-bottom">
+                  <tr>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Thumbnail</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Info Berita</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php if (!empty($newsList)): ?>
+                      <?php foreach ($newsList as $news): ?>
+                      <tr>
+                        <td class="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent text-center">
+                          <?php if(!empty($news['thumbnail'])): ?>
+                            <img src="<?= htmlspecialchars($news['thumbnail']) ?>" class="h-16 w-24 object-cover rounded-lg mx-auto border" alt="thumb" />
+                          <?php else: ?>
+                             <span class="text-xs text-gray-400">No Image</span>
+                          <?php endif; ?>
+                        </td>
+                        <td class="p-2 align-middle bg-transparent shadow-transparent">
+                           <div class="flex flex-col px-2 py-1">
+                                <h6 class="mb-0 text-sm text-center leading-normal font-bold text-slate-700"><?= htmlspecialchars($news['title']) ?></h6>
+                                <p class="mb-0 text-xs text-center text-slate-400 overflow-hidden w-64 truncate">
+                                    <?= htmlspecialchars(substr($news['content'], 0, 100)) ?>...
+                                </p>
+                           </div>
+                        </td>
+                        <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
+                          <span class="text-xs font-semibold leading-tight text-slate-400">
+                            <?= date('d M Y', strtotime($news['published_date'])) ?>
+                          </span>
+                        </td>
+                        <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
+                          <a href="index.php?page=news&action=edit&id=<?= $news['id'] ?>" 
+                             class="text-xs font-bold leading-tight text-blue-800 mr-6 hover:text-blue-950 transition-all"> 
+                             Edit 
+                          </a>
+                          
+                          <a href="index.php?page=news&action=delete&id=<?= $news['id'] ?>" 
+                             class="text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" 
+                             onclick="return confirm('Yakin ingin menghapus berita ini?')"> 
+                             Hapus 
+                          </a>
+                        </td>
+                      </tr>
+                      <?php endforeach; ?>
+                  <?php else: ?>
+                      <tr>
+                          <td colspan="4" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada berita.</td>
+                      </tr>
+                  <?php endif; ?>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
+      </div>
+      
+    </main>
+    
+    <script>
+      function toggleNewsPopover() {
+        const popover = document.getElementById("newsPopover");
+        popover.classList.toggle("hidden");
+      }
+      document.addEventListener("click", function(e) {
+        const btn = document.getElementById("addNewsBtn");
+        const popover = document.getElementById("newsPopover");
+        if (popover && !popover.contains(e.target)) {
+           if (btn && e.target !== btn) {
+               popover.classList.add("hidden");
+           }
+        }
+      });
+    </script>
+    <script src="assets/js/plugins/perfect-scrollbar.min.js" async></script>
+    <script src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
   </body>
-  <!-- plugin for charts  -->
-  <script src="assets/js/plugins/chartjs.min.js" async></script>
-  <!-- plugin for scrollbar  -->
-  <script src="assets/js/plugins/perfect-scrollbar.min.js" async></script>
-  <!-- github button -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <!-- main script file  -->
-  <script
-    src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5"
-    async
-  ></script>
 </html>
