@@ -655,22 +655,25 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   <p class="text-xs text-slate-400 mt-2">*Format: JPG, PNG, JPEG. Max: 2MB.</p>
                 </div>
 
-                <div class="mt-4 flex justify-end space-x-3">
-                  <?php if ($isEdit): ?>
+                <div class="flex justify-end pt-2">
+                
+                <?php if ($isEdit): ?>
                     <a href="index.php?page=gallery" 
-                       class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all flex items-center">
+                       class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all">
                        Batal
                     </a>
-                  <?php else: ?>
+                <?php else: ?>
                     <button type="button" 
-                            class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" 
+                            class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" 
                             onclick="toggleGalleryPopover()">
                             Batal
                     </button>
-                  <?php endif; ?>
-                  
-                  <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">Simpan</button>
-                </div>
+                <?php endif; ?>
+                
+                <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">
+                    Simpan
+                </button>
+              </div>
               </form>
             </div>
         </div>

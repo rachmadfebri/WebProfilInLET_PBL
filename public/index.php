@@ -34,7 +34,7 @@ $attendanceController = new AttendanceController();
 $studentController = new StudentController($pdo);
 
 // --- 3. AMBIL PARAMETER URL ---
-$page = $_GET['page'] ?? 'login'; // Nanti bisa diganti 'home' jika frontend sudah siap
+$page = $_GET['page'] ?? 'home'; // Nanti bisa diganti 'home' jika frontend sudah siap
 $action = $_GET['action'] ?? null;
 
 // --- 4. PROSES ACTION (POST REQUEST / ACTION BUTTONS) ---
