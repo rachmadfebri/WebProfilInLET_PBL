@@ -54,6 +54,7 @@ if ($action) {
   }
 }
 
+
 // --- ROUTING CRUD KHUSUS (Create, Edit, Delete) ---
 
 // Routing Gallery
@@ -104,6 +105,8 @@ if ($page === 'students' && $action === 'delete') {
     exit;
 }
 
+$viewDir = __DIR__ . '/../app/views/users/';
+
 // --- 5. ROUTING VIEWS (SWITCH PAGE) ---
 switch ($page) {
   // Auth Pages
@@ -114,6 +117,30 @@ switch ($page) {
     require __DIR__ . '/../app/views/pages/sign-up.php';
     break;
 
+   case 'home':
+  case 'index': // Menangani default page
+    require $viewDir . 'home.php'; // Memanggil home.php
+    break;
+
+  case 'about':
+    require $viewDir . 'about.php'; // Memanggil about.php
+    break;
+
+  case 'team':
+    // Opsi 1: Panggil langsung View (Cara Cepat)
+    require $viewDir . 'team.php';
+    
+    // Opsi 2: Jika ingin pakai Controller (MVC Murni), gunakan ini:
+    // $teamMembersController->index(); 
+    break;
+
+  case 'gallery':
+    // Opsi 1: Panggil langsung View (Cara Cepat)
+    require $viewDir . 'gallery.php';
+
+    // Opsi 2: Jika ingin pakai Controller:
+    // $galleryController->index();
+    break;
   // Dashboards
   case 'admin-dashboard':
     $adminController->dashboard();
