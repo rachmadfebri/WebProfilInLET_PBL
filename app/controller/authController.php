@@ -12,7 +12,7 @@ class authController {
     }
 
     public function register() {
-    session_start();
+    
 
     $fullname = trim($_POST['full_name'] ?? '');
     $username = trim($_POST['username'] ?? ''); // <--- Tambahan username

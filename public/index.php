@@ -32,7 +32,7 @@ $teamMembersController = new TeamMembersController($pdo);
 $attendanceController = new AttendanceController();
 
 // Ambil Parameter URL
-$page = $_GET['page'] ?? 'login';
+$page = $_GET['page'] ?? 'home';
 $action = $_GET['action'] ?? null;
 
 // --- PROSES ACTION (POST REQUEST) ---
@@ -130,17 +130,47 @@ if ($page === 'collaboration' && $action === 'create') {
   exit;
 }
 
+// ... (kode atas biarkan sama) ...
+
+// Definisikan path folder view agar lebih rapi
+$viewDir = __DIR__ . '/../app/views/users/';
+
 switch ($page) {
   case 'login':
-    // ... (kode yang sudah ada)
     require __DIR__ . '/../app/views/pages/sign-in.php';
     break;
    
   case 'register':
-    // ... (kode yang sudah ada)
     require __DIR__ . '/../app/views/pages/sign-up.php';
     break;
 
+  // --- ROUTING HALAMAN UTAMA (USER) ---
+  case 'home':
+  case 'index': // Menangani default page
+    require $viewDir . 'home.php'; // Memanggil home.php
+    break;
+
+  case 'about':
+    require $viewDir . 'about.php'; // Memanggil about.php
+    break;
+
+  case 'team':
+    // Opsi 1: Panggil langsung View (Cara Cepat)
+    require $viewDir . 'team.php';
+    
+    // Opsi 2: Jika ingin pakai Controller (MVC Murni), gunakan ini:
+    // $teamMembersController->index(); 
+    break;
+
+  case 'gallery':
+    // Opsi 1: Panggil langsung View (Cara Cepat)
+    require $viewDir . 'gallery.php';
+
+    // Opsi 2: Jika ingin pakai Controller:
+    // $galleryController->index();
+    break;
+
+  // --- HALAMAN DASHBOARD ADMIN/MAHASISWA ---
   case 'admin-dashboard':
     $adminController->dashboard();
     break;
@@ -148,10 +178,8 @@ switch ($page) {
   case 'mahasiswa-dashboard':
     $mahasiswaController->dashboard();
     break;
- 
-  case 'gallery':
-    $galleryController->index();
-    break;
+
+  // ... (routing news, products, dll biarkan atau sesuaikan jika perlu) ...
   case 'news':
     $newsController->index();
     break;
@@ -161,15 +189,17 @@ switch ($page) {
   case 'research':
     $researchController->index();
     break;
-  case 'team':
-    $teamMembersController->index();
-    break;
   case 'collaboration':
     $collaborationController->index();
     break;
+    
   default:
-    echo "Page not found.";
+    // Set default ke home jika page tidak ditemukan atau kosong
+    if (empty($page)) {
+        require $viewDir . 'home.php';
+    } else {
+        echo "Page not found.";
+    }
     break;
 }
-
 ?>
