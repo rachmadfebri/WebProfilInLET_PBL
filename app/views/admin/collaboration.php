@@ -662,14 +662,25 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   <input type="file" name="logo" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 cursor-pointer" 
                          <?= $isEdit ? '' : 'required' ?>>
                 </div>
-                <div class="mt-4 flex justify-end space-x-3">
-                  <?php if ($isEdit): ?>
-                      <a href="index.php?page=collaboration" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all flex items-center">Batal</a>
-                  <?php else: ?>
-                      <button type="button" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" onclick="toggleCollabPopover()">Batal</button>
-                  <?php endif; ?>
-                  <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">Simpan</button>
-                </div>
+                <div class="flex justify-end pt-2">
+                
+                <?php if ($isEdit): ?>
+                    <a href="index.php?page=collaboration" 
+                       class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all">
+                       Batal
+                    </a>
+                <?php else: ?>
+                    <button type="button" 
+                            class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" 
+                            onclick="toggleCollaborationPopover()">
+                            Batal
+                    </button>
+                <?php endif; ?>
+                
+                <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">
+                    Simpan
+                </button>
+              </div>
               </form>
             </div>
         </div>
