@@ -126,17 +126,17 @@ switch ($page) {
     require $viewDir . 'about.php'; // Memanggil about.php
     break;
 
-  case 'team':
+  case 'teampublic':
     // Opsi 1: Panggil langsung View (Cara Cepat)
-    require $viewDir . 'team.php';
+    require $viewDir . 'teampublic.php';
     
     // Opsi 2: Jika ingin pakai Controller (MVC Murni), gunakan ini:
     // $teamMembersController->index(); 
     break;
 
-  case 'gallery':
+  case 'gallerypublic':
     // Opsi 1: Panggil langsung View (Cara Cepat)
-    require $viewDir . 'gallery.php';
+    require $viewDir . 'gallerypublic.php';
 
     // Opsi 2: Jika ingin pakai Controller:
     // $galleryController->index();
