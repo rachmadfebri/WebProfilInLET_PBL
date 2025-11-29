@@ -1,12 +1,10 @@
 <!-- filepath: c:\laragon\www\WebProfilInLET_PBL\app\views\admin\products.php -->
 <?php
 // Ambil data dari database
-require_once __DIR__ . '/../../../config/database.php'; // sesuaikan path
-
-$db = new Database();
-$conn = $db->connect();
-$stmt = $conn->query("SELECT * FROM team_members ORDER BY created_at DESC");
-$productsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Ambil data dari database
+if (!isset($teamList) || !is_array($teamList)) {
+    $teamList = [];
+}
 $keyword = $_GET['keyword'] ?? '';
 $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
 ?>
@@ -462,7 +460,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
           <li class="mt-* w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="?page=daftar-mahasiswa"
+              href="?page=students"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"

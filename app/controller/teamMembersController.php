@@ -14,7 +14,11 @@ class TeamMembersController {
             header("Location: ?page=login");
             exit;
         }
-        $teamList = $this->teamModel->getAll(); 
+
+        // PERBAIKAN: Ambil keyword search
+        $keyword = $_GET['keyword'] ?? '';
+        $teamList = $this->teamModel->getAll($keyword); 
+
         require __DIR__ . '/../views/admin/team.php'; 
     }
 
@@ -48,13 +52,11 @@ class TeamMembersController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $photoPath = '';
             
-            // Ambil foto lama jika edit
             if ($id) {
                 $oldData = $this->teamModel->getById($id);
                 $photoPath = $oldData['photo'];
             }
 
-            // Upload Foto Baru
             if (isset($_FILES['photo']) && $_FILES['photo']['error'] == UPLOAD_ERR_OK) {
                 $ext = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
                 $newName = 'team_' . time() . '.' . $ext;
@@ -88,7 +90,9 @@ class TeamMembersController {
         }
 
         // GET: Tampilkan View
-        $teamList = $this->teamModel->getAll(); 
+        // PERBAIKAN: Support Search
+        $keyword = $_GET['keyword'] ?? '';
+        $teamList = $this->teamModel->getAll($keyword); 
         
         if ($id) {
             $editData = $this->teamModel->getById($id);

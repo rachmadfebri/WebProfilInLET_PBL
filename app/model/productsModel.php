@@ -6,9 +6,21 @@ class ProductsModel {
         $this->db = $pdo;
     }
 
-    public function getAll() {
-        $stmt = $this->db->prepare("SELECT * FROM products ORDER BY created_at DESC");
-        $stmt->execute();
+    // PERBAIKAN: Tambahkan parameter $keyword
+    public function getAll($keyword = '') {
+        $sql = "SELECT * FROM products";
+        $params = [];
+
+        // Logika Pencarian
+        if ($keyword) {
+            $sql .= " WHERE title ILIKE :keyword OR description ILIKE :keyword";
+            $params[':keyword'] = '%' . $keyword . '%';
+        }
+
+        $sql .= " ORDER BY created_at DESC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -18,9 +30,7 @@ class ProductsModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // PERBAIKAN FUNGSI CREATE
     public function create($data) {
-        // Tambahkan :url di VALUES
         $query = "INSERT INTO products (title, description, url, thumbnail, created_at) 
                   VALUES (:title, :description, :url, :thumbnail, NOW())";
         
@@ -29,14 +39,12 @@ class ProductsModel {
         return $stmt->execute([
             ':title'       => $data['title'],
             ':description' => $data['description'],
-            ':url'         => $data['url'], // Bind URL
+            ':url'         => $data['url'], 
             ':thumbnail'   => $data['thumbnail'],
         ]);
     }
 
-    // PERBAIKAN FUNGSI UPDATE
     public function update($id, $data) {
-        // Tambahkan url = :url
         $query = "UPDATE products SET 
                   title = :title, 
                   description = :description, 
@@ -49,7 +57,7 @@ class ProductsModel {
         return $stmt->execute([
             ':title'       => $data['title'],
             ':description' => $data['description'],
-            ':url'         => $data['url'], // Bind URL
+            ':url'         => $data['url'], 
             ':thumbnail'   => $data['thumbnail'],
             ':id'          => $id
         ]);

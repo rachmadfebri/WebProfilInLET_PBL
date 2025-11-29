@@ -14,7 +14,11 @@ class NewsController {
             header("Location: ?page=login");
             exit;
         }
-        $newsList = $this->newsModel->getAll(); 
+
+        // PERBAIKAN: Ambil keyword search
+        $keyword = $_GET['keyword'] ?? '';
+        $newsList = $this->newsModel->getAll($keyword); 
+        
         require __DIR__ . '/../views/admin/news.php'; 
     }
 
@@ -37,7 +41,6 @@ class NewsController {
         exit;
     }
 
-    // Fungsi Gabungan untuk Create dan Edit (agar rapi)
     private function handleRequest($id = null) {
         if (session_status() == PHP_SESSION_NONE) session_start();
         if ($_SESSION['role'] !== 'admin') {
@@ -49,13 +52,11 @@ class NewsController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $thumbnailPath = '';
             
-            // Jika Edit, ambil path lama dulu
             if ($id) {
                 $oldData = $this->newsModel->getById($id);
                 $thumbnailPath = $oldData['thumbnail'];
             }
 
-            // Cek Upload Gambar Baru
             if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] == UPLOAD_ERR_OK) {
                 $ext = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
                 $newName = 'news_' . time() . '.' . $ext;
@@ -86,10 +87,12 @@ class NewsController {
         }
 
         // 2. JIKA GET (Tampilkan Halaman)
-        $newsList = $this->newsModel->getAll(); // Tetap ambil list untuk tabel
+        // PERBAIKAN: Tambahkan support search di sini juga
+        $keyword = $_GET['keyword'] ?? '';
+        $newsList = $this->newsModel->getAll($keyword);
         
         if ($id) {
-            $editData = $this->newsModel->getById($id); // Data spesifik untuk form edit
+            $editData = $this->newsModel->getById($id);
         }
 
         require __DIR__ . '/../views/admin/news.php';

@@ -14,7 +14,11 @@ class ProductsController {
             header("Location: ?page=login");
             exit;
         }
-        $productsList = $this->productsModel->getAll(); 
+
+        // PERBAIKAN: Ambil keyword search
+        $keyword = $_GET['keyword'] ?? '';
+        $productsList = $this->productsModel->getAll($keyword); 
+
         require __DIR__ . '/../views/admin/products.php'; 
     }
 
@@ -48,13 +52,11 @@ class ProductsController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $thumbnailPath = '';
             
-            // Ambil gambar lama jika edit dan tidak ada gambar baru
             if ($id) {
                 $oldData = $this->productsModel->getById($id);
                 $thumbnailPath = $oldData['thumbnail'];
             }
 
-            // Proses Upload Gambar Baru
             if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] == UPLOAD_ERR_OK) {
                 $ext = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
                 $newName = 'products_' . time() . '.' . $ext;
@@ -67,12 +69,10 @@ class ProductsController {
                 }
             }
 
-            // DATA YANG DIKIRIM KE MODEL
-            // Pastikan 'url' diambil dari $_POST['url_product']
             $data = [
                 'title'       => $_POST['title'],
                 'description' => $_POST['description'],
-                'url'         => $_POST['url'] ?? '', // Tangkap URL di sini
+                'url'         => $_POST['url'] ?? '', 
                 'thumbnail'   => $thumbnailPath
             ];
 
@@ -87,7 +87,9 @@ class ProductsController {
         }
 
         // 2. JIKA GET (Tampilkan View)
-        $productsList = $this->productsModel->getAll(); 
+        // PERBAIKAN: Tambahkan support search
+        $keyword = $_GET['keyword'] ?? '';
+        $productsList = $this->productsModel->getAll($keyword); 
         
         if ($id) {
             $editData = $this->productsModel->getById($id);

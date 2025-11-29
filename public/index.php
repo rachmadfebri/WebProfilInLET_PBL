@@ -1,7 +1,8 @@
 <?php
 // --- 1. REQUIRE CONFIG & CONTROLLERS ---
 require_once __DIR__ . '/../config/connection.php';
-// Perhatikan: Folder controller/model di struktur Anda adalah singular (controller, model)
+
+// --- CONTROLLERS ---
 require_once __DIR__ . '/../app/controller/AuthController.php';
 require_once __DIR__ . '/../app/controller/AdminController.php';
 require_once __DIR__ . '/../app/controller/MahasiswaController.php';
@@ -11,14 +12,13 @@ require_once __DIR__ . '/../app/controller/ProductsController.php';
 require_once __DIR__ . '/../app/controller/Collaborationcontroller.php';
 require_once __DIR__ . '/../app/controller/ResearchController.php';
 require_once __DIR__ . '/../app/controller/TeamMembersController.php';
-// --- TAMBAH CONTROLLER ABSENSI (ATTENDANCE) ---
 require_once __DIR__ . '/../app/controller/AttendanceController.php';
+require_once __DIR__ . '/../app/controller/StudentController.php';
 
-// Inisialisasi Database
+// --- 2. INISIALISASI DATABASE & CONTROLLER ---
 $db = new Database();
 $pdo = $db->connect();
 
-// Inisialisasi Controller
 $authController = new AuthController($pdo);
 $adminController = new AdminController();
 $mahasiswaController = new MahasiswaController();
@@ -28,14 +28,16 @@ $productsController = new ProductsController($pdo);
 $researchController = new ResearchController($pdo);
 $collaborationController = new CollaborationController($pdo);
 $teamMembersController = new TeamMembersController($pdo);
-// --- TAMBAH INIALISASI ATTENDANCE CONTROLLER ---
 $attendanceController = new AttendanceController();
 
-// Ambil Parameter URL
-$page = $_GET['page'] ?? 'login';
+// [BARU] Inisialisasi Student Controller
+$studentController = new StudentController($pdo);
+
+// --- 3. AMBIL PARAMETER URL ---
+$page = $_GET['page'] ?? 'login'; // Nanti bisa diganti 'home' jika frontend sudah siap
 $action = $_GET['action'] ?? null;
 
-// --- PROSES ACTION (POST REQUEST) ---
+// --- 4. PROSES ACTION (POST REQUEST / ACTION BUTTONS) ---
 if ($action) {
   if ($action === 'login') {
     $authController->login();
@@ -44,111 +46,83 @@ if ($action) {
   } elseif ($action === 'logout') {
     $authController->logout();
   } 
-    // --- TAMBAH ROUTING UNTUK ABSENSI ---
-    elseif ($action === 'checkin') {
-        $attendanceController->processCheckIn();
-    } elseif ($action === 'checkout') {
-        $attendanceController->processCheckOut();
-    }
-    // Tambahkan aksi untuk menghapus semua data absensi (hanya untuk Admin)
-    // elseif ($action === 'clear-all-attendance') {
-    //     // Pastikan ini hanya bisa diakses oleh Admin
-    //     // Anda perlu implementasi otorisasi di dalam method ini
-    //     $attendanceController->clearAllAttendance(); 
-    // }
+  // Routing Absensi
+  elseif ($action === 'checkin') {
+      $attendanceController->processCheckIn();
+  } elseif ($action === 'checkout') {
+      $attendanceController->processCheckOut();
+  }
 }
 
-//routing gallery
-if ($page === 'gallery' && $action === 'create') {
-  $galleryController->create();
-  exit;
-} elseif ($page === 'gallery' && $action === 'edit') {
-  $galleryController->edit($_GET['id']);
-  exit;
-} elseif ($page === 'gallery' && $action === 'delete') {
-  $galleryController->delete($_GET['id']);
-  exit;
+// --- ROUTING CRUD KHUSUS (Create, Edit, Delete) ---
+
+// Routing Gallery
+if ($page === 'gallery') {
+    if ($action === 'create') { $galleryController->create(); exit; }
+    elseif ($action === 'edit') { $galleryController->edit($_GET['id']); exit; }
+    elseif ($action === 'delete') { $galleryController->delete($_GET['id']); exit; }
 }
 
-//routing news
-if ($page === 'news' && $action === 'create') {
-  $newsController->create();
-  exit;
-} elseif ($page === 'news' && $action === 'edit') {
-  $newsController->edit($_GET['id']);
-  exit;
-} elseif ($page === 'news' && $action === 'delete') {
-  $newsController->delete($_GET['id']);
-  exit;
+// Routing News
+if ($page === 'news') {
+    if ($action === 'create') { $newsController->create(); exit; }
+    elseif ($action === 'edit') { $newsController->edit($_GET['id']); exit; }
+    elseif ($action === 'delete') { $newsController->delete($_GET['id']); exit; }
 }
 
-//routing products
-if ($page === 'products' && $action === 'create') {
-  $productsController->create();
-  exit;
-} elseif ($page === 'products' && $action === 'edit') {
-  $productsController->edit($_GET['id']);
-  exit;
-} elseif ($page === 'products' && $action === 'delete') {
-  $productsController->delete($_GET['id']);
-  exit;
+// Routing Products
+if ($page === 'products') {
+    if ($action === 'create') { $productsController->create(); exit; }
+    elseif ($action === 'edit') { $productsController->edit($_GET['id']); exit; }
+    elseif ($action === 'delete') { $productsController->delete($_GET['id']); exit; }
 }
 
-//routing riset
-if ($page === 'research' && $action === 'create') {
-  $researchController->create();
-  exit;
-} elseif ($page === 'research' && $action === 'edit') {
-  $researchController->edit($_GET['id']);
-  exit;
-} elseif ($page === 'research' && $action === 'delete') {
-  $researchController->delete($_GET['id']);
-  exit;
+// Routing Research
+if ($page === 'research') {
+    if ($action === 'create') { $researchController->create(); exit; }
+    elseif ($action === 'edit') { $researchController->edit($_GET['id']); exit; }
+    elseif ($action === 'delete') { $researchController->delete($_GET['id']); exit; }
 }
 
-//routing tim
-if ($page === 'team' && $action === 'create') {
-  $teamMembersController->create();
-  exit;
-} elseif ($page === 'team' && $action === 'edit') {
-  $teamMembersController->edit($_GET['id']);
-  exit;
-} elseif ($page === 'team' && $action === 'delete') {
-  $teamMembersController->delete($_GET['id']);
-  exit;
+// Routing Team
+if ($page === 'team') {
+    if ($action === 'create') { $teamMembersController->create(); exit; }
+    elseif ($action === 'edit') { $teamMembersController->edit($_GET['id']); exit; }
+    elseif ($action === 'delete') { $teamMembersController->delete($_GET['id']); exit; }
 }
 
-//routing collaboration
-if ($page === 'collaboration' && $action === 'create') {
-  $collaborationController->create();
-  exit;
-} elseif ($page === 'collaboration' && $action === 'edit') {
-  $collaborationController->edit($_GET['id']);
-  exit;
-} elseif ($page === 'collaboration' && $action === 'delete') {
-  $collaborationController->delete($_GET['id']);
-  exit;
+// Routing Collaboration
+if ($page === 'collaboration') {
+    if ($action === 'create') { $collaborationController->create(); exit; }
+    elseif ($action === 'edit') { $collaborationController->edit($_GET['id']); exit; }
+    elseif ($action === 'delete') { $collaborationController->delete($_GET['id']); exit; }
 }
 
+// [BARU] Routing Students (Hanya Delete, Create via Register)
+if ($page === 'students' && $action === 'delete') {
+    $studentController->delete($_GET['id']);
+    exit;
+}
+
+// --- 5. ROUTING VIEWS (SWITCH PAGE) ---
 switch ($page) {
+  // Auth Pages
   case 'login':
-    // ... (kode yang sudah ada)
     require __DIR__ . '/../app/views/pages/sign-in.php';
     break;
-   
   case 'register':
-    // ... (kode yang sudah ada)
     require __DIR__ . '/../app/views/pages/sign-up.php';
     break;
 
+  // Dashboards
   case 'admin-dashboard':
     $adminController->dashboard();
     break;
-
   case 'mahasiswa-dashboard':
     $mahasiswaController->dashboard();
     break;
  
+  // Admin Features
   case 'gallery':
     $galleryController->index();
     break;
@@ -167,9 +141,14 @@ switch ($page) {
   case 'collaboration':
     $collaborationController->index();
     break;
+
+  // [BARU] Halaman Kelola Mahasiswa (Admin)
+  case 'students':
+    $studentController->index();
+    break;
+
   default:
     echo "Page not found.";
     break;
 }
-
 ?>

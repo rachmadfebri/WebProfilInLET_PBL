@@ -6,9 +6,21 @@ class NewsModel {
         $this->db = $pdo;
     }
 
-    public function getAll() {
-        $stmt = $this->db->prepare("SELECT * FROM news ORDER BY created_at DESC");
-        $stmt->execute();
+    // PERBAIKAN: Tambahkan parameter $keyword
+    public function getAll($keyword = '') {
+        $sql = "SELECT * FROM news";
+        $params = [];
+
+        // Logika Pencarian
+        if ($keyword) {
+            $sql .= " WHERE title ILIKE :keyword OR content ILIKE :keyword";
+            $params[':keyword'] = '%' . $keyword . '%';
+        }
+
+        $sql .= " ORDER BY created_at DESC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

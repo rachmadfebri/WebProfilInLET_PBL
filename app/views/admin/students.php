@@ -1,8 +1,25 @@
 <?php
-// Pastikan variabel ada
-if (!isset($newsList) || !is_array($newsList)) {
-    $newsList = [];
+// app/views/admin/students.php
+
+if (!isset($studentList) || !is_array($studentList)) {
+    $studentList = [];
 }
+
+// --- LOGIKA PAGINATION ---
+$totalRecords = count($studentList);
+$currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+$limit = 5; // Batas data per halaman
+$totalPages = ceil($totalRecords / $limit);
+
+// Pastikan page tidak kurang dari 1 atau lebih dari total pages
+if ($currentPage < 1) { $currentPage = 1; }
+if ($currentPage > $totalPages && $totalPages > 0) { $currentPage = $totalPages; }
+
+// Potong array data sesuai halaman (Simulasi Pagination di View)
+$offset = ($currentPage - 1) * $limit;
+$pagedData = array_slice($studentList, $offset, $limit);
+// -------------------------
+
 $keyword = $_GET['keyword'] ?? '';
 $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
 ?>
@@ -11,66 +28,19 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="apple-touch-icon"
-      sizes="76x76"
-      href="public/assets/img/apple-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      href="public/assets/img/favicon.png"
-    />
-    <title>News - Lab InLET</title>
-    <!-- Fonts and icons -->
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
-      rel="stylesheet"
-    />
-    <!-- Font Awesome Icons -->
-    <script
-      src="https://kit.fontawesome.com/42d5adcbca.js"
-      crossorigin="anonymous">
-    </script>
-     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
+    <title>Daftar Mahasiswa - Admin</title>
+    <!-- Assets -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
-    
-    <!-- Popper -->
     <script src="https://unpkg.com/@popperjs/core@2"></script>
-    
-    <!-- Main Styling -->
-    <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
-      <link
-        href="assets/css/nucleo-icons.css"
-        rel="stylesheet"
-    />
-    
-    <link
-      href="assets/css/nucleo-svg.css"
-      rel="stylesheet"
-    />
-    
-    <!-- Popper -->
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    
-    <!-- Main Styling -->
-    <link
-      href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
-      rel="stylesheet"
-    />
-
-    <!-- Nepcha Analytics (nepcha.com) -->
-    <script
-      defer
-      data-site="YOUR_DOMAIN_HERE"
-      src="https://api.nepcha.com/js/nepcha-analytics.js">
-    </script>
+    <link href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
   </head>
 
-  <body
-    class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500"
-  >
-    <!-- sidenav -->
+  <body class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500">
+    
+    <!-- SIDENAV UTAMA -->
     <aside
       id="sidenav-main"
       class="fixed inset-y-0 left-0 w-full max-w-62.5 -translate-x-full p-0 antialiased shadow-2xl transition-transform duration-300 xl:ml-4 xl:my-4 xl:translate-x-0 xl:rounded-2xl xl:shadow-soft-xl xl:h-[calc(100vh-2rem)] h-full flex flex-col border-r border-gray-200 xl:border-0"
@@ -204,11 +174,11 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
           <!-- Tombol News -->
           <li class="mt-0.5 w-full">
             <a
-              class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
               href="?page=news"
             >
               <div
-                class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center fill-current stroke-0 text-center xl:p-2.5"
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center fill-current stroke-0 text-center xl:p-2.5"
               >
                 <svg
                   width="12px"
@@ -219,16 +189,25 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
                   <title>credit-card</title>
-                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                  <g
+                    stroke="none"
+                    stroke-width="1"
+                    fill="none"
+                    fill-rule="evenodd"
+                  >
+                    <g
+                      transform="translate(-2169.000000, -745.000000)"
+                      fill="#FFFFFF"
+                      fill-rule="nonzero"
+                    >
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(453.000000, 454.000000)">
                           <path
-                            class="opacity-60"
+                            class="fill-slate-800 opacity-60"
                             d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"
                           ></path>
                           <path
-                            class=""
+                            class="fill-slate-800"
                             d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"
                           ></path>
                         </g>
@@ -237,7 +216,10 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   </g>
                 </svg>
               </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Berita</span>
+              <span
+                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
+                >Berita</span
+              >
             </a>
           </li>
 
@@ -353,8 +335,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
             </a>
           </li>
 
-          <!-- Tombol Tim -->
-          <li class="mt-0.5 w-full">
+         <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
               href="?page=team"
@@ -455,31 +436,19 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
             </a>
           </li>
           <!-- Tombol Daftar Mahasiswa -->
-          <li class="mt-* w-full">
-            <a
-              class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="?page=students"
-            >
-              <div
-                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
-              >
-                <!-- Icon kertas simpel -->
-                <svg
-                  width="20px"
-                  height="20px"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect x="4" y="4" width="16" height="20" rx="3" fill="#8B5CF6" />
-                  <rect x="7" y="8" width="10" height="2" rx="1" fill="#fff"/>
-                  <rect x="7" y="12" width="10" height="2" rx="1" fill="#fff"/>
-                  <rect x="7" y="16" width="6" height="2" rx="1" fill="#fff"/>
-                </svg>
-              </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Daftar Mahasiswa</span>
-            </a>
-          </li>
+         <li class="mt-0.5 w-full">
+                <a class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors" href="?page=students">
+                  <div class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="4" y="4" width="16" height="20" rx="3" fill="#fff" fill-opacity="0.9" />
+                      <rect x="7" y="8" width="10" height="2" rx="1" fill="#8B5CF6"/>
+                      <rect x="7" y="12" width="10" height="2" rx="1" fill="#8B5CF6"/>
+                      <rect x="7" y="16" width="6" height="2" rx="1" fill="#8B5CF6"/>
+                    </svg>
+                  </div>
+                  <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Daftar Mahasiswa</span>
+                </a>
+              </li>
           <!-- Tombol Log Out -->
           <li class="mt-6 w-full">
             <a href="?action=logout"
@@ -492,300 +461,146 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
     </aside>
     <!-- end sidenav -->
 
-    <main
-      class="ease-soft-in-out xl:ml-68.5 relative min-h-screen rounded-xl transition-all duration-200"
-    >
+    <main class="ease-soft-in-out xl:ml-68.5 relative min-h-screen rounded-xl transition-all duration-200">
       <!-- Navbar -->
-      <nav
-        class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start"
-        navbar-main
-        navbar-scroll="true"
-      >
-        <div
-          class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit"
-        >
-          <nav>
-            <!-- breadcrumb -->
-            <ol
-              class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16"
-            >
-              <li class="leading-normal text-sm">
-                <a class="opacity-50 text-slate-700" href="javascript:;"
-                  >Pages</a
-                >
-              </li>
-              <li
-                class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
-                aria-current="page"
-              >
-                Berita
-              </li>
+      <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start">
+        <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+           <nav>
+            <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+              <li class="leading-normal text-sm"><a class="opacity-50 text-slate-700" href="javascript:;">Pages</a></li>
+              <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">Mahasiswa</li>
             </ol>
-            <h6 class="mb-0 font-bold capitalize">Berita</h6>
+            <h6 class="mb-0 font-bold capitalize">Daftar Mahasiswa</h6>
           </nav>
-
-          <div
-            class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto"
-          >
-            <!-- ...existing code... -->
+          
+          <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
             <div class="flex items-center md:ml-auto md:pr-4">
-              <div class="relative flex flex-wrap items-center w-full transition-all rounded-lg ease-soft">
-                <!-- Ganti search bar dengan info akun -->
-                <span class="flex items-center px-3 py-2 bg-white rounded-lg shadow-soft-md">
+               <span class="flex items-center px-3 py-2 bg-white rounded-lg shadow-soft-md">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="#8B5CF6"/>
                     <path stroke="#8B5CF6" stroke-width="2" d="M4 20c0-3.333 3.333-6 8-6s8 2.667 8 6" fill="none"/>
                   </svg>
-                  <span class="font-semibold text-slate-700">
-                    <?php echo htmlspecialchars($nama_pengguna); ?>
-                  </span>
+                  <span class="font-semibold text-slate-700"><?= htmlspecialchars($nama_pengguna) ?></span>
                 </span>
-              </div>
             </div>
             
-            <ul
-              class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full"
-            >
-              
+            <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
               <li class="flex items-center pl-4 xl:hidden">
-                <a
-                  href="javascript:;"
-                  class="block p-0 text-sm transition-all ease-nav-brand text-slate-500"
-                  sidenav-trigger
-                >
+                <a href="javascript:;" class="block p-0 text-sm transition-all ease-nav-brand text-slate-500" sidenav-trigger>
                   <div class="w-4.5 overflow-hidden">
-                    <i
-                      class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"
-                    ></i>
-                    <i
-                      class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"
-                    ></i>
-                    <i
-                      class="ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all"
-                    ></i>
+                    <i class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
+                    <i class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
+                    <i class="ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
                   </div>
                 </a>
               </li>
-              <li class="flex items-center px-4">
-                <a
-                  href="javascript:;"
-                  class="p-0 text-sm transition-all ease-nav-brand text-slate-500"
-                >
-                  <i
-                    fixed-plugin-button-nav
-                    class="cursor-pointer fa fa-cog"
-                    aria-hidden="true"
-                  ></i>
-                  <!-- fixed-plugin-button-nav  -->
-                </a>
-              </li>
             </ul>
+
           </div>
         </div>
       </nav>
-      <!-- End Navbar -->
 
-      <div class="w-full px-6 py-6 mx-auto">
-        
-        <?php
-            // Logika View
-            $isEdit = isset($editData);
-            $formTitle = $isEdit ? "Edit Berita" : "Tambah Berita";
-            $formAction = $isEdit 
-                ? "index.php?page=news&action=edit&id=" . $editData['id'] 
-                : "index.php?page=news&action=create";
+      <!-- Content -->
+      <div class="mx-6 mt-6 relative">
+        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-padding">
             
-            // Logika Visibilitas
-            $popoverClass = $isEdit ? "" : "hidden";
-        ?>
-
-        <div class="relative inline-block text-left mb-4" style="z-index: 50;">
-          
-          <?php if (!$isEdit): ?>
-          <button
-            id="addNewsBtn"
-            class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all shadow-md"
-            onclick="toggleNewsPopover()"
-          >
-            + Tambah Berita
-          </button>
-          <?php endif; ?>
-
-          <div
-            id="newsPopover"
-            class="absolute left-0 mt-2 bg-white rounded-lg shadow-lg p-6 border border-gray-100 <?= $popoverClass ?>"
-            style="width: 400px; max-width: 90vw; z-index: 100;"
-          >
-            <h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800"><?= $formTitle ?></h3>
-            
-            <form action="<?= $formAction ?>" method="POST" enctype="multipart/form-data">
-              
-              <?php if ($isEdit && !empty($editData['thumbnail'])): ?>
-                <div class="mb-4 text-center">
-                    <p class="text-xs font-semibold mb-1 text-gray-500">Thumbnail Saat Ini:</p>
-                    
-                    <img src="<?= htmlspecialchars($editData['thumbnail']) ?>" 
-                         class="mx-auto rounded border shadow-sm object-contain bg-gray-100"
-                         style="height: 120px; width: auto; max-width: 100%; display: block;">
-                         
-                </div>
-              <?php endif; ?>
-
-              <div class="mb-4">
-                <label class="block text-sm font-semibold mb-1 text-gray-700">Judul Artikel</label>
-                <input type="text" name="title" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all" 
-                       value="<?= $isEdit ? htmlspecialchars($editData['title']) : '' ?>" required>
-              </div>
-
-              <div class="mb-4">
-                <label class="block text-sm font-semibold mb-1 text-gray-700">Tanggal Publish</label>
-                <input type="date" name="published_date" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all" 
-                       value="<?= $isEdit ? htmlspecialchars($editData['published_date']) : date('Y-m-d') ?>" required>
-              </div>
-
-              <div class="mb-4">
-                <label class="block text-sm font-semibold mb-1 text-gray-700">Isi Konten</label>
-                <textarea name="content" rows="4" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all" required><?= $isEdit ? htmlspecialchars($editData['content']) : '' ?></textarea>
-              </div>
-
-              <div class="mb-4">
-                <label class="block text-sm font-semibold mb-1 text-gray-700">
-                    <?= $isEdit ? "Ganti Thumbnail" : "Upload Thumbnail" ?>
-                </label>
-                
-                <input type="file" name="thumbnail" accept="image/*" 
-                       class="w-full text-sm text-slate-500
-                              file:mr-4 file:py-2 file:px-4
-                              file:rounded-full file:border-0
-                              file:text-sm file:font-semibold
-                              file:bg-purple-700 file:text-white
-                              hover:file:bg-purple-600
-                              cursor-pointer focus:outline-none"
-                       <?= $isEdit ? '' : 'required' ?>>
-                       
-                <p class="text-xs text-slate-400 mt-1">*Format: JPG, PNG, JPEG. Max: 2MB.</p>
-              </div>
-
-              <div class="flex justify-end pt-2">
-                
-                <?php if ($isEdit): ?>
-                    <a href="index.php?page=news" 
-                       class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all">
-                       Batal
-                    </a>
-                <?php else: ?>
-                    <button type="button" 
-                            class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" 
-                            onclick="toggleNewsPopover()">
-                            Batal
-                    </button>
-                <?php endif; ?>
-                
-                <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">
-                    Simpan
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-          <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
-            <h6>Daftar Berita</h6>
-
-            <form action="index.php" method="GET" class="flex items-center space-x-2">
-                <input type="hidden" name="page" value="news">
-                <input 
-                    type="search" 
-                    name="keyword" 
-                    placeholder="Cari Berita..." 
-                    value="<?= htmlspecialchars($keyword) ?>"
-                    class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all"
-                >
-                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">
-                    Cari
-                </button>
-            </form>
-          </div>
-          <div class="flex-auto px-0 pt-0 pb-2">
-            <div class="p-0 overflow-x-auto">
-              <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
-                <thead class="align-bottom">
-                  <tr>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Thumbnail</th>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Info Berita</th>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal</th>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php if (!empty($newsList)): ?>
-                      <?php foreach ($newsList as $news): ?>
-                      <tr>
-                        <td class="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent text-center">
-                          <?php if(!empty($news['thumbnail'])): ?>
-                            <img src="<?= htmlspecialchars($news['thumbnail']) ?>" class="h-16 w-24 object-cover rounded-lg mx-auto border" alt="thumb" />
-                          <?php else: ?>
-                             <span class="text-xs text-gray-400">No Image</span>
-                          <?php endif; ?>
-                        </td>
-                        <td class="p-2 align-middle bg-transparent shadow-transparent">
-                           <div class="flex flex-col px-2 py-1">
-                                <h6 class="mb-0 text-sm text-center leading-normal font-bold text-slate-700"><?= htmlspecialchars($news['title']) ?></h6>
-                                <p class="mb-0 text-xs text-center text-slate-400 overflow-hidden w-64 truncate">
-                                    <?= htmlspecialchars(substr($news['content'], 0, 100)) ?>...
-                                </p>
-                           </div>
-                        </td>
-                        <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
-                          <span class="text-xs font-semibold leading-tight text-slate-400">
-                            <?= date('d M Y', strtotime($news['published_date'])) ?>
-                          </span>
-                        </td>
-                        <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
-                          <a href="index.php?page=news&action=edit&id=<?= $news['id'] ?>" 
-                             class="text-xs font-bold leading-tight text-blue-800 mr-6 hover:text-blue-950 transition-all"> 
-                             Edit 
-                          </a>
-                          
-                          <a href="index.php?page=news&action=delete&id=<?= $news['id'] ?>" 
-                             class="text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" 
-                             onclick="return confirm('Yakin ingin menghapus berita ini?')"> 
-                             Hapus 
-                          </a>
-                        </td>
-                      </tr>
-                      <?php endforeach; ?>
-                  <?php else: ?>
-                      <tr>
-                          <td colspan="4" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada berita.</td>
-                      </tr>
-                  <?php endif; ?>
-                </tbody>
-              </table>
+            <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
+                <h6>Tabel Mahasiswa Terdaftar</h6>
+                <form action="index.php" method="GET" class="flex items-center space-x-2">
+                    <input type="hidden" name="page" value="students">
+                    <input type="search" name="keyword" placeholder="Cari Nama / NIM..." value="<?= htmlspecialchars($keyword) ?>" class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all">
+                    <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">Cari</button>
+                </form>
             </div>
-          </div>
+
+            <div class="flex-auto px-0 pt-0 pb-2">
+                <div class="p-0 overflow-x-auto">
+                    <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                        <thead class="align-bottom">
+                            <tr>
+                                <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Profil</th>
+                                <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">NIM</th>
+                                <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Prodi & Angkatan</th>
+                                <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aktivitas</th>
+                                <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           <?php if (!empty($pagedData)): // GANTI studentList jadi pagedData ?>
+                                <?php foreach ($pagedData as $s): ?>
+                                <tr>
+                                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                        <div class="flex px-2 py-1">
+                                            <!-- PERBAIKAN: Menghapus <img> avatar -->
+                                            <div class="flex flex-col justify-center">
+                                                <h6 class="mb-0 text-sm leading-normal font-semibold text-slate-700"><?= htmlspecialchars($s['full_name'] ?? '') ?></h6>
+                                                <p class="mb-0 text-xs leading-tight text-slate-400"><?= htmlspecialchars($s['email'] ?? '') ?></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                        <p class="mb-0 text-xs font-bold leading-tight text-slate-500"><?= htmlspecialchars($s['nim'] ?? '') ?></p>
+                                    </td>
+                                    <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                        <p class="text-xs font-semibold mb-0 text-slate-500"><?= htmlspecialchars($s['program_study'] ?? '') ?></p>
+                                        <p class="text-xs text-slate-400">Angkatan <?= htmlspecialchars($s['batch'] ?? '') ?></p>
+                                    </td>
+                                    <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                        <span class="bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                            <?= htmlspecialchars($s['activity_type'] ?? '') ?>
+                                         </span>
+                                    </td>
+                                    <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                        <a href="index.php?page=students&action=delete&id=<?= $s['student_id'] ?>" onclick="return confirm('Hapus mahasiswa ini? Data user akan tetap ada, hanya data mahasiswa yang dihapus.')" class="text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer">
+                                            Hapus
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr><td colspan="5" class="text-center p-4 text-sm text-gray-500">Tidak ada data mahasiswa.</td></tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- PAGINATION -->
+            <?php if ($totalPages > 1): ?>
+            <div class="flex justify-center mt-4 mb-4">
+                <nav aria-label="Page navigation">
+                    <ul class="inline-flex items-center -space-x-px">
+                        <!-- Tombol Prev -->
+                        <li class="mx-1">
+                            <a href="?page=students&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+                        
+                        <!-- Angka Halaman -->
+                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li class="mx-1">
+                            <a href="?page=students&p=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>">
+                                <?= $i ?>
+                            </a>
+                        </li>
+                        <?php endfor; ?>
+                        
+                        <!-- Tombol Next -->
+                        <li class="mx-1">
+                            <a href="?page=students&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <?php endif; ?>
+            <!-- END PAGINATION -->
+
         </div>
       </div>
-      
     </main>
-    
-    <script>
-      function toggleNewsPopover() {
-        const popover = document.getElementById("newsPopover");
-        popover.classList.toggle("hidden");
-      }
-      document.addEventListener("click", function(e) {
-        const btn = document.getElementById("addNewsBtn");
-        const popover = document.getElementById("newsPopover");
-        if (popover && !popover.contains(e.target)) {
-           if (btn && e.target !== btn) {
-               popover.classList.add("hidden");
-           }
-        }
-      });
-    </script>
-    <script src="assets/js/plugins/perfect-scrollbar.min.js" async></script>
     <script src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
   </body>
 </html>

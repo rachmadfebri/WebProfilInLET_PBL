@@ -6,9 +6,21 @@ class TeamMembersModel {
         $this->db = $pdo;
     }
 
-    public function getAll() {
-        $stmt = $this->db->prepare("SELECT * FROM team_members ORDER BY created_at DESC");
-        $stmt->execute();
+    // PERBAIKAN: Tambahkan parameter $keyword
+    public function getAll($keyword = '') {
+        $sql = "SELECT * FROM team_members";
+        $params = [];
+
+        // Logika Pencarian
+        if ($keyword) {
+            $sql .= " WHERE name ILIKE :keyword OR position ILIKE :keyword OR email ILIKE :keyword";
+            $params[':keyword'] = '%' . $keyword . '%';
+        }
+
+        $sql .= " ORDER BY created_at DESC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
