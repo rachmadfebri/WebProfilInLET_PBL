@@ -245,21 +245,35 @@
                     <p class="gallery-description">
                         Di balik setiap potret, ada kisah dan perasaan yang hidup. Inilah bagian kecil dari cerita besar kita — tempat kenangan tumbuh dan tak pernah hilang.
                     </p>
-                    <a href="#" class="btn-view-more">
+                    <a href="index.php?page=gallerypublic" class="btn-view-more">
                         <span>View More</span>
                     </a>
                 </div>
 
                 <div class="gallery-right">
-                    <div class="gallery-capsule mt-down">
-                        <img src="img/galery2.png" alt="Gallery 1">
-                    </div>
-                    <div class="gallery-capsule mt-up">
-                        <img src="img/galery1.png" alt="Gallery 2">
-                    </div>
-                    <div class="gallery-capsule mt-down">
-                        <img src="img/galery3.png" alt="Gallery 3">
-                    </div>
+                    <?php
+                    // Ambil 3 gambar pertama dari database
+                    try {
+                        require_once __DIR__ . '/../../model/galleryModel.php';
+                        $galleryModel = new GalleryModel($pdo);
+                        $galleries = $galleryModel->getAll();
+                        
+                        // Ambil hanya 3 gambar pertama
+                        $firstThree = array_slice($galleries, 0, 3);
+                        
+                        $capsuleClasses = ['mt-down', 'mt-up', 'mt-down'];
+                        
+                        foreach ($firstThree as $index => $gallery):
+                    ?>
+                        <div class="gallery-capsule <?php echo $capsuleClasses[$index] ?? 'mt-down'; ?>">
+                            <img src="<?php echo htmlspecialchars($gallery['image']); ?>" alt="Gallery <?php echo $index + 1; ?>">
+                        </div>
+                    <?php
+                        endforeach;
+                    } catch (Exception $e) {
+                        error_log("Gallery Error: " . $e->getMessage());
+                    }
+                    ?>
                 </div>
             </div>
         </section>

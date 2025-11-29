@@ -1,5 +1,7 @@
 
-<?php $currentPage = basename($_SERVER['PHP_SELF']); ?>
+<?php 
+    $currentPage = $_GET['page'] ?? 'home';
+?>
 
 <header>
     <div class="logo">
@@ -11,27 +13,27 @@
 
         <ul>
             <li>
-                <a href="index.php" class="nav-item <?php echo $currentPage === 'index.php' ? 'active' : ''; ?>">
+                <a href="index.php?page=home" class="nav-item <?php echo $currentPage === 'home' ? 'active' : ''; ?>">
                     Home
                 </a>
             </li>
             <li>
-                <a href="about.php" class="nav-item <?php echo $currentPage === 'about.php' ? 'active' : ''; ?>">
+                <a href="index.php?page=about" class="nav-item <?php echo $currentPage === 'about' ? 'active' : ''; ?>">
                     About
                 </a>
             </li>
             <li>
-                <a href="team.php" class="nav-item <?php echo $currentPage === 'team.php' ? 'active' : ''; ?>">
+                <a href="index.php?page=teampublic" class="nav-item <?php echo $currentPage === 'teampublic' ? 'active' : ''; ?>">
                     Team
                 </a>
             </li>
             <li>
-                <a href="<?php echo $currentPage === 'index.php' ? '#news' : 'index.php#news'; ?>" class="nav-item">
+                <a href="index.php?page=newspublic" class="nav-item <?php echo $currentPage === 'newspublic' ? 'active' : ''; ?>">
                     News
                 </a>
             </li>
             <li>
-                <a href="gallery.php" class="nav-item <?php echo $currentPage === 'gallery.php' ? 'active' : ''; ?>">
+                <a href="index.php?page=gallerypublic" class="nav-item <?php echo $currentPage === 'gallerypublic' ? 'active' : ''; ?>">
                     Gallery
                 </a>
             </li>
@@ -46,4 +48,38 @@
             </div>
         </a>
     </div>
+        <script>
+        const navPill = document.querySelector('.nav-pill');
+        const indicator = document.querySelector('.nav-indicator');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        if (navPill && indicator && navItems.length) {
+            const handleIndicator = (el) => {
+                navItems.forEach((item) => {
+                    item.classList.remove('active');
+                    item.style.color = '';
+                });
+
+                const parentRect = navPill.getBoundingClientRect();
+                const elementRect = el.getBoundingClientRect();
+                indicator.style.width = `${elementRect.width}px`;
+                indicator.style.left = `${elementRect.left - parentRect.left}px`;
+                indicator.style.top = `${elementRect.top - parentRect.top}px`;
+                indicator.style.opacity = '1';
+
+                el.classList.add('active');
+                el.style.color = 'white';
+            };
+
+            navItems.forEach((item) => {
+                item.addEventListener('mouseenter', () => handleIndicator(item));
+                item.addEventListener('focus', () => handleIndicator(item));
+            });
+
+            const activeItem = document.querySelector('.nav-item.active') || navItems[0];
+            if (activeItem) {
+                handleIndicator(activeItem);
+            }
+        }
+    </script>
 </header>

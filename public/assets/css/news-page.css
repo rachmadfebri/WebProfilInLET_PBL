@@ -1,0 +1,102 @@
+/* --- Umum Halaman News --- */
+.news-section {
+    padding: 120px 50px; /* Padding atas untuk memberi ruang dari header fixed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* --- Judul Halaman (Gradient Text) --- */
+.news-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 40px;
+    letter-spacing: -1px;
+    
+    /* Replikasi gaya gradient-text dari style.css */
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* --- Kontainer Grid Utama --- */
+.news-grid-container {
+    display: grid;
+    /* Membuat 3 kolom, rasio 2:1 */
+    grid-template-columns: 2fr 1fr; 
+    gap: 30px;
+    width: 100%;
+}
+
+/* --- Kolom Kiri --- */
+.news-column-left {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Jarak antara main article dan small article list */
+}
+
+/* Berita Utama (Kotak Besar Atas) */
+.main-article-block {
+    /* Rasio 16:9 untuk gambar */
+    padding-bottom: 56.25%; 
+    position: relative;
+    width: 100%;
+}
+
+.main-article-image-placeholder {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #d1d1d1; /* Warna abu-abu placeholder */
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Daftar Berita Kecil (2 kolom) */
+.small-article-list {
+    display: grid;
+    grid-template-columns: 1fr; /* Hanya 1 kolom di sini */
+    gap: 15px;
+}
+
+/* Item Berita Kecil (Kotak Horizontal) */
+.small-article-item {
+    background-color: #d1d1d1; /* Warna abu-abu placeholder */
+    height: 50px; /* Tinggi kotak */
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Kolom Kanan --- */
+.news-column-right {
+    /* Hanya untuk penempatan */
+}
+
+/* Sidebar Detail (Kotak Besar Kanan) */
+.sidebar-detail-block {
+    background-color: #d1d1d1; /* Warna abu-abu placeholder */
+    height: 100%; /* Mengisi sisa ruang vertikal */
+    min-height: 500px; /* Ketinggian minimum */
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Mobile (Tumpuk kolom) */
+@media (max-width: 900px) {
+    .news-grid-container {
+        /* Kembali ke 1 kolom vertikal */
+        grid-template-columns: 1fr; 
+    }
+    
+    .news-section {
+        padding: 100px 20px 50px 20px;
+    }
+    
+    .sidebar-detail-block {
+        /* Di mobile, tinggi sidebar dikurangi */
+        min-height: 300px; 
+    }
+}

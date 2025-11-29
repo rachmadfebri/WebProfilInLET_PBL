@@ -141,6 +141,15 @@ switch ($page) {
     // Opsi 2: Jika ingin pakai Controller:
     // $galleryController->index();
     break;
+  
+  case 'newspublic':
+    // Opsi 1: Panggil langsung View (Cara Cepat)
+    require $viewDir . 'newspublic.php';
+    
+    // Opsi 2: Jika ingin pakai Controller:
+    // $newsController->index();
+    break;
+
   // Dashboards
   case 'admin-dashboard':
     $adminController->dashboard();
