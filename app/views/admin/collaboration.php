@@ -672,7 +672,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                 <?php else: ?>
                     <button type="button" 
                             class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" 
-                            onclick="toggleCollaborationPopover()">
+                            onclick="toggleCollabPopover()">
                             Batal
                     </button>
                 <?php endif; ?>
