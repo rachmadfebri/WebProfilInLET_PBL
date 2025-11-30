@@ -3,11 +3,17 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Fallback jika variabel belum ada (biar tidak error jika file dibuka langsung)
+// Fallback variabel statistik
 $totalProducts = $totalProducts ?? 0;
 $totalResearch = $totalResearch ?? 0;
 $totalStudents = $totalStudents ?? 0;
 $totalTeam     = $totalTeam ?? 0;
+
+// Fallback variabel guestbook
+$guestbookList = $guestbookList ?? [];
+$startDate     = $startDate ?? '';
+$endDate       = $endDate ?? '';
+$keyword       = $keyword ?? '';
 
 $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
 ?>
@@ -414,15 +420,15 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(1.000000, 0.000000)">
                           <path
-                            class="fill-slate-800 opacity-60"
+                            class="opacity-60"
                             d="M45,0 L26,0 C25.447,0 25,0.447 25,1 L25,20 C25,20.379 25.214,20.725 25.553,20.895 C25.694,20.965 25.848,21 26,21 C26.212,21 26.424,20.933 26.6,20.8 L34.333,15 L45,15 C45.553,15 46,14.553 46,14 L46,1 C46,0.447 45.553,0 45,0 Z"
                           ></path>
                           <path
-                            class="fill-slate-800"
+                            class=""
                             d="M22.883,32.86 C20.761,32.012 17.324,31 13,31 C8.676,31 5.239,32.012 3.116,32.86 C1.224,33.619 0,35.438 0,37.494 L0,41 C0,41.553 0.447,42 1,42 L25,42 C25.553,42 26,41.553 26,41 L26,37.494 C26,35.438 24.776,33.619 22.883,32.86 Z"
                           ></path>
                           <path
-                            class="fill-slate-800"
+                            class=""
                             d="M13,28 C17.432,28 21,22.529 21,18 C21,13.589 17.411,10 13,10 C8.589,10 5,13.589 5,18 C5,22.529 8.568,28 13,28 Z"
                           ></path>
                         </g>
@@ -547,10 +553,10 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                 class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
                 aria-current="page"
               >
-                Beranda
+                Dashboard
               </li>
             </ol>
-            <h6 class="mb-0 font-bold capitalize">Beranda</h6>
+            <h6 class="mb-0 font-bold capitalize">Ringkasan Lab</h6>
           </nav>
 
           <div
@@ -593,19 +599,6 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                       class="ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all"
                     ></i>
                   </div>
-                </a>
-              </li>
-              <li class="flex items-center px-4">
-                <a
-                  href="javascript:;"
-                  class="p-0 text-sm transition-all ease-nav-brand text-slate-500"
-                >
-                  <i
-                    fixed-plugin-button-nav
-                    class="cursor-pointer fa fa-cog"
-                    aria-hidden="true"
-                  ></i>
-                  <!-- fixed-plugin-button-nav  -->
                 </a>
               </li>
             </ul>
@@ -758,14 +751,108 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
         </div>
 
         <!-- AREA KONTEN LAIN (Grafik/Tabel, bisa dikosongkan dulu atau diisi tabel ringkas) -->
+       <!-- AREA GUESTBOOK / BUKU TAMU (FILTER & TABEL) -->
         <div class="flex flex-wrap mt-6 -mx-3">
-            <div class="w-full px-3 mb-6 lg:mb-0 lg:w-7/12 lg:flex-none">
-                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div class="flex-auto p-4">
-                         <h6 class="font-bold mb-4">Selamat Datang di Panel Admin Lab InLET</h6>
-                         <p class="text-sm text-slate-500">Gunakan menu di samping untuk mengelola data website.</p>
+            <div class="w-full px-3 mb-6 lg:mb-0 lg:flex-none">
+                
+                <!-- CARD FILTER -->
+                <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border mb-4">
+                    <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+                        <h6 class="font-bold">Filter & Cetak Laporan Tamu</h6>
+                    </div>
+                    <div class="flex-auto p-6">
+                        <!-- FORM PENCARIAN & FILTER (Action ke Dashboard) -->
+                        <form action="index.php" method="GET" class="flex flex-wrap items-end gap-4 mb-4">
+                            <input type="hidden" name="page" value="admin-dashboard">
+                            
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700">Dari Tanggal</label>
+                                <input type="date" name="start_date" value="<?= htmlspecialchars($startDate) ?>" class="text-sm border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:border-purple-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700">Sampai Tanggal</label>
+                                <input type="date" name="end_date" value="<?= htmlspecialchars($endDate) ?>" class="text-sm border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:border-purple-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700">Keyword (Opsional)</label>
+                                <input type="text" name="keyword" value="<?= htmlspecialchars($keyword) ?>" placeholder="Nama / Instansi" class="text-sm border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:border-purple-500">
+                            </div>
+                            <div class="ml-2">
+                                <button type="submit" class="inline-flex items-center justify-center px-6 py-2 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-xs font-bold uppercase shadow-md hover:scale-105 transition-all">
+                                    <i class="fas fa-search mr-1"></i> Cari
+                                </button>
+                            </div>
+                            <div class="ml-2">
+                                <a href="index.php?page=print-guestbook&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&keyword=<?= urlencode($keyword) ?>" target="_blank" class="inline-flex items-center justify-center px-6 py-2 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-xs font-bold uppercase shadow-md hover:scale-105 transition-all">
+                                    <i class="fas fa-print mr-2"></i> Cetak PDF
+                                </a>
+                            </div>
+                        </form>
+
+                        <!-- TOMBOL CETAK TERPISAH (Mengambil parameter filter yang sedang aktif) -->
+                        
                     </div>
                 </div>
+
+                <!-- CARD TABEL GUESTBOOK -->
+                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
+                    <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
+                         <h6 class="font-bold">Daftar Buku Tamu Terbaru</h6>
+                    </div>
+                    <div class="flex-auto px-0 pt-0 pb-2">
+                        <div class="p-0 overflow-x-auto">
+                            <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                                <thead class="align-bottom">
+                                    <tr>
+                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Waktu</th>
+                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Nama & Instansi</th>
+                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Kontak</th>
+                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Pesan</th>
+                                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (!empty($guestbookList)): ?>
+                                        <?php foreach ($guestbookList as $item): ?>
+                                        <tr>
+                                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                                <div class="px-2 py-1">
+                                                    <p class="mb-0 text-xs font-semibold leading-tight"><?= date('d M Y H:i', strtotime($item['sent_at'])) ?></p>
+                                                </div>
+                                            </td>
+                                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                                <div class="px-2 py-1">
+                                                    <h6 class="mb-0 text-sm leading-normal font-bold text-slate-700"><?= htmlspecialchars($item['name']) ?></h6>
+                                                    <p class="mb-0 text-xs leading-tight text-slate-400"><?= htmlspecialchars($item['institution'] ?? '-') ?></p>
+                                                </div>
+                                            </td>
+                                            <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
+                                                <p class="mb-0 text-xs leading-tight text-slate-500"><?= htmlspecialchars($item['email'] ?? '-') ?></p>
+                                                <p class="mb-0 text-xs leading-tight text-slate-500"><?= htmlspecialchars($item['phone_number'] ?? '-') ?></p>
+                                            </td>
+                                            <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
+                                                <p class="mb-0 text-xs leading-tight text-slate-500 whitespace-pre-wrap max-w-xs truncate" title="<?= htmlspecialchars($item['message']) ?>">
+                                                    <?= htmlspecialchars(substr($item['message'], 0, 50)) . (strlen($item['message']) > 50 ? '...' : '') ?>
+                                                </p>
+                                            </td>
+                                            <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                                <a href="index.php?page=guestbook&action=delete&id=<?= $item['id'] ?>" class="text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer" onclick="return confirm('Hapus pesan tamu ini?')">
+                                                    <i class="fas fa-trash mr-1"></i> Hapus
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="5" class="text-center p-4 text-sm font-semibold text-gray-500">Belum ada data buku tamu.</td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 

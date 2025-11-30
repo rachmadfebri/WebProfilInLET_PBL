@@ -14,6 +14,7 @@ require_once __DIR__ . '/../app/controller/ResearchController.php';
 require_once __DIR__ . '/../app/controller/TeamMembersController.php';
 require_once __DIR__ . '/../app/controller/AttendanceController.php';
 require_once __DIR__ . '/../app/controller/StudentController.php';
+require_once __DIR__ . '/../app/controller/GuestbookController.php';
 
 // --- 2. INISIALISASI DATABASE & CONTROLLER ---
 $db = new Database();
@@ -29,6 +30,7 @@ $researchController = new ResearchController($pdo);
 $collaborationController = new CollaborationController($pdo);
 $teamMembersController = new TeamMembersController($pdo);
 $attendanceController = new AttendanceController();
+$guestbookController = new GuestbookController($pdo);
 
 // [BARU] Inisialisasi Student Controller
 $studentController = new StudentController($pdo);
@@ -104,6 +106,10 @@ if ($page === 'students' && $action === 'delete') {
     $studentController->delete($_GET['id']);
     exit;
 }
+if ($page === 'guestbook' && $action === 'delete') {
+    $guestbookController->delete($_GET['id']);
+    exit;
+}
 
 $viewDir = __DIR__ . '/../app/views/users/';
 
@@ -177,6 +183,14 @@ switch ($page) {
   case 'collaboration':
     $collaborationController->index();
     break;
+  case 'print-guestbook':
+    $guestbookController->printReport();
+    break;
+
+  // [TAMBAHAN] Aksi Submit Tamu (Dipanggil dari form di halaman depan)
+  // case 'submit-guestbook':
+  //   $guestbookController->submit();
+  //   break;
 
   // [BARU] Halaman Kelola Mahasiswa (Admin)
   case 'students':
