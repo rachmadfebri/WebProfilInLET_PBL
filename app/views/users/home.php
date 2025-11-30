@@ -104,137 +104,127 @@
 
     <section id="news" class="news-section">
 
+        <?php
+        // Ambil berita dari database
+        try {
+            require_once __DIR__ . '/../../model/newsModel.php';
+            $newsModel = new NewsModel($pdo);
+            $allNews = $newsModel->getAll();
+            
+            // Pisahkan berita pertama dan sisanya
+            $mainNews = !empty($allNews) ? $allNews[0] : null;
+            $otherNews = !empty($allNews) ? array_slice($allNews, 1, 8) : [];
+        } catch (Exception $e) {
+            error_log("News Error: " . $e->getMessage());
+            $mainNews = null;
+            $otherNews = [];
+        }
+        ?>
 
             <h2 class="news-heading gradient-text">News</h2>
 
             <div class="news-container">
-                <div class="news-card-border">
-                    <div class="news-card">
-                        <img src="img/news 1.png" alt="News 1" class="news-card-img">
-                        <div class="news-card-content">
-                            <h3 class="news-card-title">Visiting Scientist Program</h3>
-                            <p class="news-card-description">
-                                In November, 2023, we had a chance to had a research collaboration with Hiroshima University
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="news-card-wrapper">
+                <!-- Main News Card -->
+                <?php if ($mainNews): ?>
                     <div class="news-card-border">
                         <div class="news-card">
-                            <img src="img/news 2.png" alt="News 2" class="news-card-img">
+                            <?php if (!empty($mainNews['thumbnail'])): ?>
+                                <img src="<?php echo htmlspecialchars($mainNews['thumbnail']); ?>" alt="<?php echo htmlspecialchars($mainNews['title']); ?>" class="news-card-img">
+                            <?php endif; ?>
                             <div class="news-card-content">
-                                <h3 class="news-card-title">Monthly Research Discussion</h3>
+                                <h3 class="news-card-title"><?php echo htmlspecialchars($mainNews['title']); ?></h3>
                                 <p class="news-card-description">
-                                    Conducting a routine monthly research discussion to find new concept and finding
+                                    <?php echo htmlspecialchars(substr($mainNews['content'], 0, 150)) . '...'; ?>
                                 </p>
                             </div>
                         </div>
                     </div>
+                <?php endif; ?>
 
-                    <a href="javascript:void(0)" class="news-button" id="toggleNewsBtn">
-                        <i class="fa-solid fa-chevron-down"></i> </a>
-                </div>
+                <!-- Second News Card with Toggle Button -->
+                <?php if (count($otherNews) > 0): ?>
+                    <div class="news-card-wrapper">
+                        <div class="news-card-border">
+                            <div class="news-card">
+                                <?php if (!empty($otherNews[0]['thumbnail'])): ?>
+                                    <img src="<?php echo htmlspecialchars($otherNews[0]['thumbnail']); ?>" alt="<?php echo htmlspecialchars($otherNews[0]['title']); ?>" class="news-card-img">
+                                <?php endif; ?>
+                                <div class="news-card-content">
+                                    <h3 class="news-card-title"><?php echo htmlspecialchars($otherNews[0]['title']); ?></h3>
+                                    <p class="news-card-description">
+                                        <?php echo htmlspecialchars(substr($otherNews[0]['content'], 0, 150)) . '...'; ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="news-card-border">
-                    <div class="news-card">
-                        <img src="img/news 3.png" alt="News 3" class="news-card-img">
-                        <div class="news-card-content">
-                            <h3 class="news-card-title">International Research Discussion Program</h3>
-                            <p class="news-card-description">
-                                Enriching the research area by having Research discussion
-                            </p>
+                        <?php if (count($otherNews) > 1): ?>
+                            <a href="javascript:void(0)" class="news-button" id="toggleNewsBtn">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Third News Card -->
+                <?php if (count($otherNews) > 1): ?>
+                    <div class="news-card-border">
+                        <div class="news-card">
+                            <?php if (!empty($otherNews[1]['thumbnail'])): ?>
+                                <img src="<?php echo htmlspecialchars($otherNews[1]['thumbnail']); ?>" alt="<?php echo htmlspecialchars($otherNews[1]['title']); ?>" class="news-card-img">
+                            <?php endif; ?>
+                            <div class="news-card-content">
+                                <h3 class="news-card-title"><?php echo htmlspecialchars($otherNews[1]['title']); ?></h3>
+                                <p class="news-card-description">
+                                    <?php echo htmlspecialchars(substr($otherNews[1]['content'], 0, 150)) . '...'; ?>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endif; ?>
 
             </div>
 
-            <div id="moreNewsSection" class="more-news-wrapper" style="display: none;">
+            <!-- Additional News Grid (Hidden by default) -->
+            <?php if (count($otherNews) > 2): ?>
+                <div id="moreNewsSection" class="more-news-wrapper" style="display: none;">
 
-                <div class="news-container additional-news-grid">
-                    <div class="news-card-border">
-                        <div class="news-card">
-                            <img src="img/news4.png" alt="News 4" class="news-card-img">
-                            <div class="news-card-content">
-                                <h3 class="news-card-title">Workshop Data Science</h3>
-                                <p class="news-card-description">
-                                    Workshop intensif tentang dasar-dasar data science dan aplikasinya.
-                                </p>
+                    <div class="news-container additional-news-grid">
+                        <?php 
+                        // Ambil berita ke-3 sampai ke-8
+                        for ($i = 2; $i < count($otherNews) && $i < 8; $i++):
+                            $news = $otherNews[$i];
+                        ?>
+                            <div class="news-card-border">
+                                <div class="news-card">
+                                    <?php if (!empty($news['thumbnail'])): ?>
+                                        <img src="<?php echo htmlspecialchars($news['thumbnail']); ?>" alt="<?php echo htmlspecialchars($news['title']); ?>" class="news-card-img">
+                                    <?php endif; ?>
+                                    <div class="news-card-content">
+                                        <h3 class="news-card-title"><?php echo htmlspecialchars($news['title']); ?></h3>
+                                        <p class="news-card-description">
+                                            <?php echo htmlspecialchars(substr($news['content'], 0, 80)) . '...'; ?>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        <?php endfor; ?>
                     </div>
-                    <div class="news-card-border">
-                        <div class="news-card">
-                            <img src="img/news5.png" alt="News 5" class="news-card-img">
-                            <div class="news-card-content">
-                                <h3 class="news-card-title">Guest Lecture AI Ethics</h3>
-                                <p class="news-card-description">
-                                    Diskusi mendalam mengenai etika AI dengan pembicara ahli internasional.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="news-card-border">
-                        <div class="news-card">
-                            <img src="img/news6.png" alt="News 6" class="news-card-img">
-                            <div class="news-card-content">
-                                <h3 class="news-card-title">Research Grant Award</h3>
-                                <p class="news-card-description">
-                                    Penghargaan hibah penelitian bagi tim dengan inovasi terbaik.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="news-card-border">
-                        <div class="news-card">
-                            <img src="img/news7.png" alt="News 7" class="news-card-img">
-                            <div class="news-card-content">
-                                <h3 class="news-card-title">Student Exchange Program</h3>
-                                <p class="news-card-description">
-                                    Kesempatan belajar di luar negeri melalui program pertukaran mahasiswa.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="news-card-border">
-                        <div class="news-card">
-                            <img src="img/news8.png" alt="News 8" class="news-card-img">
-                            <div class="news-card-content">
-                                <h3 class="news-card-title">New Publication</h3>
-                                <p class="news-card-description">
-                                    Rilis publikasi ilmiah terbaru dari anggota tim peneliti kami.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="news-card-border">
-                        <div class="news-card">
-                            <img src="img/news9.png" alt="News 9" class="news-card-img">
-                            <div class="news-card-content">
-                                <h3 class="news-card-title">Community Service</h3>
-                                <p class="news-card-description">
-                                    Kegiatan pengabdian masyarakat berbasis teknologi untuk dampak sosial.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="grid-nav-buttons">
+                    <div class="grid-nav-buttons">
 
-                    <a href="javascript:void(0)" class="circle-btn-bottom" id="btnCollapse">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </a>
+                        <a href="javascript:void(0)" class="circle-btn-bottom" id="btnCollapse">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
 
-                    <a href="javascript:void(0)" class="circle-btn-bottom">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </a>
+                        <a href="javascript:void(0)" class="circle-btn-bottom">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+
+                    </div>
 
                 </div>
-
-            </div>
+            <?php endif; ?>
 
     </section>
 
