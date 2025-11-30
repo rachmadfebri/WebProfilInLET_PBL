@@ -3,6 +3,22 @@
 if (!isset($newsList) || !is_array($newsList)) {
     $newsList = [];
 }
+
+// --- PERBAIKAN LOGIKA PAGINATION ---
+$totalRecords = count($newsList); // Hitung total data
+$currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+$limit = 5; // Jumlah data per halaman
+$totalPages = ceil($totalRecords / $limit);
+
+if ($currentPage < 1) $currentPage = 1;
+if ($currentPage > $totalPages && $totalPages > 0) $currentPage = $totalPages;
+
+// Slice array untuk pagination
+$offset = ($currentPage - 1) * $limit;
+// GANTI $news menjadi $newsList
+$pagedData = array_slice($newsList, $offset, $limit);
+// -----------------------------------
+
 $keyword = $_GET['keyword'] ?? '';
 $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
 ?>
@@ -712,6 +728,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
               <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                 <thead class="align-bottom">
                   <tr>
+                      <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">No</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Thumbnail</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Info Berita</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal</th>
@@ -719,9 +736,17 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   </tr>
                 </thead>
                 <tbody>
-                  <?php if (!empty($newsList)): ?>
+                  <?php
+                  $no = $offset + 1;
+                  if (!empty($pagedData)): 
+                    ?> 
                       <?php foreach ($newsList as $news): ?>
                       <tr>
+                        <td class="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent text-center">
+                          <span class="text-xs font-semibold leading-tight text-slate-400">
+                            <?= $no++; ?>
+                          </span>
+                        </td>
                         <td class="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent text-center">
                           <?php if(!empty($news['thumbnail'])): ?>
                             <img src="<?= htmlspecialchars($news['thumbnail']) ?>" class="h-16 w-24 object-cover rounded-lg mx-auto border" alt="thumb" />
@@ -766,8 +791,34 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
             </div>
           </div>
         </div>
+
+        <?php if ($totalPages > 1): ?>
+        <div class="flex justify-center mt-6 mb-6">
+            <nav aria-label="Page navigation">
+                <ul class="inline-flex items-center -space-x-px">
+                    <li class="mx-1">
+                        <a href="?page=news&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
+                            <i class="fas fa-chevron-left"><</i>
+                        </a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <li class="mx-1">
+                        <a href="?page=news&p=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>">
+                            <?= $i ?>
+                        </a>
+                    </li>
+                    <?php endfor; ?>
+                    <li class="mx-1">
+                        <a href="?page=news&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
+                            <i class="fas fa-chevron-right">></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <?php endif; ?>
       </div>
-      
+                    
     </main>
     
     <script>

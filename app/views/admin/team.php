@@ -1,10 +1,23 @@
-<!-- filepath: c:\laragon\www\WebProfilInLET_PBL\app\views\admin\products.php -->
 <?php
-// Ambil data dari database
 // Ambil data dari database
 if (!isset($teamList) || !is_array($teamList)) {
     $teamList = [];
 }
+
+// --- LOGIKA PAGINATION ---
+$totalRecords = count($teamList);
+$currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+$limit = 5; // Batas per halaman
+$totalPages = ceil($totalRecords / $limit);
+
+if ($currentPage < 1) $currentPage = 1;
+if ($currentPage > $totalPages && $totalPages > 0) $currentPage = $totalPages;
+
+// Slice array
+$offset = ($currentPage - 1) * $limit;
+$pagedData = array_slice($teamList, $offset, $limit);
+// -------------------------
+
 $keyword = $_GET['keyword'] ?? '';
 $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
 ?>
@@ -712,6 +725,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
               <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                 <thead class="align-bottom">
                   <tr>
+                      <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">No</th>
                     <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Foto</th>
                     <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Nama & Posisi</th>
                     <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Kontak & Sosmed</th>
@@ -719,9 +733,17 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   </tr>
                 </thead>
                 <tbody>
-                  <?php if (!empty($teamList)): ?>
+                  <?php
+                  $no = $offset + 1;
+                  if (!empty($pagedData)): 
+                    ?> 
                       <?php foreach ($teamList as $item): ?>
                       <tr>
+                         <td class="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent text-center">
+                          <span class="text-xs font-semibold leading-tight text-slate-400">
+                            <?= $no++; ?>
+                          </span>
+                        </td>
                         <!-- Foto -->
                         <td class="p-2 py-3 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
                           <?php if(!empty($item['photo'])): ?>
@@ -764,7 +786,31 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
         </div>
       </div>
 
-      <script>
+      <!-- PAGINATION -->
+        <?php if ($totalPages > 1): ?>
+        <div class="flex justify-center mt-6 mb-6">
+            <nav aria-label="Page navigation">
+                <ul class="inline-flex items-center -space-x-px">
+                    <li class="mx-1">
+                        <a href="?page=team&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-left"></i></a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <li class="mx-1">
+                        <a href="?page=team&p=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>"><?= $i ?></a>
+                    </li>
+                    <?php endfor; ?>
+                    <li class="mx-1">
+                        <a href="?page=team&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-right"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <?php endif; ?>
+        <!-- END PAGINATION -->
+
+      </div>
+    </main>
+    <script>
       function toggleTeamPopover() {
         const popover = document.getElementById("teamPopover");
         if(popover) popover.classList.toggle("hidden");
@@ -776,8 +822,8 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
            if(btn) popover.classList.add("hidden");
         }
       });
-      </script>
-      <script src="assets/js/plugins/perfect-scrollbar.min.js" async></script>
-      <script src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
+    </script>
+    <script src="assets/js/plugins/perfect-scrollbar.min.js" async></script>
+    <script src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
   </body>
 </html>

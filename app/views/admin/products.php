@@ -1,9 +1,22 @@
-<!-- filepath: c:\laragon\www\WebProfilInLET_PBL\app\views\admin\products.php -->
 <?php
-// Ambil data dari database
 if (!isset($productsList) || !is_array($productsList)) {
     $productsList = [];
 }
+
+// --- LOGIKA PAGINATION ---
+$totalRecords = count($productsList);
+$currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+$limit = 5; // Batas data per halaman
+$totalPages = ceil($totalRecords / $limit);
+
+// Validasi halaman
+if ($currentPage < 1) $currentPage = 1;
+if ($currentPage > $totalPages && $totalPages > 0) $currentPage = $totalPages;
+
+// Slice array (Potong data sesuai halaman)
+$offset = ($currentPage - 1) * $limit;
+$pagedData = array_slice($productsList, $offset, $limit);
+// -------------------------
 
 // Ambil keyword agar tetap muncul di kotak pencarian setelah submit
 $keyword = $_GET['keyword'] ?? '';
@@ -693,23 +706,13 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
           </div>
         </div>
 
-        <!-- TABEL DATA PRODUK -->
         <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
           <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
             <h6>Daftar Produk</h6>
-
             <form action="index.php" method="GET" class="flex items-center space-x-2">
                 <input type="hidden" name="page" value="products">
-                <input 
-                    type="search" 
-                    name="keyword" 
-                    placeholder="Cari Produk..." 
-                    value="<?= htmlspecialchars($keyword) ?>"
-                    class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all"
-                >
-                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">
-                    Cari
-                </button>
+                <input type="search" name="keyword" placeholder="Cari Produk..." value="<?= htmlspecialchars($keyword) ?>" class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all">
+                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">Cari</button>
             </form>
           </div>
           <div class="flex-auto px-0 pt-0 pb-2">
@@ -717,18 +720,24 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
               <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                 <thead class="align-bottom">
                   <tr>
-                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Thumbnail</th>
-                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Nama Produk</th>
-                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">URL Produk</th>
-                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal</th>
-                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">No</th>
+                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Thumbnail</th>
+                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Nama Produk</th>
+                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">URL Produk</th>
+                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Tanggal</th>
+                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <?php if (!empty($productsList)): ?>
-                      <?php foreach ($productsList as $item): ?>
+                  <?php
+                  $no = $offset + 1;
+                  if (!empty($pagedData)): 
+                    ?> 
+                      <?php foreach ($pagedData as $item): ?>
                       <tr>
-                        <!-- 1. Thumbnail -->
+                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
+                            <span class="text-xs font-semibold leading-tight text-slate-400"><?= $no++ ?></span>
+                        </td>
                         <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
                           <?php if(!empty($item['thumbnail'])): ?>
                             <img src="<?= htmlspecialchars($item['thumbnail']) ?>" class="h-16 w-24 object-cover rounded-lg mx-auto border" alt="thumb" />
@@ -736,57 +745,62 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                              <span class="text-xs text-gray-400">No Image</span>
                           <?php endif; ?>
                         </td>
-                        
-                        <!-- 2. Nama Produk -->
                         <td class="p-2 align-middle bg-transparent border-b shadow-transparent text-center">
-                            <h6 class="mb-0 text-sm leading-normal font-bold text-slate-700">
-                                <?= htmlspecialchars($item['title'] ?? '') ?>
-                            </h6>
+                            <h6 class="mb-0 text-sm leading-normal font-bold text-slate-700"><?= htmlspecialchars($item['title'] ?? '') ?></h6>
                         </td>
-
-                        <!-- 3. URL Produk -->
                         <td class="p-2 align-middle bg-transparent border-b shadow-transparent text-center">
                             <?php if(!empty($item['url'])): ?>
-                                <a href="<?= htmlspecialchars($item['url']) ?>" target="_blank" class="text-xs text-blue-500 hover:underline truncate w-48 block">
-                                    <?= htmlspecialchars($item['url']) ?>
-                                </a>
+                                <a href="<?= htmlspecialchars($item['url']) ?>" target="_blank" class="text-xs text-blue-500 hover:underline truncate w-48 block mx-auto"><?= htmlspecialchars($item['url']) ?></a>
                             <?php else: ?>
                                 <span class="text-xs text-slate-400">-</span>
                             <?php endif; ?>
                         </td>
-
-                        <!-- 4. Tanggal -->
                         <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <span class="text-xs font-semibold leading-tight text-slate-400">
-                            <?= date('d M Y', strtotime($item['created_at'])) ?>
-                          </span>
+                          <span class="text-xs font-semibold leading-tight text-slate-400"><?= date('d M Y', strtotime($item['created_at'])) ?></span>
                         </td>
-
-                        <!-- 5. Aksi -->
                         <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <a href="index.php?page=products&action=edit&id=<?= $item['id'] ?>" 
-                             class="inline-block mr-6 text-xs font-bold leading-tight text-blue-800 hover:text-blue-950 transition-all"> 
-                             Edit 
-                          </a>
-                          
-                          <a href="index.php?page=products&action=delete&id=<?= $item['id'] ?>" 
-                             class="inline-block text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" 
-                             onclick="return confirm('Yakin ingin menghapus produk ini?')"> 
-                             Hapus 
-                          </a>
+                          <a href="index.php?page=products&action=edit&id=<?= $item['id'] ?>" class="inline-block mr-4 text-xs font-bold leading-tight text-blue-800 hover:text-blue-950">Edit</a>
+                          <a href="index.php?page=products&action=delete&id=<?= $item['id'] ?>" class="inline-block text-xs font-bold leading-tight text-red-500 hover:text-red-700" onclick="return confirm('Hapus produk?')">Hapus</a>
                         </td>
                       </tr>
                       <?php endforeach; ?>
                   <?php else: ?>
-                      <tr>
-                          <td colspan="5" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada produk.</td>
-                      </tr>
+                      <tr><td colspan="5" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada produk.</td></tr>
                   <?php endif; ?>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
+
+        <!-- PAGINATION CONTROLS -->
+        <?php if ($totalPages > 1): ?>
+        <div class="flex justify-center mt-6 mb-6">
+            <nav aria-label="Page navigation">
+                <ul class="inline-flex items-center -space-x-px">
+                    <li class="mx-1">
+                        <a href="?page=products&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
+                            <i class="fas fa-chevron-left"><</i>
+                        </a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <li class="mx-1">
+                        <a href="?page=products&p=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>">
+                            <?= $i ?>
+                        </a>
+                    </li>
+                    <?php endfor; ?>
+                    <li class="mx-1">
+                        <a href="?page=products&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
+                            <i class="fas fa-chevron-right">></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <?php endif; ?>
+        <!-- END PAGINATION -->
+
       </div>
     </main>
     <script>
@@ -797,14 +811,11 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
       document.addEventListener("click", function(e) {
         const btn = document.getElementById("addProductsBtn");
         const popover = document.getElementById("productsPopover");
-        if (!popover.contains(e.target) && e.target !== btn) {
+        if (popover && !popover.contains(e.target) && (!btn || e.target !== btn)) {
           popover.classList.add("hidden");
         }
       });
     </script>
-    <script src="/assets/js/plugins/perfect-scrollbar.min.js" async></script>
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script src="/assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
     <script src="assets/js/plugins/perfect-scrollbar.min.js" async></script>
     <script src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
   </body>
