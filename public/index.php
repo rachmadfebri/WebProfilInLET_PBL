@@ -20,7 +20,7 @@ $db = new Database();
 $pdo = $db->connect();
 
 $authController = new AuthController($pdo);
-$adminController = new AdminController();
+$adminController = new AdminController($pdo);
 $mahasiswaController = new MahasiswaController();
 $galleryController = new galleryController($pdo);
 $newsController = new NewsController($pdo);
