@@ -237,7 +237,7 @@ h1 {
 /* --- SECTION 3: PORTFOLIO / APLIKASI --- */
 .portfolio-section {
     padding: 60px 50px 100px 50px;
-    background-color: #ffffff; 
+    /* background-color: #ffffff;  */
     margin-top: 100px; /* Memberi jarak dari statistik di atas */
 }
 
@@ -369,7 +369,7 @@ h1 {
 /* --- SECTION 4: NEWS SECTION --- */
 .news-section {
     padding: 80px 50px 150px 50px; /* Padding bawah lebih banyak untuk ruang tombol */
-    background-color: #fff; /* Latar belakang putih */
+    /* background-color: #fff; Latar belakang putih */
 }
 
 .news-heading {
@@ -497,7 +497,7 @@ h1 {
 /* --- SECTION 5: GALLERY STYLES --- */
 .gallery-section {
             padding: 100px 50px;
-            background-color: #fff;
+            /* background-color: #fff; */
             overflow: hidden;
         }
 
@@ -568,7 +568,7 @@ h1 {
         /* --- SECTION 6: ACTIVITY SECTION (YOUTUBE EMBED) --- */
 .activity-section {
     padding: 100px 50px;
-    background-color: #f8f8f8; /* Latar belakang sedikit abu-abu untuk kontras */
+    /* background-color: #f8f8f8; Latar belakang sedikit abu-abu untuk kontras */
     text-align: center;
 }
 
@@ -949,4 +949,12 @@ h1 {
         grid-template-columns: repeat(2, minmax(120px, 1fr));
     }
 
+}
+
+/* --- HOME PAGE BACKGROUND --- */
+body.page-home {
+    background-image: url('../img/bgweb.png');
+    /* background-attachment: fixed;
+    background-size: cover;
+    background-position: center; */
 }
