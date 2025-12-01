@@ -3,37 +3,29 @@ require_once __DIR__ . '/../../config/connection.php';
 
 class GalleryModel {
     private $db;
-    private $table = 'gallery'; // Pastikan nama tabel sesuai DB
+    private $table = 'gallery'; 
 
     public function __construct(PDO $pdo) {
         $this->db = $pdo;
     }
 
-    /**
-     * Mengambil data galeri dengan fitur pencarian.
-     * PERBAIKAN: Pencarian HANYA diarahkan ke kolom upload_date.
-     */
     public function getAll($keyword = '') {
-        $sql = "SELECT * FROM {$this->table}";
+        // PERBAIKAN: Join ke tabel users
+        // Asumsi: tabel user bernama 'users', kolom id 'id', dan kolom nama 'full_name'
+        $sql = "SELECT g.*, u.full_name as uploader_name 
+                FROM {$this->table} g
+                LEFT JOIN users u ON g.user_id = u.user_id";
+        
         $params = [];
 
-        // Logika Search KHUSUS TANGGAL
+        // Logika Filter
         if ($keyword) {
-            // PERBAIKAN UTAMA:
-            // Mengubah format tanggal DB (YYYY-MM-DD) menjadi string tampilan (DD Mon YYYY) misal: "28 Nov 2025"
-            // Agar user bisa mencari "Nov", "28", atau "2025".
-            
-            // UNTUK POSTGRESQL (Sesuai error log Anda sebelumnya):
-            $sql .= " WHERE TO_CHAR(upload_date, 'DD Mon YYYY') ILIKE :keyword";
-            
-            // CATATAN: Jika nanti pindah ke MySQL/MariaDB, ganti baris di atas dengan:
-            // $sql .= " WHERE DATE_FORMAT(upload_date, '%d %b %Y') LIKE :keyword";
-
+            // WHERE harus setelah JOIN
+            $sql .= " WHERE TO_CHAR(g.upload_date, 'DD Mon YYYY') ILIKE :keyword";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
-        // Urutkan dari yang paling baru
-        $sql .= " ORDER BY upload_date DESC";
+        $sql .= " ORDER BY g.upload_date DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
@@ -46,9 +38,14 @@ class GalleryModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function create($image) {
-        $stmt = $this->db->prepare("INSERT INTO {$this->table} (image, upload_date) VALUES (:image, NOW())");
-        return $stmt->execute([':image' => $image]);
+    // PERBAIKAN: Menerima $user_id
+    public function create($image, $user_id) {
+        // Simpan user_id ke database
+        $stmt = $this->db->prepare("INSERT INTO {$this->table} (image, user_id, upload_date) VALUES (:image, :user_id, NOW())");
+        return $stmt->execute([
+            ':image' => $image,
+            ':user_id' => $user_id
+        ]);
     }
 
     public function update($id, $image) {

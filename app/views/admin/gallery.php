@@ -705,6 +705,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   <tr>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">No</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Gambar</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Diupload Oleh</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Upload</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
                   </tr>
@@ -722,6 +723,12 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                         
                         <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
                           <img src="<?= htmlspecialchars($item['image']) ?>" class="h-12 w-24 object-cover rounded-lg mx-auto border bg-gray-50 p-1" alt="Galeri Image" />
+                        </td>
+
+                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                          <span class="text-xs font-semibold leading-tight text-slate-400">
+                            <?= htmlspecialchars($item['uploader_name'] ?? 'Unknown') ?>
+                          </span>
                         </td>
 
                         <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
