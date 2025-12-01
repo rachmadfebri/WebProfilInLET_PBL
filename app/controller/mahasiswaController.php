@@ -42,13 +42,30 @@ class MahasiswaController {
             unset($_SESSION['flash_message']);
 
             if ($action === 'absen_datang') {
+                // Validasi waktu: Check-in hanya boleh setelah jam 07:00 dan sebelum jam 22:00
+                if (!$this->attendanceModel->isCheckInTimeAllowed()) {
+                    $_SESSION['flash_message'] = ['type' => 'warning', 'text' => '⏰ Absensi datang hanya tersedia mulai pukul 07:00 WIB.'];
+                    header('Location: ' . $redirect_url);
+                    exit;
+                }
+                
+                if (!$this->attendanceModel->isActivityTimeAllowed()) {
+                    $_SESSION['flash_message'] = ['type' => 'warning', 'text' => '⏰ Absensi ditutup pada pukul 22:00 WIB. Silakan coba besok.'];
+                    header('Location: ' . $redirect_url);
+                    exit;
+                }
+                
+                error_log("Attempting check-in for user_id: " . $user_id);
                 $result = $this->attendanceModel->checkIn($user_id);
+                error_log("Check-in result: " . ($result ? 'true' : 'false'));
 
                 if ($result) {
                     $_SESSION['flash_message'] = ['type' => 'success', 'text' => '✅ Check-In berhasil! Selamat beraktivitas.'];
                 } else {
                     // Cek apakah sudah check-in hari ini
                     $latestAttendance = $this->attendanceModel->getLatestTodayAttendance($user_id);
+                    error_log("Latest attendance after failed check-in: " . json_encode($latestAttendance));
+                    
                     if ($latestAttendance && is_null($latestAttendance['check_out_time'])) {
                         $_SESSION['flash_message'] = ['type' => 'warning', 'text' => '⚠️ Anda sudah Check-In hari ini pada pukul ' . date('H:i', strtotime($latestAttendance['check_in_time'])) . '.'];
                     } else {
@@ -57,6 +74,13 @@ class MahasiswaController {
                 }
                 
             } elseif ($action === 'absen_pulang') {
+                // Validasi waktu: Check-out hanya boleh sebelum jam 22:00
+                if (!$this->attendanceModel->isActivityTimeAllowed()) {
+                    $_SESSION['flash_message'] = ['type' => 'warning', 'text' => '⏰ Absensi ditutup pada pukul 22:00 WIB. Silakan coba besok.'];
+                    header('Location: ' . $redirect_url);
+                    exit;
+                }
+                
                 $latestAttendance = $this->attendanceModel->getLatestTodayAttendance($user_id);
                 
                 if ($latestAttendance && is_null($latestAttendance['check_out_time'])) {
@@ -74,6 +98,8 @@ class MahasiswaController {
             }
             
             // Redirect setelah POST untuk mencegah re-submit form pada refresh
+            // Tambahkan kecil delay untuk memastikan database ter-update
+            sleep(1);
             header('Location: ' . $redirect_url);
             exit;
         }
@@ -114,13 +140,23 @@ class MahasiswaController {
         $check_in_time = null;
         
         if ($latestAttendance) {
+            error_log("Latest attendance found!");
+            error_log("check_in_time: " . $latestAttendance['check_in_time']);
+            error_log("check_out_time: " . ($latestAttendance['check_out_time'] ?? 'NULL'));
+            
             $check_in_time = date('H:i:s', strtotime($latestAttendance['check_in_time']));
+            
             // PERBAIKAN: Pastikan logika pengecekan check_out_time konsisten
-            if (is_null($latestAttendance['check_out_time']) || empty($latestAttendance['check_out_time'])) {
+            // Cek apakah check_out_time NULL atau kosong string
+            if (is_null($latestAttendance['check_out_time']) || $latestAttendance['check_out_time'] === '' || empty($latestAttendance['check_out_time'])) {
                 $status_absen_hari_ini = 'sudah_datang';
+                error_log("Status set to: sudah_datang");
             } else {
                 $status_absen_hari_ini = 'sudah_lengkap';
+                error_log("Status set to: sudah_lengkap");
             }
+        } else {
+            error_log("No attendance record found for today");
         }
         
         // DEBUGGING: Log status absen
@@ -132,6 +168,16 @@ class MahasiswaController {
         // Ambil flash message dari session
         $flash_message = $_SESSION['flash_message'] ?? null;
         unset($_SESSION['flash_message']); // Hapus setelah diambil
+        
+        // --- INFO WAKTU UNTUK VALIDASI BUTTON ---
+        $current_hour = (int)date('H');
+        $current_minute = (int)date('i');
+        $is_check_in_time_allowed = $this->attendanceModel->isCheckInTimeAllowed();
+        $is_activity_time_allowed = $this->attendanceModel->isActivityTimeAllowed();
+        
+        error_log("Current time: {$current_hour}:{$current_minute}");
+        error_log("Check-in time allowed: " . ($is_check_in_time_allowed ? 'YES' : 'NO'));
+        error_log("Activity time allowed: " . ($is_activity_time_allowed ? 'YES' : 'NO'));
         
         // Load View: Variabel-variabel di atas tersedia di dashboard.php
         require __DIR__ . '/../views/mahasiswa/dashboard.php';
@@ -157,12 +203,16 @@ class MahasiswaController {
             if (empty($data['nim']) || empty($data['batch']) || !is_numeric($data['batch']) || strlen($data['nim']) < 5) {
                 $error_message = "NIM dan Angkatan wajib diisi dengan format yang benar (NIM minimal 5 karakter).";
             } else {
-                if ($this->mahasiswaModel->createOrUpdate($user_id, $data)) {
-                    $_SESSION['flash_message'] = ['type' => 'success', 'text' => 'Data profil berhasil dilengkapi!'];
-                    header('Location: ?page=mahasiswa-dashboard');
-                    exit();
-                } else {
-                    $error_message = "Gagal menyimpan data ke database. Silakan coba lagi.";
+                try {
+                    if ($this->mahasiswaModel->createOrUpdate($user_id, $data)) {
+                        $_SESSION['flash_message'] = ['type' => 'success', 'text' => 'Data profil berhasil dilengkapi!'];
+                        header('Location: ?page=mahasiswa-dashboard');
+                        exit();
+                    } else {
+                        $error_message = "Gagal menyimpan data ke database. Silakan coba lagi.";
+                    }
+                } catch (Exception $e) {
+                    $error_message = $e->getMessage();
                 }
             }
         } 

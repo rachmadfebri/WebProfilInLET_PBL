@@ -13,9 +13,9 @@
 
 <body class="m-0 font-sans antialiased font-normal text-base leading-default text-slate-500">
     
-    <div class="flex items-center justify-center min-h-screen p-4 bg-gradient-to-tl from-slate-800 to-purple-700">
+    <div class="flex items-center justify-center min-h-screen p-4 bg-gradient-to-br from-purple-900 via-purple-700 to-purple-600">
         
-        <div class="w-full max-w-md p-8 bg-white rounded-2xl shadow-2xl"> 
+        <div class="w-full max-w-md p-8 bg-white rounded-2xl shadow-2xl border border-purple-200"> 
             
             <div class="text-center mb-6">
                 <h3 class="font-bold text-transparent bg-gradient-to-tl from-red-600 to-red-400 bg-clip-text text-3xl">
@@ -33,7 +33,6 @@
             <?php endif; ?>
 
             <form role="form" action="" method="POST">
-                
                 <label class="mb-2 ml-1 font-bold text-xs text-slate-700">NIM (Wajib)</label>
                 <div class="mb-4">
                     <input type="text" id="nim" name="nim" required class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow" placeholder="Nomor Induk Mahasiswa" value="<?= htmlspecialchars($data_mahasiswa_input['nim'] ?? '') ?>" />

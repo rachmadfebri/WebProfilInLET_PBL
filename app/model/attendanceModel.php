@@ -14,8 +14,7 @@ class AttendanceModel {
     private $db;
 
     public function __construct() {
-        $db_instance = new Database();
-        $this->db = $db_instance->connect(); 
+        $this->db = require __DIR__ . '/../../config/connection.php';
     }
 
     /**
@@ -26,6 +25,7 @@ class AttendanceModel {
     public function checkIn(int $user_id): bool {
         error_log("=== CheckIn START (PostgreSQL) ===");
         error_log("User ID: " . $user_id);
+        error_log("DB Object type: " . gettype($this->db));
         
         // Cek duplikasi - apakah user sudah check-in hari ini?
         $latestAttendance = $this->getLatestTodayAttendance($user_id);
@@ -39,13 +39,19 @@ class AttendanceModel {
 
         // PostgreSQL INSERT dengan RETURNING clause
         $query = "INSERT INTO attendance (user_id, check_in_time, activity_description, created_at) 
-                  VALUES ($1, NOW(), $2, NOW())
+                  VALUES (?, NOW() AT TIME ZONE 'Asia/Jakarta', ?, NOW())
                   RETURNING id";
         
         error_log("Query: " . $query);
         error_log("Params: user_id=" . $user_id . ", activity_description='Check-In'");
         
         try {
+            if (!$this->db) {
+                error_log("❌ DATABASE CONNECTION IS NULL!");
+                error_log("=== CheckIn END (NO DB CONNECTION) ===");
+                return false;
+            }
+            
             $stmt = $this->db->prepare($query);
             
             if (!$stmt) {
@@ -56,7 +62,7 @@ class AttendanceModel {
             }
             
             // Execute dengan parameter
-            $result = $stmt->execute([$user_id, 'Check-In']);
+            $result = $stmt->execute([$user_id, 'Attendance']);
             
             if ($result) {
                 // PostgreSQL: Ambil ID dari RETURNING clause
@@ -91,6 +97,10 @@ class AttendanceModel {
             
             error_log("=== CheckIn END (EXCEPTION) ===");
             return false;
+        } catch (Exception $e) {
+            error_log("❌ GENERAL EXCEPTION: " . $e->getMessage());
+            error_log("=== CheckIn END (EXCEPTION) ===");
+            return false;
         }
     }
 
@@ -103,14 +113,19 @@ class AttendanceModel {
         error_log("=== CheckOut START (PostgreSQL) ===");
         error_log("Attendance ID: " . $attendance_id);
         
-        // Update check_out_time dan tambahkan info ke activity_description
+        // Update check_out_time dengan timezone yang benar
         $query = "UPDATE attendance 
-                  SET check_out_time = NOW(),
-                      activity_description = COALESCE(activity_description, '') || ' | Check-Out'
-                  WHERE id = $1 
+                  SET check_out_time = NOW() AT TIME ZONE 'Asia/Jakarta'
+                  WHERE id = ? 
                   AND check_out_time IS NULL"; 
 
         try {
+            if (!$this->db) {
+                error_log("❌ DATABASE CONNECTION IS NULL!");
+                error_log("=== CheckOut END (NO DB CONNECTION) ===");
+                return false;
+            }
+            
             $stmt = $this->db->prepare($query);
             
             if (!$stmt) {
@@ -140,9 +155,30 @@ class AttendanceModel {
             
         } catch (PDOException $e) {
             error_log("❌ EXCEPTION: " . $e->getMessage());
+            error_log("SQLSTATE: " . $e->getCode());
+            error_log("=== CheckOut END (EXCEPTION) ===");
+            return false;
+        } catch (Exception $e) {
+            error_log("❌ GENERAL EXCEPTION: " . $e->getMessage());
             error_log("=== CheckOut END (EXCEPTION) ===");
             return false;
         }
+    }
+
+    /**
+     * Mengecek apakah waktu saat ini sudah boleh untuk check-in (setelah jam 07:00)
+     */
+    public function isCheckInTimeAllowed(): bool {
+        $current_hour = (int)date('H');
+        return $current_hour >= 7; // Check-in mulai jam 07:00
+    }
+
+    /**
+     * Mengecek apakah waktu saat ini masih boleh untuk aktivitas (sebelum jam 22:00)
+     */
+    public function isActivityTimeAllowed(): bool {
+        $current_hour = (int)date('H');
+        return $current_hour < 22; // Aktivitas berakhir jam 22:00 (10 malam)
     }
 
     /**
@@ -152,26 +188,49 @@ class AttendanceModel {
      */
     public function getLatestTodayAttendance(int $user_id) {
         // PostgreSQL: Cast timestamp to date untuk perbandingan
-        // check_in_time::date = CURRENT_DATE artinya: ambil tanggal dari check_in_time dan bandingkan dengan hari ini
+        // Gunakan AT TIME ZONE untuk memastikan timezone konsisten
         $query = "SELECT * FROM attendance 
-                  WHERE user_id = $1 
-                  AND check_in_time::date = CURRENT_DATE
+                  WHERE user_id = ? 
+                  AND (check_in_time AT TIME ZONE 'Asia/Jakarta')::date = CURRENT_DATE
                   ORDER BY check_in_time DESC 
                   LIMIT 1"; 
 
         try {
+            if (!$this->db) {
+                error_log("Database connection is null in getLatestTodayAttendance!");
+                return false;
+            }
+            
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$user_id]);
+            
+            if (!$stmt) {
+                error_log("Prepare failed in getLatestTodayAttendance!");
+                error_log("PDO Error: " . json_encode($this->db->errorInfo()));
+                return false;
+            }
+            
+            $executeResult = $stmt->execute([$user_id]);
+            
+            if (!$executeResult) {
+                error_log("Execute failed in getLatestTodayAttendance!");
+                error_log("Statement Error: " . json_encode($stmt->errorInfo()));
+                return false;
+            }
             
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            error_log("getLatestTodayAttendance for user_id " . $user_id . ": " . json_encode($result));
+            error_log("getLatestTodayAttendance for user_id " . $user_id);
+            error_log("Query result: " . json_encode($result));
             
             // Return false jika tidak ada data, bukan empty array
             return $result ?: false;
             
         } catch (PDOException $e) {
             error_log("Database error in getLatestTodayAttendance: " . $e->getMessage());
+            error_log("SQLSTATE: " . $e->getCode());
+            return false;
+        } catch (Exception $e) {
+            error_log("General error in getLatestTodayAttendance: " . $e->getMessage());
             return false;
         }
     }

@@ -29,19 +29,31 @@ class MahasiswaModel {
 
     /**
      * Melakukan INSERT atau UPDATE data mahasiswa.
-     * (Kode ini sudah Anda berikan)
+     * Cek apakah NIM sudah ada di database (dari user lain).
      */
     public function createOrUpdate(int $user_id, array $data) {
+        // Cek apakah data untuk user_id ini sudah ada
         $stmt = $this->db->prepare("SELECT user_id FROM students WHERE user_id = :id");
         $stmt->execute([':id' => $user_id]);
 
         if ($stmt->fetch()) {
+            // Data sudah ada untuk user ini, lakukan UPDATE
             $query = "
                 UPDATE students 
                 SET nim = :nim, program_study = :program_study, batch = :batch, activity_type = :activity_type
                 WHERE user_id = :id
             ";
         } else {
+            // Data belum ada, cek apakah NIM sudah digunakan user lain
+            $checkNim = $this->db->prepare("SELECT user_id FROM students WHERE nim = :nim");
+            $checkNim->execute([':nim' => $data['nim'] ?? null]);
+            
+            if ($checkNim->fetch()) {
+                // NIM sudah digunakan, throw error
+                throw new Exception("NIM {$data['nim']} sudah terdaftar di sistem.");
+            }
+            
+            // NIM belum digunakan, lakukan INSERT
             $query = "
                 INSERT INTO students (user_id, nim, program_study, batch, activity_type)
                 VALUES (:id, :nim, :program_study, :batch, :activity_type)
