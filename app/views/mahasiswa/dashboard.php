@@ -247,6 +247,18 @@ elseif (isset($_SESSION['flash_message'])) {
                         <?php endif; ?>
                     </p>
                 </div>
+                
+                <!-- Informasi Waktu -->
+                <div class="mb-4 p-2 bg-yellow-50 rounded-lg border border-yellow-200 text-xs text-yellow-700">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    <?php if (!$is_check_in_time_allowed): ?>
+                        ⏰ Absensi datang tersedia mulai pukul <strong>07:00 WIB</strong>
+                    <?php elseif (!$is_activity_time_allowed): ?>
+                        ⏰ Absensi ditutup pada pukul <strong>22:00 WIB</strong>. Silakan coba lagi besok.
+                    <?php else: ?>
+                        ✓ Absensi sedang tersedia (hingga 22:00 WIB)
+                    <?php endif; ?>
+                </div>
 
                 <p class="leading-normal text-base mb-8 text-slate-600">
                     Silakan klik tombol di bawah ini sesuai dengan aktivitas kehadiran Anda di Laboratorium.
@@ -259,38 +271,72 @@ elseif (isset($_SESSION['flash_message'])) {
                         
                         <!-- Tombol Absen Datang -->
                         <?php 
-                        $is_datang_disabled = ($status_absen_hari_ini != 'belum_absen');
-                        $datang_class = $is_datang_disabled 
-                            ? 'bg-gray-400 cursor-not-allowed opacity-60' 
-                            : 'bg-gradient-to-tl from-green-600 to-lime-400 cursor-pointer hover:scale-105 hover:shadow-soft-xs active:opacity-85';
-                        $datang_text = $is_datang_disabled ? 'Sudah Absen Datang' : 'Absen Datang';
+                        $is_status_datang_disabled = ($status_absen_hari_ini != 'belum_absen');
+                        $is_time_datang_allowed = $is_check_in_time_allowed && $is_activity_time_allowed;
+                        $is_datang_disabled = $is_status_datang_disabled || !$is_time_datang_allowed;
+                        
+                        if ($is_status_datang_disabled) {
+                            $datang_text = 'Absen Datang';
+                            $datang_tooltip = 'Anda sudah melakukan absensi datang hari ini.';
+                            $datang_bg = 'background-color: #28c965ff; opacity: 0.7;';
+                        } elseif (!$is_time_datang_allowed) {
+                            $datang_text = 'Absen Datang';
+                            $datang_tooltip = ($current_hour < 7) ? 'Absensi datang hanya tersedia mulai pukul 07:00 WIB.' : 'Absensi ditutup pada pukul 22:00 WIB.';
+                            $datang_bg = 'background-color: #28c965ff; opacity: 0.7;';
+                        } else {
+                            $datang_text = 'Absen Datang';
+                            $datang_tooltip = 'Klik untuk mencatat waktu masuk Anda.';
+                            $datang_bg = 'background: #28c965ff;';
+                        }
                         ?>
                         <button
                             type="submit"
                             name="action"
-                            value="absen_datang" 
+                            value="absen_datang"
                             <?= $is_datang_disabled ? 'disabled' : '' ?>
-                            class="inline-block px-8 py-4 font-bold text-center text-white uppercase align-middle transition-all border-0 rounded-lg shadow-soft-md bg-150 bg-x-25 leading-pro text-sm <?= $datang_class ?>"
+                            title="<?= htmlspecialchars($datang_tooltip) ?>"
+                            style="<?= $datang_bg ?> display: inline-block; padding: 1rem 2rem; font-weight: bold; color: white; text-transform: uppercase; border: none; border-radius: 0.5rem; cursor: <?= $is_datang_disabled ? 'not-allowed' : 'pointer' ?>; box-shadow: 0 4px 6px rgba(0,0,0,0.1); <?= $is_datang_disabled ? 'pointer-events: none;' : 'transition: transform 0.2s;' ?>"
+                            onmouseover="if (!this.disabled) this.style.transform='scale(1.05)'"
+                            onmouseout="if (!this.disabled) this.style.transform='scale(1)'"
                         >
-                            <i class="fas fa-sign-in-alt mr-2 text-lg"></i> 
-                            <?= $datang_text ?>
+                            <i class="fas fa-sign-in-alt" style="margin-right: 0.5rem; font-size: 1.125rem;"></i>
+                            <?= htmlspecialchars($datang_text) ?>
                         </button>
 
                         <!-- Tombol Absen Pulang -->
                         <?php 
-                        $is_pulang_disabled = ($status_absen_hari_ini == 'belum_absen' || $status_absen_hari_ini == 'sudah_lengkap');
-                        $pulang_class = $is_pulang_disabled 
-                            ? 'opacity-50 cursor-not-allowed' /* Disabled */
-                            : 'cursor-pointer hover:scale-105 hover:shadow-soft-xs active:opacity-85'; /* Bisa Diklik */
+                        $is_pulang_disabled = ($status_absen_hari_ini == 'belum_absen' || $status_absen_hari_ini == 'sudah_lengkap') || !$is_activity_time_allowed;
+                        
+                        if ($status_absen_hari_ini == 'belum_absen') {
+                            $pulang_text = 'Absen Pulang';
+                            $pulang_tooltip = 'Anda harus absen datang terlebih dahulu.';
+                            $pulang_bg = 'background-color: #f87171; opacity: 0.7;';
+                        } elseif ($status_absen_hari_ini == 'sudah_lengkap') {
+                            $pulang_text = 'Absen Pulang';
+                            $pulang_tooltip = 'Anda sudah melakukan absensi pulang hari ini.';
+                            $pulang_bg = 'background-color: #f87171; opacity: 0.7;';
+                        } elseif (!$is_activity_time_allowed) {
+                            $pulang_text = 'Absen Pulang ';
+                            $pulang_tooltip = 'Absensi ditutup pada pukul 22:00 WIB.';
+                            $pulang_bg = 'background-color: #f87171; opacity: 0.7;';
+                        } else {
+                            $pulang_text = 'Absen Pulang';
+                            $pulang_tooltip = 'Klik untuk mencatat waktu keluar Anda.';
+                            $pulang_bg = 'background: #f87171;';
+                        }
                         ?>
                         <button
                             type="submit"
                             name="action"
-                            value="absen_pulang" 
+                            value="absen_pulang"
                             <?= $is_pulang_disabled ? 'disabled' : '' ?>
-                            class="inline-block px-8 py-4 font-bold text-center text-white uppercase align-middle transition-all border-0 rounded-lg shadow-soft-md bg-150 bg-x-25 leading-pro text-sm bg-gradient-to-tl from-red-600 to-rose-400 <?= $pulang_class ?>"
+                            title="<?= htmlspecialchars($pulang_tooltip) ?>"
+                            style="<?= $pulang_bg ?> display: inline-block; padding: 1rem 2rem; font-weight: bold; color: white; text-transform: uppercase; border: none; border-radius: 0.5rem; cursor: <?= $is_pulang_disabled ? 'not-allowed' : 'pointer' ?>; box-shadow: 0 4px 6px rgba(0,0,0,0.1); <?= $is_pulang_disabled ? 'pointer-events: none;' : 'transition: transform 0.2s;' ?>"
+                            onmouseover="if (!this.disabled) this.style.transform='scale(1.05)'"
+                            onmouseout="if (!this.disabled) this.style.transform='scale(1)'"
                         >
-                            <i class="fas fa-sign-out-alt mr-2 text-lg"></i> Absen Pulang
+                            <i class="fas fa-sign-out-alt" style="margin-right: 0.5rem; font-size: 1.125rem;"></i>
+                            <?= htmlspecialchars($pulang_text) ?>
                         </button>
 
                     </div>
@@ -346,5 +392,15 @@ elseif (isset($_SESSION['flash_message'])) {
     
     // Jalankan fungsi sekali saat halaman pertama kali dimuat
     updateClock();
+
+    // Jika ada flash message, refresh halaman setelah 2 detik untuk update status button
+    // Flash message biasanya muncul setelah absensi, sehingga ini memastikan button ter-update
+    const flashMessage = document.querySelector('[role="alert"]');
+    if (flashMessage) {
+        console.log('Flash message detected, akan refresh halaman dalam 2 detik...');
+        setTimeout(function() {
+            location.reload();
+        }, 2000);
+    }
   </script>
 </html>
