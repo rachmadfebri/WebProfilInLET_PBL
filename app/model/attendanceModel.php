@@ -27,7 +27,7 @@ class AttendanceModel {
         error_log("User ID: " . $user_id);
         error_log("DB Object type: " . gettype($this->db));
         
-        // Cek duplikasi - apakah user sudah check-in hari ini?
+        // Cek duplikasi 
         $latestAttendance = $this->getLatestTodayAttendance($user_id);
         error_log("Latest attendance: " . json_encode($latestAttendance));
         
@@ -61,11 +61,11 @@ class AttendanceModel {
                 return false;
             }
             
-            // Execute dengan parameter
+            // Execute
             $result = $stmt->execute([$user_id, 'Attendance']);
             
             if ($result) {
-                // PostgreSQL: Ambil ID dari RETURNING clause
+                // P]ambil ID dari RETURNING clause
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 $lastId = $row['id'] ?? 'unknown';
                 error_log("✅ Check-in SUCCESS! Inserted ID: " . $lastId);
@@ -83,14 +83,12 @@ class AttendanceModel {
             error_log("Message: " . $e->getMessage());
             error_log("Code: " . $e->getCode());
             
-            // PostgreSQL specific error info
             if (isset($e->errorInfo)) {
                 error_log("SQLSTATE: " . ($e->errorInfo[0] ?? 'N/A'));
                 error_log("Driver Error Code: " . ($e->errorInfo[1] ?? 'N/A'));
                 error_log("Driver Error Message: " . ($e->errorInfo[2] ?? 'N/A'));
             }
             
-            // Check for specific PostgreSQL errors
             if (strpos($e->getMessage(), 'foreign key') !== false) {
                 error_log("⚠️ FOREIGN KEY VIOLATION: user_id " . $user_id . " tidak ada di tabel users!");
             }
@@ -113,7 +111,7 @@ class AttendanceModel {
         error_log("=== CheckOut START (PostgreSQL) ===");
         error_log("Attendance ID: " . $attendance_id);
         
-        // Update check_out_time dengan timezone yang benar
+        // update check_out_time dengan timezone yang benar
         $query = "UPDATE attendance 
                   SET check_out_time = NOW() AT TIME ZONE 'Asia/Jakarta'
                   WHERE id = ? 
@@ -170,7 +168,7 @@ class AttendanceModel {
      */
     public function isCheckInTimeAllowed(): bool {
         $current_hour = (int)date('H');
-        return $current_hour >= 7; // Check-in mulai jam 07:00
+        return $current_hour >= 7; 
     }
 
     /**
@@ -178,7 +176,7 @@ class AttendanceModel {
      */
     public function isActivityTimeAllowed(): bool {
         $current_hour = (int)date('H');
-        return $current_hour < 22; // Aktivitas berakhir jam 22:00 (10 malam)
+        return $current_hour < 22; 
     }
 
     /**
@@ -187,8 +185,7 @@ class AttendanceModel {
      * @return array|false Associative array of attendance data or false.
      */
     public function getLatestTodayAttendance(int $user_id) {
-        // PostgreSQL: Cast timestamp to date untuk perbandingan
-        // Gunakan AT TIME ZONE untuk memastikan timezone konsisten
+        // PostgreSQL: Cast timestamp to date untuk perbandingan. menggunakan AT TIME ZONE untuk memastikan timezone konsisten
         $query = "SELECT * FROM attendance 
                   WHERE user_id = ? 
                   AND (check_in_time AT TIME ZONE 'Asia/Jakarta')::date = CURRENT_DATE
@@ -222,7 +219,7 @@ class AttendanceModel {
             error_log("getLatestTodayAttendance for user_id " . $user_id);
             error_log("Query result: " . json_encode($result));
             
-            // Return false jika tidak ada data, bukan empty array
+            // return false jika tidak ada data, not empty array
             return $result ?: false;
             
         } catch (PDOException $e) {

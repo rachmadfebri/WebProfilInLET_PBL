@@ -1,5 +1,4 @@
 <?php
-// app/controller/CollaborationController.php
 
 require_once __DIR__ . '/../model/CollaborationModel.php'; 
 
@@ -12,21 +11,17 @@ class CollaborationController {
     }
 
     public function index() {
-        // Pengecekan role admin
         if ($_SESSION['role'] !== 'admin') {
             header("Location: ?page=login");
             exit;
         }
         
-        // Ambil keyword dari URL atau POST
         $keyword = $_GET['keyword'] ?? '';
         
         $collaborationList = $this->collaborationModel->getAll($keyword); 
         
-        // Variabel yang akan tersedia di view
         $totalRecords = count($collaborationList);
         
-        // Panggil View
         require __DIR__ . '/../views/admin/collaboration.php'; 
     }
 
@@ -43,7 +38,6 @@ class CollaborationController {
             header("Location: ?page=login");
             exit;
         }
-        // Hapus data
         $this->collaborationModel->delete($id);
         header("Location: index.php?page=collaboration");
         exit;
@@ -55,7 +49,6 @@ class CollaborationController {
             exit;
         }
 
-        // 1. JIKA POST (Simpan Data)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $logoPath = '';
             
@@ -64,7 +57,6 @@ class CollaborationController {
                 $logoPath = $oldData['logo'];
             }
 
-            // Cek Upload Logo Baru
             if (isset($_FILES['logo']) && $_FILES['logo']['error'] == UPLOAD_ERR_OK) {
                 $ext = pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION);
                 $newName = 'collab_' . time() . '.' . $ext;
@@ -73,15 +65,18 @@ class CollaborationController {
                 if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
                 
                 if (move_uploaded_file($_FILES['logo']['tmp_name'], $uploadDir . $newName)) {
-                    $logoPath = 'uploads/' . $newName; // Path yang disimpan di database
+                    $logoPath = 'uploads/' . $newName;
                 }
             }
 
+            $currentUserId = $_SESSION['user_id'] ?? $_SESSION['id'] ?? null;
+
             $data = [
-                'name' => $_POST['name'],
-                'website' => $_POST['website'],
+                'name'        => $_POST['name'],
+                'website'     => $_POST['website'],
                 'description' => $_POST['description'],
-                'logo' => $logoPath
+                'logo'        => $logoPath,
+                'user_id'     => $currentUserId
             ];
 
             if ($id) {
@@ -94,7 +89,6 @@ class CollaborationController {
             exit;
         }
         
-        // 2. JIKA GET (Tampilkan Halaman)
         $collaborationList = $this->collaborationModel->getAll(); 
         if ($id) {
             $editData = $this->collaborationModel->getById($id); 

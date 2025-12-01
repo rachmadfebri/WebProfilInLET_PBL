@@ -1,5 +1,4 @@
 <?php
-// app/controllers/AttendanceController.php
 
 require_once __DIR__ . '/../model/AttendanceModel.php'; 
 
@@ -11,34 +10,24 @@ class AttendanceController {
             session_start();
         }
         $this->attendanceModel = new AttendanceModel();
-        // Atur timezone ke Asia/Jakarta untuk konsistensi waktu absensi
         date_default_timezone_set('Asia/Jakarta');
     }
 
-    /**
-     * Menangani proses Check-In absensi (dipanggil via ?action=checkin)
-     */
     public function processCheckIn() {
-        // PERBAIKAN: Validasi session lebih ketat
         if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
             $_SESSION['flash_message'] = ['type' => 'error', 'text' => 'Sesi kedaluwarsa. Silakan login ulang.'];
             header("Location: ?page=login"); 
             exit;
         }
 
-        // PERBAIKAN: Cast ke integer untuk keamanan
         $user_id = (int)$_SESSION['user_id'];
         
-        // DEBUGGING: Log user_id
         error_log("AttendanceController::processCheckIn - User ID: " . $user_id);
         
         $latest_attendance = $this->attendanceModel->getLatestTodayAttendance($user_id);
         
-        // DEBUGGING: Log hasil query
         error_log("AttendanceController::processCheckIn - Latest Attendance: " . print_r($latest_attendance, true));
 
-        // PERBAIKAN: Pengecekan yang lebih robust
-        // Cek apakah user sudah Check-In hari ini dan belum Check-Out (status: sudah_datang)
         if ($latest_attendance && (is_null($latest_attendance['check_out_time']) || empty($latest_attendance['check_out_time']))) {
             $check_in_formatted = date('H:i', strtotime($latest_attendance['check_in_time']));
             $_SESSION['flash_message'] = [
@@ -53,7 +42,6 @@ class AttendanceController {
             ];
             error_log("AttendanceController::processCheckIn - Check-in successful");
         } else {
-            // Ini akan menangani kasus di mana Check-In gagal karena error DB
             $_SESSION['flash_message'] = [
                 'type' => 'error', 
                 'text' => '⚠️ Gagal melakukan Check-In. Coba lagi atau hubungi admin.'
@@ -61,35 +49,25 @@ class AttendanceController {
             error_log("AttendanceController::processCheckIn - Check-in failed");
         }
 
-        // Redirect kembali ke dashboard mahasiswa
         header("Location: ?page=mahasiswa-dashboard"); 
         exit;
     }
 
-    /**
-     * Menangani proses Check-Out absensi (dipanggil via ?action=checkout)
-     */
     public function processCheckOut() {
-        // PERBAIKAN: Validasi session lebih ketat
         if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
             $_SESSION['flash_message'] = ['type' => 'error', 'text' => 'Sesi kedaluwarsa. Silakan login ulang.'];
             header("Location: ?page=login"); 
             exit;
         }
 
-        // PERBAIKAN: Cast ke integer untuk keamanan
         $user_id = (int)$_SESSION['user_id'];
         
-        // DEBUGGING: Log user_id
         error_log("AttendanceController::processCheckOut - User ID: " . $user_id);
         
-        // Ambil record absensi terbaru hari ini
         $latest_attendance = $this->attendanceModel->getLatestTodayAttendance($user_id);
         
-        // DEBUGGING: Log hasil query
         error_log("AttendanceController::processCheckOut - Latest Attendance: " . print_r($latest_attendance, true));
 
-        // PERBAIKAN: Cek apakah ada record dan belum Check-Out
         if (!$latest_attendance) {
             $_SESSION['flash_message'] = [
                 'type' => 'warning', 
@@ -121,22 +99,19 @@ class AttendanceController {
     }
 
     /** 
-     * Fungsi helper untuk mengambil data absensi hari ini (Dipanggil dari MahasiswaController)
+     * helper untuk mengambil data absensi hari ini (dipanggil dari MahasiswaController)
      * @param int $user_id
      * @return array 
      * 'status': 'belum_absen', 'sudah_datang', 'sudah_lengkap'
      * 'check_in_time': string waktu check-in (H:i:s)
      */
     public function getAttendanceStatus($user_id) {
-        // PERBAIKAN: Cast ke integer
         $user_id = (int)$user_id;
         
-        // DEBUGGING: Log user_id
         error_log("AttendanceController::getAttendanceStatus - User ID: " . $user_id);
         
         $latestAttendance = $this->attendanceModel->getLatestTodayAttendance($user_id);
         
-        // DEBUGGING: Log hasil query
         error_log("AttendanceController::getAttendanceStatus - Latest Attendance: " . print_r($latestAttendance, true));
         
         $status = 'belum_absen'; 
@@ -145,8 +120,6 @@ class AttendanceController {
         if ($latestAttendance) {
             $check_in_time = date('H:i:s', strtotime($latestAttendance['check_in_time']));
             
-            // PERBAIKAN: Pengecekan yang lebih robust
-            // Jika ada record tapi check_out_time masih NULL atau kosong, berarti statusnya 'sudah_datang'
             if (is_null($latestAttendance['check_out_time']) || empty($latestAttendance['check_out_time'])) {
                 $status = 'sudah_datang';
             } else {
@@ -154,7 +127,6 @@ class AttendanceController {
             }
         }
         
-        // DEBUGGING: Log status yang dikembalikan
         error_log("AttendanceController::getAttendanceStatus - Returning status: " . $status);
 
         return [

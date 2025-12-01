@@ -1,11 +1,9 @@
 <?php
-// app/models/MahasiswaModel.php
 
 class MahasiswaModel {
     private $db;
 
     public function __construct() {
-        // Pastikan path ke connection.php sudah benar
         $this->db = (require __DIR__ . '/../../config/connection.php');
     }
 
@@ -23,7 +21,6 @@ class MahasiswaModel {
     $stmt = $this->db->prepare($sql);
     $stmt->execute([':id' => $user_id]);
     
-    // Jika data ditemukan dan NIM sudah terisi, fetch data.
     return $stmt->fetch();
 }
 
@@ -37,14 +34,13 @@ class MahasiswaModel {
         $stmt->execute([':id' => $user_id]);
 
         if ($stmt->fetch()) {
-            // Data sudah ada untuk user ini, lakukan UPDATE
             $query = "
                 UPDATE students 
                 SET nim = :nim, program_study = :program_study, batch = :batch, activity_type = :activity_type
                 WHERE user_id = :id
             ";
         } else {
-            // Data belum ada, cek apakah NIM sudah digunakan user lain
+            // data belum ada, cek apakah NIM sudah digunakan user lain
             $checkNim = $this->db->prepare("SELECT user_id FROM students WHERE nim = :nim");
             $checkNim->execute([':nim' => $data['nim'] ?? null]);
             

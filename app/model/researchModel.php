@@ -1,5 +1,4 @@
 <?php
-// app/model/ResearchModel.php
 
 require_once __DIR__ . '/../../config/connection.php'; 
 
@@ -11,23 +10,19 @@ class ResearchModel {
         $this->db = $pdo;
     }
 
-    /**
-     * PERBAIKAN: Menambahkan parameter $keyword = ''
-     * Agar sesuai dengan Controller yang mengirim keyword pencarian.
-     */
     public function getAll($keyword = '') {
-        $sql = "SELECT * FROM {$this->table}";
+        $sql = "SELECT r.*, u.full_name AS uploader_name 
+                FROM {$this->table} r
+                LEFT JOIN users u ON r.user_id = u.user_id";
+        
         $params = [];
 
-        // Logika Pencarian (Search)
         if ($keyword) {
-            // Menggunakan ILIKE untuk PostgreSQL (case-insensitive)
-            // Jika pakai MySQL ganti ILIKE menjadi LIKE
-            $sql .= " WHERE title ILIKE :keyword OR description ILIKE :keyword";
+            $sql .= " WHERE r.title ILIKE :keyword OR r.description ILIKE :keyword";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
-        $sql .= " ORDER BY created_at DESC";
+        $sql .= " ORDER BY r.created_at DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
@@ -41,13 +36,15 @@ class ResearchModel {
     }
 
     public function create($data) {
-        $query = "INSERT INTO {$this->table} (title, description, image, created_at) 
-                  VALUES (:title, :description, :image, NOW())";
+        $query = "INSERT INTO {$this->table} (title, description, image, user_id, created_at) 
+                  VALUES (:title, :description, :image, :user_id, NOW())";
+        
         $stmt = $this->db->prepare($query);
         return $stmt->execute([
-            ':title' => $data['title'],
+            ':title'       => $data['title'],
             ':description' => $data['description'],
-            ':image' => $data['image']
+            ':image'       => $data['image'],
+            ':user_id'     => $data['user_id']
         ]);
     }
 
@@ -59,10 +56,10 @@ class ResearchModel {
                   WHERE id = :id";
         $stmt = $this->db->prepare($query);
         return $stmt->execute([
-            ':title' => $data['title'],
+            ':title'       => $data['title'],
             ':description' => $data['description'],
-            ':image' => $data['image'],
-            ':id' => $id
+            ':image'       => $data['image'],
+            ':id'          => $id
         ]);
     }
 

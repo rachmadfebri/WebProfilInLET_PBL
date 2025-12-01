@@ -15,7 +15,6 @@ class TeamMembersController {
             exit;
         }
 
-        // PERBAIKAN: Ambil keyword search
         $keyword = $_GET['keyword'] ?? '';
         $teamList = $this->teamModel->getAll($keyword); 
 
@@ -48,7 +47,6 @@ class TeamMembersController {
             exit;
         }
 
-        // POST: Simpan Data
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $photoPath = '';
             
@@ -89,8 +87,6 @@ class TeamMembersController {
             exit;
         }
 
-        // GET: Tampilkan View
-        // PERBAIKAN: Support Search
         $keyword = $_GET['keyword'] ?? '';
         $teamList = $this->teamModel->getAll($keyword); 
         

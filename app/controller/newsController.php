@@ -5,17 +5,16 @@ class NewsController {
     private $newsModel;
 
     public function __construct(PDO $pdo) {
+        if (session_status() == PHP_SESSION_NONE) session_start();
         $this->newsModel = new NewsModel($pdo);
     }
 
     public function index() {
-        if (session_status() == PHP_SESSION_NONE) session_start();
         if ($_SESSION['role'] !== 'admin') {
             header("Location: ?page=login");
             exit;
         }
 
-        // PERBAIKAN: Ambil keyword search
         $keyword = $_GET['keyword'] ?? '';
         $newsList = $this->newsModel->getAll($keyword); 
         
@@ -31,7 +30,6 @@ class NewsController {
     }
 
     public function delete($id) {
-        if (session_status() == PHP_SESSION_NONE) session_start();
         if ($_SESSION['role'] !== 'admin') {
             header("Location: ?page=login");
             exit;
@@ -42,13 +40,11 @@ class NewsController {
     }
 
     private function handleRequest($id = null) {
-        if (session_status() == PHP_SESSION_NONE) session_start();
         if ($_SESSION['role'] !== 'admin') {
             header("Location: ?page=login");
             exit;
         }
 
-        // 1. JIKA POST (Simpan Data)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $thumbnailPath = '';
             
@@ -69,11 +65,14 @@ class NewsController {
                 }
             }
 
+            $userId = $_SESSION['user_id'] ?? null;
+
             $data = [
                 'title' => $_POST['title'],
                 'content' => $_POST['content'],
                 'published_date' => $_POST['published_date'],
-                'thumbnail' => $thumbnailPath
+                'thumbnail' => $thumbnailPath,
+                'user_id' => $userId 
             ];
 
             if ($id) {
@@ -86,8 +85,6 @@ class NewsController {
             exit;
         }
 
-        // 2. JIKA GET (Tampilkan Halaman)
-        // PERBAIKAN: Tambahkan support search di sini juga
         $keyword = $_GET['keyword'] ?? '';
         $newsList = $this->newsModel->getAll($keyword);
         
@@ -95,6 +92,6 @@ class NewsController {
             $editData = $this->newsModel->getById($id);
         }
 
-        require __DIR__ . '/../views/admin/news.php';
+        require __DIR__ . '/../views/admin/news.php'; 
     }
 }

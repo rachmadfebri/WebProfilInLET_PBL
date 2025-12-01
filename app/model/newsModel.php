@@ -6,18 +6,19 @@ class NewsModel {
         $this->db = $pdo;
     }
 
-    // PERBAIKAN: Tambahkan parameter $keyword
     public function getAll($keyword = '') {
-        $sql = "SELECT * FROM news";
+        $sql = "SELECT n.*, u.full_name as uploader_name 
+                FROM news n
+                LEFT JOIN users u ON n.user_id = u.user_id";
+        
         $params = [];
 
-        // Logika Pencarian
         if ($keyword) {
-            $sql .= " WHERE title ILIKE :keyword OR content ILIKE :keyword";
+            $sql .= " WHERE n.title LIKE :keyword OR n.content LIKE :keyword";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
-        $sql .= " ORDER BY created_at DESC";
+        $sql .= " ORDER BY n.created_at DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
@@ -31,14 +32,17 @@ class NewsModel {
     }
 
     public function create($data) {
-        $query = "INSERT INTO news (title, content, thumbnail, published_date, created_at) 
-                  VALUES (:title, :content, :thumbnail, :published_date, NOW())";
+        $query = "INSERT INTO news (title, content, thumbnail, published_date, user_id, created_at) 
+                  VALUES (:title, :content, :thumbnail, :published_date, :user_id, NOW())";
+        
         $stmt = $this->db->prepare($query);
+        
         return $stmt->execute([
             ':title' => $data['title'],
             ':content' => $data['content'],
             ':thumbnail' => $data['thumbnail'],
-            ':published_date' => $data['published_date']
+            ':published_date' => $data['published_date'],
+            ':user_id' => $data['user_id'] 
         ]);
     }
 
@@ -49,7 +53,9 @@ class NewsModel {
                   published_date = :published_date,
                   thumbnail = :thumbnail 
                   WHERE id = :id";
+        
         $stmt = $this->db->prepare($query);
+        
         return $stmt->execute([
             ':title' => $data['title'],
             ':content' => $data['content'],

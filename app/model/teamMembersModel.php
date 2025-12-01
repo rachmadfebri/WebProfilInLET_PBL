@@ -6,12 +6,10 @@ class TeamMembersModel {
         $this->db = $pdo;
     }
 
-    // PERBAIKAN: Tambahkan parameter $keyword
     public function getAll($keyword = '') {
         $sql = "SELECT * FROM team_members";
         $params = [];
 
-        // Logika Pencarian
         if ($keyword) {
             $sql .= " WHERE name ILIKE :keyword OR position ILIKE :keyword OR email ILIKE :keyword";
             $params[':keyword'] = '%' . $keyword . '%';

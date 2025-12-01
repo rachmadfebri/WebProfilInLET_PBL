@@ -705,12 +705,13 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Logo</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Nama & Deskripsi</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Website</th>
+                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Diupload Oleh</th>
                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php 
-                  $no = $offset + 1; // Inisialisasi Nomor
+                  $no = $offset + 1; 
                   if (!empty($pagedData)): 
                   ?> 
                       <?php foreach ($pagedData as $collab): ?>
@@ -737,6 +738,10 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                             <?= htmlspecialchars(parse_url($collab['website'], PHP_URL_HOST) ?: $collab['website']) ?>
                           </a>
                           <p class="text-xxs text-slate-400 mt-1"><?= date('d M Y', strtotime($collab['created_at'])) ?></p>
+                        </td>
+
+                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <h6 class="text-xs font-semibold leading-tight text-slate-400"><?= htmlspecialchars($collab['uploader_name'] ?? 'Unknown') ?></h6>
                         </td>
 
                         <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">

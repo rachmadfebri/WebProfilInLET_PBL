@@ -1,5 +1,4 @@
 <?php
-// app/model/CollaborationModel.php
 
 require_once __DIR__ . '/../../config/connection.php'; 
 
@@ -11,21 +10,19 @@ class CollaborationModel {
         $this->db = $pdo;
     }
 
-    /**
-     * Mengambil semua data kolaborasi, mendukung pencarian.
-     * @param string $keyword Kata kunci pencarian (opsional).
-     * @return array
-     */
     public function getAll($keyword = '') {
-        $sql = "SELECT * FROM {$this->table}";
+        $sql = "SELECT c.*, u.full_name AS uploader_name 
+                FROM {$this->table} c
+                LEFT JOIN users u ON c.user_id = u.user_id";
+        
         $params = [];
         
         if ($keyword) {
-            $sql .= " WHERE name ILIKE :keyword OR description ILIKE :keyword"; // ILIKE for PostgreSQL (case-insensitive)
+            $sql .= " WHERE c.name ILIKE :keyword OR c.description ILIKE :keyword"; 
             $params[':keyword'] = '%' . $keyword . '%';
         }
         
-        $sql .= " ORDER BY created_at DESC";
+        $sql .= " ORDER BY c.created_at DESC";
         
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
@@ -39,14 +36,17 @@ class CollaborationModel {
     }
 
     public function create($data) {
-        $query = "INSERT INTO {$this->table} (name, logo, website, description, created_at) 
-                  VALUES (:name, :logo, :website, :description, NOW())";
+        $query = "INSERT INTO {$this->table} (name, logo, website, description, user_id, created_at) 
+                  VALUES (:name, :logo, :website, :description, :user_id, NOW())";
+        
         $stmt = $this->db->prepare($query);
+        
         return $stmt->execute([
-            ':name' => $data['name'],
-            ':logo' => $data['logo'],
-            ':website' => $data['website'],
-            ':description' => $data['description']
+            ':name'        => $data['name'],
+            ':logo'        => $data['logo'],
+            ':website'     => $data['website'],
+            ':description' => $data['description'],
+            ':user_id'     => $data['user_id'] 
         ]);
     }
 
@@ -59,11 +59,11 @@ class CollaborationModel {
                   WHERE id = :id";
         $stmt = $this->db->prepare($query);
         return $stmt->execute([
-            ':name' => $data['name'],
-            ':logo' => $data['logo'],
-            ':website' => $data['website'],
+            ':name'        => $data['name'],
+            ':logo'        => $data['logo'],
+            ':website'     => $data['website'],
             ':description' => $data['description'],
-            ':id' => $id
+            ':id'          => $id
         ]);
     }
 

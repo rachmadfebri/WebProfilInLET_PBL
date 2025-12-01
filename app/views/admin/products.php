@@ -724,6 +724,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                     <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Thumbnail</th>
                     <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Nama Produk</th>
                     <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">URL Produk</th>
+                    <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Diupload Oleh</th>
                     <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Tanggal</th>
                     <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Aksi</th>
                   </tr>
@@ -754,6 +755,9 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                             <?php else: ?>
                                 <span class="text-xs text-slate-400">-</span>
                             <?php endif; ?>
+                        </td>
+                        <td class="p-2 align-middle bg-transparent border-b shadow-transparent text-center">
+                            <h6 class="text-xs font-semibold leading-tight text-slate-400"><?= htmlspecialchars($item['uploader_name'] ?? 'Unknown') ?></h6>
                         </td>
                         <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                           <span class="text-xs font-semibold leading-tight text-slate-400"><?= date('d M Y', strtotime($item['created_at'])) ?></span>

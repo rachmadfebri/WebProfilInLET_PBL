@@ -1,7 +1,5 @@
 <?php
-// app/controllers/MahasiswaController.php
 
-// Memuat Model yang diperlukan
 require_once __DIR__ . '/../model/MahasiswaModel.php'; 
 require_once __DIR__ . '/../model/AttendanceModel.php'; 
 
@@ -16,33 +14,25 @@ class MahasiswaController {
         $this->mahasiswaModel = new MahasiswaModel();
         $this->attendanceModel = new AttendanceModel(); 
         
-        // Memastikan semua aksi POST absensi diproses sebelum rendering
         $this->handleAttendanceAction();
     }
 
-    /**
-     * Menangani semua request POST yang terkait dengan absensi (Check-In/Check-Out).
-     */
     private function handleAttendanceAction() {
-        // Hanya proses jika ada request POST dan ada action
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $action = $_POST['action'];
             
-            // PERBAIKAN: Pastikan user_id diambil dari session dengan benar
             if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
                 $_SESSION['flash_message'] = ['type' => 'error', 'text' => 'Sesi tidak valid. Silakan login ulang.'];
                 header('Location: ?page=login');
                 exit;
             }
             
-            $user_id = (int)$_SESSION['user_id']; // Cast ke integer untuk keamanan
-            $redirect_url = '?page=mahasiswa-dashboard'; // Sesuaikan dengan routing Anda
-            
-            // Hapus flash message sebelumnya
+            $user_id = (int)$_SESSION['user_id']; 
+            $redirect_url = '?page=mahasiswa-dashboard'; 
+
             unset($_SESSION['flash_message']);
 
             if ($action === 'absen_datang') {
-                // Validasi waktu: Check-in hanya boleh setelah jam 07:00 dan sebelum jam 22:00
                 if (!$this->attendanceModel->isCheckInTimeAllowed()) {
                     $_SESSION['flash_message'] = ['type' => 'warning', 'text' => '⏰ Absensi datang hanya tersedia mulai pukul 07:00 WIB.'];
                     header('Location: ' . $redirect_url);
@@ -62,7 +52,7 @@ class MahasiswaController {
                 if ($result) {
                     $_SESSION['flash_message'] = ['type' => 'success', 'text' => '✅ Check-In berhasil! Selamat beraktivitas.'];
                 } else {
-                    // Cek apakah sudah check-in hari ini
+
                     $latestAttendance = $this->attendanceModel->getLatestTodayAttendance($user_id);
                     error_log("Latest attendance after failed check-in: " . json_encode($latestAttendance));
                     
@@ -74,7 +64,6 @@ class MahasiswaController {
                 }
                 
             } elseif ($action === 'absen_pulang') {
-                // Validasi waktu: Check-out hanya boleh sebelum jam 22:00
                 if (!$this->attendanceModel->isActivityTimeAllowed()) {
                     $_SESSION['flash_message'] = ['type' => 'warning', 'text' => '⏰ Absensi ditutup pada pukul 22:00 WIB. Silakan coba besok.'];
                     header('Location: ' . $redirect_url);
@@ -97,33 +86,25 @@ class MahasiswaController {
                 }
             }
             
-            // Redirect setelah POST untuk mencegah re-submit form pada refresh
-            // Tambahkan kecil delay untuk memastikan database ter-update
             sleep(1);
             header('Location: ' . $redirect_url);
             exit;
         }
     }
 
-    /**
-     * Titik masuk utama Dashboard Mahasiswa.
-     */
     public function dashboard() {
-        // Cek Auth dan Role
+
         if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'mahasiswa') {
             header("Location: ?page=login");
             exit;
         }
         
         $user_id = (int)$_SESSION['user_id'];
-        
-        // DEBUGGING: Log user_id untuk memastikan
+    
         error_log("Dashboard loaded for user_id: " . $user_id);
         
-        // Ambil data user
         $student_data = $this->mahasiswaModel->getStudentData($user_id);
         
-        // Cek kelengkapan data mahasiswa (Asumsi: 'nim' adalah field wajib)
         if (!$student_data || empty($student_data['nim'])) { 
             return $this->setupProfile(); 
         }
@@ -132,11 +113,9 @@ class MahasiswaController {
         
         $latestAttendance = $this->attendanceModel->getLatestTodayAttendance($user_id);
         
-        // DEBUGGING: Log hasil query attendance
         error_log("Latest attendance data: " . print_r($latestAttendance, true));
         
-        // Default status
-        $status_absen_hari_ini = 'belum_absen'; // Opsi: 'belum_absen', 'sudah_datang', 'sudah_lengkap'
+        $status_absen_hari_ini = 'belum_absen'; 
         $check_in_time = null;
         
         if ($latestAttendance) {
@@ -146,8 +125,6 @@ class MahasiswaController {
             
             $check_in_time = date('H:i:s', strtotime($latestAttendance['check_in_time']));
             
-            // PERBAIKAN: Pastikan logika pengecekan check_out_time konsisten
-            // Cek apakah check_out_time NULL atau kosong string
             if (is_null($latestAttendance['check_out_time']) || $latestAttendance['check_out_time'] === '' || empty($latestAttendance['check_out_time'])) {
                 $status_absen_hari_ini = 'sudah_datang';
                 error_log("Status set to: sudah_datang");
@@ -159,17 +136,13 @@ class MahasiswaController {
             error_log("No attendance record found for today");
         }
         
-        // DEBUGGING: Log status absen
         error_log("Status absen hari ini: " . $status_absen_hari_ini);
 
-        // Ambil nama pengguna dari session, atau dari student_data jika ada
         $nama_pengguna = $student_data['full_name'] ?? $_SESSION['full_name'] ?? 'Mahasiswa';
 
-        // Ambil flash message dari session
         $flash_message = $_SESSION['flash_message'] ?? null;
-        unset($_SESSION['flash_message']); // Hapus setelah diambil
+        unset($_SESSION['flash_message']); 
         
-        // --- INFO WAKTU UNTUK VALIDASI BUTTON ---
         $current_hour = (int)date('H');
         $current_minute = (int)date('i');
         $is_check_in_time_allowed = $this->attendanceModel->isCheckInTimeAllowed();
@@ -179,13 +152,9 @@ class MahasiswaController {
         error_log("Check-in time allowed: " . ($is_check_in_time_allowed ? 'YES' : 'NO'));
         error_log("Activity time allowed: " . ($is_activity_time_allowed ? 'YES' : 'NO'));
         
-        // Load View: Variabel-variabel di atas tersedia di dashboard.php
         require __DIR__ . '/../views/mahasiswa/dashboard.php';
     }
 
-    /**
-     * Menangani Tampilan dan Proses Form Wajib Isi Data Mahasiswa.
-     */
     public function setupProfile() {
         $user_id = $_SESSION['user_id'] ?? 0;
         $error_message = '';

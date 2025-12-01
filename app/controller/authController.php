@@ -14,13 +14,11 @@ class authController {
     public function register() {
 
     $fullname = trim($_POST['full_name'] ?? '');
-    $username = trim($_POST['username'] ?? ''); // <--- Tambahan username
+    $username = trim($_POST['username'] ?? ''); 
     $email    = strtolower(trim($_POST['email'] ?? ''));
     $password = $_POST['password'] ?? '';
     $confirm  = $_POST['confirm_password'] ?? '';
 
-    // 1. Validasi Input
-    // Tambahkan $username ke validasi kosong
     if ($fullname === '' || $username === '' || $email === '' || $password === '') { 
         $_SESSION['error'] = "All fields required.";
         header("Location: ?page=register");
@@ -33,25 +31,20 @@ class authController {
         exit;
     }
 
-    // 2. Validasi Email Unik
     if ($this->userModel->getByEmail($email)) {
         $_SESSION['error'] = "Email already used.";
         header("Location: ?page=register");
         exit;
     }
 
-    // 3. Buat User & Ambil ID
-    // Pastikan urutan parameter di sini sesuai dengan urutan di userModel.php
     $user_id = $this->userModel->createUser($fullname, $username, $email, $password, 'mahasiswa');
 
-    // PENTING: Cek apakah ID berhasil didapatkan. Jika gagal (misal: false), hentikan proses.
     if (!$user_id) {
         $_SESSION['error'] = "Account creation failed due to database error.";
         header("Location: ?page=register");
         exit;
     }
 
-    // 4. Buat Entry Mahasiswa (Hanya Jika User ID Tersedia)
     $this->mhsModel->createOrUpdate($user_id, []);
 
     $_SESSION['success'] = "Account created.";

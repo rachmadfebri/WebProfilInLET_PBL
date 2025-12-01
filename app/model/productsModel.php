@@ -6,18 +6,19 @@ class ProductsModel {
         $this->db = $pdo;
     }
 
-    // PERBAIKAN: Tambahkan parameter $keyword
     public function getAll($keyword = '') {
-        $sql = "SELECT * FROM products";
+        $sql = "SELECT p.*, u.full_name AS uploader_name 
+                FROM products p
+                LEFT JOIN users u ON p.user_id = u.user_id";
+        
         $params = [];
 
-        // Logika Pencarian
         if ($keyword) {
-            $sql .= " WHERE title ILIKE :keyword OR description ILIKE :keyword";
+            $sql .= " WHERE (p.title ILIKE :keyword OR p.description ILIKE :keyword)";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
-        $sql .= " ORDER BY created_at DESC";
+        $sql .= " ORDER BY p.created_at DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
@@ -31,8 +32,8 @@ class ProductsModel {
     }
 
     public function create($data) {
-        $query = "INSERT INTO products (title, description, url, thumbnail, created_at) 
-                  VALUES (:title, :description, :url, :thumbnail, NOW())";
+        $query = "INSERT INTO products (title, description, url, thumbnail, user_id, created_at) 
+                  VALUES (:title, :description, :url, :thumbnail, :user_id, NOW())";
         
         $stmt = $this->db->prepare($query);
         
@@ -41,6 +42,7 @@ class ProductsModel {
             ':description' => $data['description'],
             ':url'         => $data['url'], 
             ':thumbnail'   => $data['thumbnail'],
+            ':user_id'     => $data['user_id'] 
         ]);
     }
 

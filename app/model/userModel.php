@@ -23,18 +23,11 @@ class userModel {
         ':role' => $role
     ]);
 
-    // PENTING: Jika INSERT berhasil, ambil ID yang baru dibuat.
     if ($success) {
-        // Untuk PostgreSQL: ganti 'user_id' dengan nama kolom SERIAL/Primary Key Anda
-        // Untuk MySQL: Anda dapat menggunakan $this->db->lastInsertId();
-        
-        // Asumsi kolom Primary Key Anda bernama 'user_id'
-        return $this->db->lastInsertId('users_user_id_seq'); // <-- Contoh untuk PostgreSQL (Ganti 'users_user_id_seq' dengan nama sequence yang benar)
-        
-        // Jika Anda menggunakan MySQL:
-        // return $this->db->lastInsertId();
+
+        return $this->db->lastInsertId('users_user_id_seq'); 
     }
-    return false; // Kembalikan false jika gagal
+    return false; 
 }
 
     public function getByEmail($email) {

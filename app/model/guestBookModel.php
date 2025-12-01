@@ -3,25 +3,22 @@ require_once __DIR__ . '/../../config/connection.php';
 
 class GuestbookModel {
     private $db;
-    private $table = 'guest_book'; // Sesuaikan dengan nama tabel di DB
+    private $table = 'guest_book'; 
 
     public function __construct(PDO $pdo) {
         $this->db = $pdo;
     }
 
-    // UPDATE: Menambahkan parameter $keyword
     public function getAll($startDate = null, $endDate = null, $keyword = '') {
-        $sql = "SELECT * FROM {$this->table} WHERE 1=1"; // Gunakan WHERE 1=1 agar mudah menyambung kondisi
+        $sql = "SELECT * FROM {$this->table} WHERE 1=1"; 
         $params = [];
 
-        // Logika Filter Tanggal
         if ($startDate && $endDate) {
             $sql .= " AND sent_at BETWEEN :start AND :end";
             $params[':start'] = $startDate . ' 00:00:00';
             $params[':end'] = $endDate . ' 23:59:59';
         }
 
-        // Logika Pencarian (Keyword)
         if (!empty($keyword)) {
             $sql .= " AND (name ILIKE :keyword OR institution ILIKE :keyword OR message ILIKE :keyword)";
             $params[':keyword'] = '%' . $keyword . '%';
@@ -35,7 +32,6 @@ class GuestbookModel {
     }
 
     public function create($data) {
-        // Menambahkan email dan phone_number sesuai struktur tabel
         $query = "INSERT INTO {$this->table} (name, institution, email, phone_number, message, sent_at) 
                   VALUES (:name, :institution, :email, :phone_number, :message, NOW())";
         

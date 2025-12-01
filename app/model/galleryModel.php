@@ -10,17 +10,13 @@ class GalleryModel {
     }
 
     public function getAll($keyword = '') {
-        // PERBAIKAN: Join ke tabel users
-        // Asumsi: tabel user bernama 'users', kolom id 'id', dan kolom nama 'full_name'
         $sql = "SELECT g.*, u.full_name as uploader_name 
                 FROM {$this->table} g
                 LEFT JOIN users u ON g.user_id = u.user_id";
         
         $params = [];
 
-        // Logika Filter
         if ($keyword) {
-            // WHERE harus setelah JOIN
             $sql .= " WHERE TO_CHAR(g.upload_date, 'DD Mon YYYY') ILIKE :keyword";
             $params[':keyword'] = '%' . $keyword . '%';
         }
@@ -38,9 +34,7 @@ class GalleryModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // PERBAIKAN: Menerima $user_id
     public function create($image, $user_id) {
-        // Simpan user_id ke database
         $stmt = $this->db->prepare("INSERT INTO {$this->table} (image, user_id, upload_date) VALUES (:image, :user_id, NOW())");
         return $stmt->execute([
             ':image' => $image,

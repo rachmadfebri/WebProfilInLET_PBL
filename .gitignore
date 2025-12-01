@@ -1,2 +1,3 @@
 # Abaikan folder uploads (file gambar user tidak perlu masuk git)
 public/uploads/
+node_modules/

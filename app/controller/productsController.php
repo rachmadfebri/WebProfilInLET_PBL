@@ -15,7 +15,6 @@ class ProductsController {
             exit;
         }
 
-        // PERBAIKAN: Ambil keyword search
         $keyword = $_GET['keyword'] ?? '';
         $productsList = $this->productsModel->getAll($keyword); 
 
@@ -48,7 +47,6 @@ class ProductsController {
             exit;
         }
 
-        // 1. JIKA POST (Simpan Data)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $thumbnailPath = '';
             
@@ -69,11 +67,14 @@ class ProductsController {
                 }
             }
 
+            $currentUserId = $_SESSION['user_id'] ?? $_SESSION['id'] ?? null; 
+
             $data = [
                 'title'       => $_POST['title'],
                 'description' => $_POST['description'],
                 'url'         => $_POST['url'] ?? '', 
-                'thumbnail'   => $thumbnailPath
+                'thumbnail'   => $thumbnailPath,
+                'user_id'     => $currentUserId 
             ];
 
             if ($id) {
@@ -86,8 +87,6 @@ class ProductsController {
             exit;
         }
 
-        // 2. JIKA GET (Tampilkan View)
-        // PERBAIKAN: Tambahkan support search
         $keyword = $_GET['keyword'] ?? '';
         $productsList = $this->productsModel->getAll($keyword); 
         

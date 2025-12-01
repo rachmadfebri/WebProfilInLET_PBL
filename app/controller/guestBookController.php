@@ -8,12 +8,10 @@ class GuestbookController {
         $this->guestbookModel = new GuestbookModel($pdo);
     }
 
-    // Fungsi ini dipanggil dari Dashboard untuk mengambil data
     public function getData($startDate = null, $endDate = null, $keyword = '') {
         return $this->guestbookModel->getAll($startDate, $endDate, $keyword);
     }
 
-    // Fungsi Delete (Tetap Redirect ke Dashboard)
     public function delete($id) {
         if (session_status() == PHP_SESSION_NONE) session_start();
         if ($_SESSION['role'] !== 'admin') exit;
@@ -55,7 +53,6 @@ class GuestbookController {
 
         $dataLaporan = $this->guestbookModel->getAll($startDate, $endDate, $keyword);
         
-        // Path view cetak (pastikan path ini benar)
         require __DIR__ . '/../views/admin/print_guestbook.php';
     }
 }
