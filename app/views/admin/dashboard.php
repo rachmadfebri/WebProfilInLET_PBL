@@ -800,6 +800,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
             </div>
           </div>
 
+          <a href="https://info.flagcounter.com/7bRW"><img src="https://s01.flagcounter.com/count2/7bRW/bg_C94AFF/txt_000000/border_CCCCCC/columns_8/maxflags_12/viewers_0/labels_1/pageviews_0/flags_0/percent_1/" alt="Flag Counter" border="0"></a>
         </div>
 
         <!-- RECENT DATA TABLES -->
