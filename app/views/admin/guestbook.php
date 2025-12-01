@@ -1,28 +1,14 @@
 <?php
-// app/views/admin/collaboration.php
-
-if (!isset($collaborationList) || !is_array($collaborationList)) {
-    $collaborationList = []; 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
-$totalRecords = isset($totalRecords) ? $totalRecords : count($collaborationList);
 
-// --- LOGIKA PAGINATION ---
-$currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
-$limit = 5; 
-$totalPages = ceil($totalRecords / $limit);
+// Fallback variabel guestbook
+$guestbookList = $guestbookList ?? [];
+$startDate     = $startDate ?? '';
+$endDate       = $endDate ?? '';
+$keyword       = $keyword ?? '';
 
-// Slice array untuk simulasi pagination
-$offset = ($currentPage - 1) * $limit;
-$pagedData = array_slice($collaborationList, $offset, $limit);
-// -------------------------
-
-$isEdit = isset($editData);
-$formTitle = $isEdit ? "Edit Mitra Kerjasama" : "Tambah Mitra Kerjasama";
-$formAction = $isEdit 
-    ? "index.php?page=collaboration&action=edit&id=" . urlencode($editData['id'])
-    : "index.php?page=collaboration&action=create";
-$popoverClass = $isEdit ? "" : "hidden";
-$keyword = $_GET['keyword'] ?? '';
 $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
 ?>
 <!DOCTYPE html>
@@ -40,7 +26,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
       type="image/png"
       href="public/assets/img/favicon.png"
     />
-    <title>Collaboration - Lab InLET</title>
+    <title>Buku Tamu - Lab InLET</title>
     <!-- Fonts and icons -->
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
@@ -51,7 +37,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
       src="https://kit.fontawesome.com/42d5adcbca.js"
       crossorigin="anonymous">
     </script>
-     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
     
     <!-- Popper -->
@@ -59,24 +45,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
     
     <!-- Main Styling -->
     <link href="assets/css/soft-ui-dashboard-tailwind.min.css" rel="stylesheet" />
-      <link
-        href="assets/css/nucleo-icons.css"
-        rel="stylesheet"
-    />
-    
-    <link
-      href="assets/css/nucleo-svg.css"
-      rel="stylesheet"
-    />
-    
-    <!-- Popper -->
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    
-    <!-- Main Styling -->
-    <link
-      href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5"
-      rel="stylesheet"
-    />
+    <link href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
 
     <!-- Nepcha Analytics (nepcha.com) -->
     <script
@@ -128,7 +97,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
         class="items-center block w-auto max-h-screen overflow-y-auto h-sidenav grow basis-full"
       >
         <ul class="flex flex-col pl-0 mb-0">
-          <li class="mt-0.5 w-full">
+         <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
               href="?page=admin-dashboard"
@@ -203,7 +172,6 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                             d="M12.25,17.5 L8.75,17.5 L8.75,1.75 C8.75,0.78225 9.53225,0 10.5,0 L31.5,0 C32.46775,0 33.25,0.78225 33.25,1.75 L33.25,12.25 L29.75,12.25 L29.75,3.5 L12.25,3.5 L12.25,17.5 Z"
                           ></path>
                           <path
-
                             class="fill-slate-800"
                             d="M40.25,14 L24.5,14 C23.53225,14 22.75,14.78225 22.75,15.75 L22.75,38.5 L19.25,38.5 L19.25,22.75 C19.25,21.78225 18.46775,21 17.5,21 L1.75,21 C0.78225,21 0,21.78225 0,22.75 L0,40.25 C0,41.21775 0.78225,42 1.75,42 L40.25,42 C41.21775,42 42,41.21775 42,40.25 L42,15.75 C42,14.78225 41.21775,14 40.25,14 Z M12.25,36.75 L7,36.75 L7,33.25 L12.25,33.25 L12.25,36.75 Z M12.25,29.75 L7,29.75 L7,26.25 L12.25,26.25 L12.25,29.75 Z M35,36.75 L29.75,36.75 L29.75,33.25 L35,33.25 L35,36.75 Z M35,29.75 L29.75,29.75 L29.75,26.25 L35,26.25 L35,29.75 Z M35,22.75 L29.75,22.75 L29.75,19.25 L35,19.25 L35,22.75 Z"
                           ></path>
@@ -443,42 +411,70 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
           <!-- Tombol Kerjasama -->
           <li class="mt-0.5 w-full">
             <a
-              class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
               href="?page=collaboration"
             >
               <div
-                class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
               >
-                <i class="ni leading-none ni-paper-diploma text-xs relative top-2 text-white"></i>
+                <i class="ni leading-none ni-paper-diploma text-xs relative top-2 text-gray"></i>
               </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kerjasama</span>
+              <span
+                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
+                >Kerjasama</span
+              >
             </a>
           </li>
 
           <!-- Tombol Buku Tamu -->
           <li class="mt-0.5 w-full">
             <a
-              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+              class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
               href="?page=guestbook"
             >
               <div
-                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+                class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
               >
-                <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="12px"
+                  height="12px"
+                  viewBox="0 0 42 42"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                >
                   <title>book</title>
-                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <g transform="translate(-1869.000000, -293.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                  <g
+                    stroke="none"
+                    stroke-width="1"
+                    fill="none"
+                    fill-rule="evenodd"
+                  >
+                    <g
+                      transform="translate(-1869.000000, -293.000000)"
+                      fill="#FFFFFF"
+                      fill-rule="nonzero"
+                    >
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(153.000000, 2.000000)">
-                          <path class="fill-slate-800" d="M21,0 C9.402,0 0,9.402 0,21 C0,32.598 9.402,42 21,42 C32.598,42 42,32.598 42,21 C42,9.402 32.598,0 21,0 Z M21,39.417 C11.106,39.417 3.583,31.894 3.583,21 C3.583,11.106 11.106,3.583 21,3.583 C30.894,3.583 38.417,11.106 38.417,21 C38.417,30.894 30.894,39.417 21,39.417 Z"></path>
-                          <path class="fill-slate-800 opacity-60" d="M21,10.5 C18.5133333,10.5 16.5,12.5133333 16.5,15 C16.5,17.4866667 18.5133333,19.5 21,19.5 C23.4866667,19.5 25.5,17.4866667 25.5,15 C25.5,12.5133333 23.4866667,10.5 21,10.5 Z M21,26.25 C17.5633333,26.25 14.6633333,28.5133333 13.875,31.5 L28.125,31.5 C27.3366667,28.5133333 24.4366667,26.25 21,26.25 Z"></path>
+                          <path
+                            class="fill-white"
+                            d="M21,0 C9.402,0 0,9.402 0,21 C0,32.598 9.402,42 21,42 C32.598,42 42,32.598 42,21 C42,9.402 32.598,0 21,0 Z M21,39.417 C11.106,39.417 3.583,31.894 3.583,21 C3.583,11.106 11.106,3.583 21,3.583 C30.894,3.583 38.417,11.106 38.417,21 C38.417,30.894 30.894,39.417 21,39.417 Z"
+                          ></path>
+                          <path
+                            class="fill-white opacity-60"
+                            d="M21,10.5 C18.5133333,10.5 16.5,12.5133333 16.5,15 C16.5,17.4866667 18.5133333,19.5 21,19.5 C23.4866667,19.5 25.5,17.4866667 25.5,15 C25.5,12.5133333 23.4866667,10.5 21,10.5 Z M21,26.25 C17.5633333,26.25 14.6633333,28.5133333 13.875,31.5 L28.125,31.5 C27.3366667,28.5133333 24.4366667,26.25 21,26.25 Z"
+                          ></path>
                         </g>
                       </g>
                     </g>
                   </g>
                 </svg>
               </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Buku Tamu</span>
+              <span
+                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
+                >Buku Tamu</span
+              >
             </a>
           </li>
 
@@ -548,7 +544,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
     <!-- end sidenav -->
 
     <main
-      class="ease-soft-in-out xl:ml-68.5 relative min-h-screen rounded-xl transition-all duration-200"
+      class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200"
     >
       <!-- Navbar -->
       <nav
@@ -573,10 +569,10 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                 class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
                 aria-current="page"
               >
-                Kerjasama
+                Buku Tamu
               </li>
             </ol>
-            <h6 class="mb-0 font-bold capitalize">Kerjasama</h6>
+            <h6 class="mb-0 font-bold capitalize">Kelola Buku Tamu</h6>
           </nav>
 
           <div
@@ -621,210 +617,118 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   </div>
                 </a>
               </li>
-              <li class="flex items-center px-4">
-                <a
-                  href="javascript:;"
-                  class="p-0 text-sm transition-all ease-nav-brand text-slate-500"
-                >
-                  <i
-                    fixed-plugin-button-nav
-                    class="cursor-pointer fa fa-cog"
-                    aria-hidden="true"
-                  ></i>
-                  <!-- fixed-plugin-button-nav  -->
-                </a>
-              </li>
             </ul>
           </div>
         </div>
       </nav>
       <!-- End Navbar -->
 
-        <div class="mx-6 mt-6 relative"> 
-            
-            <?php if (!$isEdit): ?>
-            <div class="relative">
-                <button
-                  id="addCollabBtn"
-                  class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all shadow-md"
-                  onclick="toggleCollabPopover()"
-                >
-                  + Tambah Kerjasama
-                </button>
-            </div>
-            <?php endif; ?>
-
-            <div
-              id="collabPopover"
-              class="absolute left-0 top-12 z-50 <?= $popoverClass ?> bg-white rounded-2xl shadow-2xl p-6 border border-gray-100"
-              style="width: 100%; max-width: 500px;"
-            >
-              <h3 class="text-lg font-bold mb-4 border-b pb-2"><?= $formTitle ?></h3>
-              <form action="<?= $formAction ?>" method="POST" enctype="multipart/form-data">
-                  <?php if ($isEdit && !empty($editData['logo'])): ?>
-                  <div class="mb-4 text-center">
-                      <p class="text-xs font-semibold mb-1 text-gray-500">Logo Saat Ini:</p>
-                      <img src="<?= htmlspecialchars($editData['logo']) ?>" class="h-16 w-auto mx-auto object-contain rounded border bg-gray-50 p-1">
-                  </div>
-                  <?php endif; ?>
-
-                <div class="mb-4">
-                  <label class="block text-sm font-semibold mb-1">Nama Mitra</label>
-                  <input type="text" name="name" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" 
-                         value="<?= $isEdit ? htmlspecialchars($editData['name']) : '' ?>" required>
-                </div>
-                <div class="mb-4">
-                  <label class="block text-sm font-semibold mb-1">Website (URL)</label>
-                  <input type="url" name="website" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" 
-                         value="<?= $isEdit ? htmlspecialchars($editData['website']) : '' ?>" placeholder="Contoh: https://example.com" required>
-                </div>
-                <div class="mb-4">
-                  <label class="block text-sm font-semibold mb-1">Deskripsi Singkat</label>
-                  <textarea name="description" rows="3" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500" required><?= $isEdit ? htmlspecialchars($editData['description']) : '' ?></textarea>
-                </div>
-                <div class="mb-4">
-                  <label class="block text-sm font-semibold mb-1">
-                      <?= $isEdit ? "Ganti Logo (Opsional)" : "Upload Logo" ?>
-                  </label>
-                  <input type="file" name="logo" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 cursor-pointer" 
-                         <?= $isEdit ? '' : 'required' ?>>
-                </div>
-                <div class="flex justify-end pt-2">
+      <!-- CARD FILTER & TABEL GUESTBOOK -->
+      <div class="w-full px-6 py-6 mx-auto">
+        <div class="flex flex-wrap -mx-3">
+            <div class="w-full px-3 mb-6 lg:mb-0 lg:flex-none">
                 
-                <?php if ($isEdit): ?>
-                    <a href="index.php?page=collaboration" 
-                       class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all">
-                       Batal
-                    </a>
-                <?php else: ?>
-                    <button type="button" 
-                            class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all" 
-                            onclick="toggleCollabPopover()">
-                            Batal
-                    </button>
-                <?php endif; ?>
-                
-                <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">
-                    Simpan
-                </button>
-              </div>
-              </form>
+                <!-- CARD FILTER -->
+                <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border mb-4">
+                    <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+                        <h6 class="font-bold">Filter & Cetak Laporan Buku Tamu</h6>
+                    </div>
+                    <div class="flex-auto p-6">
+                        <!-- FORM PENCARIAN & FILTER (Action ke Halaman Guestbook) -->
+                        <form action="index.php" method="GET" class="flex flex-wrap items-end gap-4 mb-4">
+                            <input type="hidden" name="page" value="guestbook">
+                            
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700">Dari Tanggal</label>
+                                <input type="date" name="start_date" value="<?= htmlspecialchars($startDate) ?>" class="text-sm border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:border-purple-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700">Sampai Tanggal</label>
+                                <input type="date" name="end_date" value="<?= htmlspecialchars($endDate) ?>" class="text-sm border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:border-purple-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700">Keyword (Opsional)</label>
+                                <input type="text" name="keyword" value="<?= htmlspecialchars($keyword) ?>" placeholder="Nama / Instansi" class="text-sm border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:border-purple-500">
+                            </div>
+                            <div class="ml-2">
+                                <button type="submit" class="inline-flex items-center justify-center px-6 py-2 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-xs font-bold uppercase shadow-md hover:scale-105 transition-all">
+                                    <i class="fas fa-search mr-1"></i> Cari
+                                </button>
+                            </div>
+                            <div class="ml-2">
+                                <a href="index.php?page=print-guestbook&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&keyword=<?= urlencode($keyword) ?>" target="_blank" class="inline-flex items-center justify-center px-6 py-2 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-xs font-bold uppercase shadow-md hover:scale-105 transition-all">
+                                    <i class="fas fa-print mr-2"></i> Cetak PDF
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- CARD TABEL GUESTBOOK -->
+                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
+                    <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
+                         <h6 class="font-bold">Daftar Buku Tamu</h6>
+                    </div>
+                    <div class="flex-auto px-0 pt-0 pb-2">
+                        <div class="p-0 overflow-x-auto">
+                            <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                                <thead class="align-bottom">
+                                    <tr>
+                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Waktu</th>
+                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Nama & Instansi</th>
+                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Kontak</th>
+                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Pesan</th>
+                                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (!empty($guestbookList)): ?>
+                                        <?php foreach ($guestbookList as $item): ?>
+                                        <tr>
+                                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                                <div class="px-2 py-1">
+                                                    <p class="mb-0 text-xs font-semibold leading-tight"><?= date('d M Y H:i', strtotime($item['sent_at'])) ?></p>
+                                                </div>
+                                            </td>
+                                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                                <div class="px-2 py-1">
+                                                    <h6 class="mb-0 text-sm leading-normal font-bold text-slate-700"><?= htmlspecialchars($item['name']) ?></h6>
+                                                    <p class="mb-0 text-xs leading-tight text-slate-400"><?= htmlspecialchars($item['institution'] ?? '-') ?></p>
+                                                </div>
+                                            </td>
+                                            <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
+                                                <p class="mb-0 text-xs leading-tight text-slate-500"><?= htmlspecialchars($item['email'] ?? '-') ?></p>
+                                                <p class="mb-0 text-xs leading-tight text-slate-500"><?= htmlspecialchars($item['phone_number'] ?? '-') ?></p>
+                                            </td>
+                                            <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
+                                                <p class="mb-0 text-xs leading-tight text-slate-500 whitespace-pre-wrap max-w-xs truncate" title="<?= htmlspecialchars($item['message']) ?>">
+                                                    <?= htmlspecialchars(substr($item['message'], 0, 50)) . (strlen($item['message']) > 50 ? '...' : '') ?>
+                                                </p>
+                                            </td>
+                                            <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                                <a href="index.php?page=guestbook&action=delete&id=<?= $item['id'] ?>" class="text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer" onclick="return confirm('Hapus pesan tamu ini?')">
+                                                    <i class="fas fa-trash mr-1"></i>Hapus
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="5" class="text-center p-4 text-sm font-semibold text-gray-500">Belum ada data buku tamu.</td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-
-        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-padding mx-6 mt-4">
-          
-          <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
-             <h6>Daftar Mitra Kerjasama</h6>
-             <form action="index.php" method="GET" class="flex items-center space-x-2">
-                <input type="hidden" name="page" value="collaboration">
-                <input type="search" name="keyword" placeholder="Cari Mitra..." value="<?= htmlspecialchars($keyword) ?>" class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all">
-                <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">Cari</button>
-            </form>
-          </div>
-          
-          <div class="flex-auto px-0 pt-0 pb-2">
-            <div class="p-0 overflow-x-auto">
-              <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
-                <thead class="align-bottom">
-                  <tr>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">No</th>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Logo</th>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Nama & Deskripsi</th>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Website</th>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Diupload Oleh</th>
-                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php 
-                  $no = $offset + 1; 
-                  if (!empty($pagedData)): 
-                  ?> 
-                      <?php foreach ($pagedData as $collab): ?>
-                      <tr>
-                        <td class="p-2 align-middle text-center bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
-                            <span class="text-xs font-semibold leading-tight text-slate-400"><?= $no++ ?></span>
-                        </td>
-
-                        <td class="p-2 align-middle text-center bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
-                          <img src="<?= htmlspecialchars($collab['logo']) ?>" class="h-12 w-24 object-contain rounded-lg mx-auto border bg-gray-50 p-1" alt="Logo Mitra" />
-                        </td>
-                        
-                        <td class="p-2 align-middle text-center bg-transparent border-b shadow-transparent">
-                           <div class="flex flex-col px-2 py-1">
-                                <h6 class="mb-0 text-sm leading-normal font-bold text-slate-700"><?= htmlspecialchars($collab['name']) ?></h6>
-                                <p class="mb-0 text-xs text-slate-400 overflow-hidden w-64 truncate">
-                                    <?= htmlspecialchars(substr($collab['description'], 0, 80)) ?>...
-                                </p>
-                           </div>
-                        </td>
-
-                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <a href="<?= htmlspecialchars($collab['website']) ?>" target="_blank" class="text-xs font-semibold leading-tight text-blue-500 hover:text-blue-700 underline">
-                            <?= htmlspecialchars(parse_url($collab['website'], PHP_URL_HOST) ?: $collab['website']) ?>
-                          </a>
-                          <p class="text-xxs text-slate-400 mt-1"><?= date('d M Y', strtotime($collab['created_at'])) ?></p>
-                        </td>
-
-                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                            <h6 class="text-xs font-semibold leading-tight text-slate-400"><?= htmlspecialchars($collab['uploader_name'] ?? 'Unknown') ?></h6>
-                        </td>
-
-                        <td class="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
-                          <a href="index.php?page=collaboration&action=edit&id=<?= $collab['id'] ?>" class="text-xs font-bold leading-tight text-blue-800 mr-6 hover:text-blue-950 transition-all"><i class="fas fa-edit mr-1"></i>Edit</a>
-                          <a href="index.php?page=collaboration&action=delete&id=<?= $collab['id'] ?>" class="text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" onclick="return confirm('Yakin ingin menghapus kerjasama ini?')"><i class="fas fa-trash mr-1"></i>Hapus</a>
-                        </td>
-                      </tr>
-                      <?php endforeach; ?>
-                  <?php else: ?>
-                      <tr>
-                          <td colspan="5" class="p-4 text-center text-sm text-gray-500 font-semibold">Belum ada data kolaborasi.</td>
-                      </tr>
-                  <?php endif; ?>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        
-        <?php if ($totalPages > 1): ?>
-        <div class="flex justify-center mt-6 mb-6">
-            <nav aria-label="Page navigation">
-                <ul class="inline-flex items-center -space-x-px">
-                    <li class="mx-1">
-                        <a href="?page=collaboration&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-left"><</i></a>
-                    </li>
-                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                    <li class="mx-1">
-                        <a href="?page=collaboration&p=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>"><?= $i ?></a>
-                    </li>
-                    <?php endfor; ?>
-                    <li class="mx-1">
-                        <a href="?page=collaboration&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-right">></i></a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <?php endif; ?>
-        
       </div>
+
     </main>
-    
-    <script>
-      function toggleCollabPopover() {
-        const popover = document.getElementById("collabPopover");
-        popover.classList.toggle("hidden");
-      }
-      document.addEventListener("click", function(e) {
-        const btn = document.getElementById("addCollabBtn");
-        const popover = document.getElementById("collabPopover");
-        if (btn && popover && !popover.contains(e.target) && e.target !== btn) {
-          popover.classList.add("hidden");
-        }
-      });
-    </script>
-    <script src="assets/js/plugins/perfect-scrollbar.min.js" async></script>
+
     <script src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
-</body>
+  </body>
 </html>

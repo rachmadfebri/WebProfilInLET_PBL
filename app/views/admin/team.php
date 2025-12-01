@@ -442,6 +442,33 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
             </a>
           </li>
 
+          <!-- Tombol Buku Tamu -->
+          <li class="mt-0.5 w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=guestbook"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                  <title>book</title>
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-1869.000000, -293.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                      <g transform="translate(1716.000000, 291.000000)">
+                        <g transform="translate(153.000000, 2.000000)">
+                          <path class="fill-slate-800" d="M21,0 C9.402,0 0,9.402 0,21 C0,32.598 9.402,42 21,42 C32.598,42 42,32.598 42,21 C42,9.402 32.598,0 21,0 Z M21,39.417 C11.106,39.417 3.583,31.894 3.583,21 C3.583,11.106 11.106,3.583 21,3.583 C30.894,3.583 38.417,11.106 38.417,21 C38.417,30.894 30.894,39.417 21,39.417 Z"></path>
+                          <path class="fill-slate-800 opacity-60" d="M21,10.5 C18.5133333,10.5 16.5,12.5133333 16.5,15 C16.5,17.4866667 18.5133333,19.5 21,19.5 C23.4866667,19.5 25.5,17.4866667 25.5,15 C25.5,12.5133333 23.4866667,10.5 21,10.5 Z M21,26.25 C17.5633333,26.25 14.6633333,28.5133333 13.875,31.5 L28.125,31.5 C27.3366667,28.5133333 24.4366667,26.25 21,26.25 Z"></path>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Buku Tamu</span>
+            </a>
+          </li>
+
           <!-- menu mahasiswa -->
       <div class="mx-4 my-6 shrink-0">
         <div class="mb-2 font-bold text-slate-700 text-base">Mahasiswa</div>
@@ -737,7 +764,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   $no = $offset + 1;
                   if (!empty($pagedData)): 
                     ?> 
-                      <?php foreach ($teamList as $item): ?>
+                      <?php foreach ($pagedData as $item): ?>
                       <tr>
                          <td class="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent text-center">
                           <span class="text-xs font-semibold leading-tight text-slate-400">
@@ -769,8 +796,8 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
 
                         <!-- Aksi -->
                         <td class="p-2 py-3 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center">
-                          <a href="index.php?page=team&action=edit&id=<?= $item['id'] ?>" class="inline-block mr-6 text-xs font-bold leading-tight text-blue-800 hover:text-blue-950 transition-all">Edit</a>
-                          <a href="index.php?page=team&action=delete&id=<?= $item['id'] ?>" class="inline-block text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" onclick="return confirm('Yakin ingin menghapus anggota ini?')">Hapus</a>
+                          <a href="index.php?page=team&action=edit&id=<?= $item['id'] ?>" class="inline-block mr-6 text-xs font-bold leading-tight text-blue-800 hover:text-blue-950 transition-all"><i class="fas fa-edit mr-1"></i>Edit</a>
+                          <a href="index.php?page=team&action=delete&id=<?= $item['id'] ?>" class="inline-block text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all" onclick="return confirm('Yakin ingin menghapus anggota ini?')"><i class="fas fa-trash mr-1"></i>Hapus</a>
                         </td>
                       </tr>
                       <?php endforeach; ?>

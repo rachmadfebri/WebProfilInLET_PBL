@@ -8,6 +8,21 @@ class GuestbookController {
         $this->guestbookModel = new GuestbookModel($pdo);
     }
 
+    // Halaman Admin - Kelola Buku Tamu
+    public function index() {
+        if (session_status() == PHP_SESSION_NONE) session_start();
+        if ($_SESSION['role'] !== 'admin') exit;
+
+        $startDate = $_GET['start_date'] ?? '';
+        $endDate   = $_GET['end_date'] ?? '';
+        $keyword   = $_GET['keyword'] ?? '';
+
+        $guestbookList = $this->guestbookModel->getAll($startDate, $endDate, $keyword);
+
+        require __DIR__ . '/../views/admin/guestbook.php';
+    }
+
+    // Fungsi ini dipanggil dari Dashboard untuk mengambil data
     public function getData($startDate = null, $endDate = null, $keyword = '') {
         return $this->guestbookModel->getAll($startDate, $endDate, $keyword);
     }
@@ -18,8 +33,8 @@ class GuestbookController {
         
         $this->guestbookModel->delete($id);
         
-        // Redirect kembali ke Dashboard Admin
-        header("Location: index.php?page=admin-dashboard");
+        // Redirect kembali ke halaman guestbook
+        header("Location: index.php?page=guestbook");
         exit;
     }
 

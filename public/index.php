@@ -197,6 +197,11 @@ switch ($page) {
     $studentController->index();
     break;
 
+  // Halaman Kelola Buku Tamu (Admin)
+  case 'guestbook':
+    $guestbookController->index();
+    break;
+
   default:
     echo "Page not found.";
     break;
