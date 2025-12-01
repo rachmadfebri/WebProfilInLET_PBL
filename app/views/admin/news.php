@@ -767,7 +767,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   $no = $offset + 1;
                   if (!empty($pagedData)): 
                     ?> 
-                      <?php foreach ($newsList as $news): ?>
+                      <?php foreach ($pagedData as $news): ?>
                       <tr>
                         <td class="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent text-center">
                           <span class="text-xs font-semibold leading-tight text-slate-400">
