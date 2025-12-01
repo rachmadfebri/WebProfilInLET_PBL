@@ -818,7 +818,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                 <ul class="inline-flex items-center -space-x-px">
                     <li class="mx-1">
                         <a href="?page=news&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
-                            <i class="fas fa-chevron-left"><</i>
+                            <i class="fas fa-chevron-left"></i>
                         </a>
                     </li>
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
@@ -830,7 +830,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                     <?php endfor; ?>
                     <li class="mx-1">
                         <a href="?page=news&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
-                            <i class="fas fa-chevron-right">></i>
+                            <i class="fas fa-chevron-right"></i>
                         </a>
                     </li>
                 </ul>

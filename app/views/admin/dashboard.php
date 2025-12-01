@@ -802,7 +802,103 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
 
         </div>
 
-  
+        <!-- RECENT DATA TABLES -->
+        <div class="flex flex-wrap mt-6 -mx-3">
+          <!-- BERITA TERBARU -->
+          <div class="w-full max-w-full px-3 mb-6 lg:mb-0 lg:w-1/2">
+            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
+              <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl flex justify-between items-center">
+                <h6 class="font-bold text-slate-700">Berita Terbaru</h6>
+                <a href="?page=news" class="text-xs font-bold text-purple-600 hover:text-purple-800">
+                  <i class="fas fa-arrow-right mr-1"></i>Lihat Semua
+                </a>
+              </div>
+              <div class="flex-auto px-0 pt-0 pb-2">
+                <div class="p-0 overflow-x-auto">
+                  <table class="items-center w-full mb-0 align-top border-gray-200">
+                    <thead class="align-bottom">
+                      <tr>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs text-slate-400 opacity-70">Judul</th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs text-slate-400 opacity-70">Tanggal</th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs text-slate-400 opacity-70">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php if (!empty($recentNews) && is_array($recentNews)): 
+                        foreach (array_slice($recentNews, 0, 3) as $news): ?>
+                      <tr>
+                        <td class="p-2 text-left align-middle bg-transparent border-b whitespace-nowrap">
+                          <span class="text-xs font-semibold text-slate-700"><?= htmlspecialchars(substr($news['title'] ?? '', 0, 30)) ?></span>
+                        </td>
+                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap">
+                          <span class="text-xs font-semibold text-slate-400"><?= (!empty($news['published_date']) ? date('d M Y', strtotime($news['published_date'])) : (!empty($news['created_at']) ? date('d M Y', strtotime($news['created_at'])) : 'N/A')) ?></span>
+                        </td>
+                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap">
+                          <a href="?page=news&action=edit&id=<?= $news['id'] ?>" class="text-xs font-bold text-blue-800 hover:text-blue-950">
+                            <i class="fas fa-edit mr-1"></i>Edit
+                          </a>
+                        </td>
+                      </tr>
+                      <?php endforeach;
+                      else: ?>
+                      <tr>
+                        <td colspan="3" class="p-4 text-center text-sm text-gray-500">Belum ada berita</td>
+                      </tr>
+                      <?php endif; ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LAPORAN TAMU TERBARU -->
+          <div class="w-full max-w-full px-3 lg:w-1/2">
+            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
+              <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl flex justify-between items-center">
+                <h6 class="font-bold text-slate-700">Laporan Tamu Terbaru</h6>
+                <a href="?page=guestbook" class="text-xs font-bold text-purple-600 hover:text-purple-800">
+                  <i class="fas fa-arrow-right mr-1"></i>Lihat Semua
+                </a>
+              </div>
+              <div class="flex-auto px-0 pt-0 pb-2">
+                <div class="p-0 overflow-x-auto">
+                  <table class="items-center w-full mb-0 align-top border-gray-200">
+                    <thead class="align-bottom">
+                      <tr>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs text-slate-400 opacity-70">Nama</th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs text-slate-400 opacity-70">Email</th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs text-slate-400 opacity-70">Tanggal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php if (!empty($recentGuestbook) && is_array($recentGuestbook)): 
+                        foreach (array_slice($recentGuestbook, 0, 3) as $guest): ?>
+                      <tr>
+                        <td class="p-2 text-left align-middle bg-transparent border-b whitespace-nowrap">
+                          <span class="text-xs font-semibold text-slate-700"><?= htmlspecialchars($guest['name'] ?? 'N/A') ?></span>
+                        </td>
+                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap">
+                          <span class="text-xs font-semibold text-slate-400"><?= htmlspecialchars($guest['email'] ?? '-') ?></span>
+                        </td>
+                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap">
+                          <span class="text-xs font-semibold text-slate-400"><?= $guest['sent_at'] ? date('d M Y', strtotime($guest['sent_at'])) : 'N/A' ?></span>
+                        </td>
+                      </tr>
+                      <?php endforeach;
+                      else: ?>
+                      <tr>
+                        <td colspan="3" class="p-4 text-center text-sm text-gray-500">Belum ada laporan tamu</td>
+                      </tr>
+                      <?php endif; ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
     </main>
 
     <script src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>

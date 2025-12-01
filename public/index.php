@@ -13,6 +13,7 @@ require_once __DIR__ . '/../app/controller/Collaborationcontroller.php';
 require_once __DIR__ . '/../app/controller/ResearchController.php';
 require_once __DIR__ . '/../app/controller/TeamMembersController.php';
 require_once __DIR__ . '/../app/controller/AttendanceController.php';
+require_once __DIR__ . '/../app/controller/AbsensiAdminController.php';
 require_once __DIR__ . '/../app/controller/StudentController.php';
 require_once __DIR__ . '/../app/controller/GuestbookController.php';
 
@@ -30,6 +31,7 @@ $researchController = new ResearchController($pdo);
 $collaborationController = new CollaborationController($pdo);
 $teamMembersController = new TeamMembersController($pdo);
 $attendanceController = new AttendanceController();
+$absensiAdminController = new AbsensiAdminController();
 $guestbookController = new GuestbookController($pdo);
 
 // [BARU] Inisialisasi Student Controller
@@ -200,6 +202,11 @@ switch ($page) {
   // Halaman Kelola Buku Tamu (Admin)
   case 'guestbook':
     $guestbookController->index();
+    break;
+
+  // Halaman Absensi (Admin)
+  case 'absensi':
+    $absensiAdminController->index();
     break;
 
   default:

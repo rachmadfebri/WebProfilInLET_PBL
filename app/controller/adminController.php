@@ -5,6 +5,7 @@ require_once __DIR__ . '/../model/ResearchModel.php';
 require_once __DIR__ . '/../model/StudentModel.php';
 require_once __DIR__ . '/../model/TeamMembersModel.php';
 require_once __DIR__ . '/../model/GuestbookModel.php';
+require_once __DIR__ . '/../model/NewsModel.php';
 
 
 class AdminController {
@@ -13,13 +14,15 @@ class AdminController {
     private $studentModel;
     private $teamModel;
     private $guestbookModel;
+    private $newsModel;
 
     public function __construct($pdo) {
         $this->productsModel = new ProductsModel($pdo);
         $this->researchModel = new ResearchModel($pdo);
         $this->studentModel = new StudentModel($pdo);
         $this->teamModel = new TeamMembersModel($pdo);
-        $this->guestbookModel = new GuestbookModel($pdo); 
+        $this->guestbookModel = new GuestbookModel($pdo);
+        $this->newsModel = new NewsModel($pdo);
     }
 
     public function dashboard() {
@@ -41,6 +44,10 @@ class AdminController {
         $keyword   = $_GET['keyword']    ?? '';
 
         $guestbookList = $this->guestbookModel->getAll($startDate, $endDate, $keyword);
+        
+        // Ambil data terbaru untuk dashboard
+        $recentNews = $this->newsModel ? $this->newsModel->getAll() : [];
+        $recentGuestbook = $guestbookList;
 
         require __DIR__ . '/../views/admin/dashboard.php';
     }

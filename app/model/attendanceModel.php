@@ -282,4 +282,40 @@ class AttendanceModel {
             return [];
         }
     }
+
+    /**
+     * Helper method: Mendapatkan semua attendance data (all time atau dengan filter date)
+     * @param string $startDate (optional) Format: YYYY-MM-DD
+     * @param string $endDate (optional) Format: YYYY-MM-DD
+     * @return array
+     */
+    public function getAllAttendance($startDate = null, $endDate = null) {
+        $query = "SELECT a.*, u.full_name, u.email 
+                  FROM attendance a
+                  LEFT JOIN users u ON a.user_id = u.id
+                  WHERE 1=1";
+        
+        $params = [];
+
+        if ($startDate && $endDate) {
+            $query .= " AND (a.check_in_time AT TIME ZONE 'Asia/Jakarta')::date BETWEEN ? AND ?";
+            $params[] = $startDate;
+            $params[] = $endDate;
+        }
+
+        $query .= " ORDER BY a.check_in_time DESC";
+
+        try {
+            if ($params) {
+                $stmt = $this->db->prepare($query);
+                $stmt->execute($params);
+            } else {
+                $stmt = $this->db->query($query);
+            }
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error in getAllAttendance: " . $e->getMessage());
+            return [];
+        }
+    }
 }

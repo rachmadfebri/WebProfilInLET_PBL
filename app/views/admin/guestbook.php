@@ -10,6 +10,20 @@ $endDate       = $endDate ?? '';
 $keyword       = $keyword ?? '';
 
 $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
+
+// --- LOGIKA PAGINATION ---
+$totalRecords = count($guestbookList);
+$currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+$limit = 5; // Batas per halaman
+$totalPages = ceil($totalRecords / $limit);
+
+if ($currentPage < 1) $currentPage = 1;
+if ($currentPage > $totalPages && $totalPages > 0) $currentPage = $totalPages;
+
+// Slice array
+$offset = ($currentPage - 1) * $limit;
+$pagedData = array_slice($guestbookList, $offset, $limit);
+// -------------------------
 ?>
 <!DOCTYPE html>
 <html>
@@ -682,8 +696,8 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php if (!empty($guestbookList)): ?>
-                                        <?php foreach ($guestbookList as $item): ?>
+                                    <?php if (!empty($pagedData)): ?>
+                                        <?php foreach ($pagedData as $item): ?>
                                         <tr>
                                             <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                                 <div class="px-2 py-1">
@@ -722,6 +736,28 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                         </div>
                     </div>
                 </div>
+
+                <!-- PAGINATION -->
+                <?php if ($totalPages > 1): ?>
+                <div class="flex justify-center mt-6 mb-6">
+                    <nav aria-label="Page navigation">
+                        <ul class="inline-flex items-center -space-x-px">
+                            <li class="mx-1">
+                                <a href="?page=guestbook&p=<?= max(1, $currentPage - 1) ?>&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-left"></i></a>
+                            </li>
+                            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                            <li class="mx-1">
+                                <a href="?page=guestbook&p=<?= $i ?>&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>"><?= $i ?></a>
+                            </li>
+                            <?php endfor; ?>
+                            <li class="mx-1">
+                                <a href="?page=guestbook&p=<?= min($totalPages, $currentPage + 1) ?>&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <?php endif; ?>
+                <!-- END PAGINATION -->
 
             </div>
         </div>

@@ -773,7 +773,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                 <ul class="inline-flex items-center -space-x-px">
                     <li class="mx-1">
                         <a href="?page=research&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-left"><</i></a>
-                    </li>
+                    </li>   
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                     <li class="mx-1">
                         <a href="?page=research&p=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>"><?= $i ?></a>
