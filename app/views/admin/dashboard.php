@@ -462,6 +462,58 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
             </a>
           </li>
 
+          <!-- Tombol Buku Tamu -->
+          <li class="mt-0.5 w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=guestbook"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <svg
+                  width="12px"
+                  height="12px"
+                  viewBox="0 0 42 42"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                >
+                  <title>book</title>
+                  <g
+                    stroke="none"
+                    stroke-width="1"
+                    fill="none"
+                    fill-rule="evenodd"
+                  >
+                    <g
+                      transform="translate(-1869.000000, -293.000000)"
+                      fill="#FFFFFF"
+                      fill-rule="nonzero"
+                    >
+                      <g transform="translate(1716.000000, 291.000000)">
+                        <g transform="translate(153.000000, 2.000000)">
+                          <path
+                            class="fill-slate-800"
+                            d="M21,0 C9.402,0 0,9.402 0,21 C0,32.598 9.402,42 21,42 C32.598,42 42,32.598 42,21 C42,9.402 32.598,0 21,0 Z M21,39.417 C11.106,39.417 3.583,31.894 3.583,21 C3.583,11.106 11.106,3.583 21,3.583 C30.894,3.583 38.417,11.106 38.417,21 C38.417,30.894 30.894,39.417 21,39.417 Z"
+                          ></path>
+                          <path
+                            class="fill-slate-800 opacity-60"
+                            d="M21,10.5 C18.5133333,10.5 16.5,12.5133333 16.5,15 C16.5,17.4866667 18.5133333,19.5 21,19.5 C23.4866667,19.5 25.5,17.4866667 25.5,15 C25.5,12.5133333 23.4866667,10.5 21,10.5 Z M21,26.25 C17.5633333,26.25 14.6633333,28.5133333 13.875,31.5 L28.125,31.5 C27.3366667,28.5133333 24.4366667,26.25 21,26.25 Z"
+                          ></path>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+              <span
+                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
+                >Buku Tamu</span
+              >
+            </a>
+          </li>
+
           <!-- menu mahasiswa -->
       <div class="mx-4 my-6 shrink-0">
         <div class="mb-2 font-bold text-slate-700 text-base">Mahasiswa</div>
@@ -750,113 +802,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
 
         </div>
 
-        <!-- AREA KONTEN LAIN (Grafik/Tabel, bisa dikosongkan dulu atau diisi tabel ringkas) -->
-       <!-- AREA GUESTBOOK / BUKU TAMU (FILTER & TABEL) -->
-        <div class="flex flex-wrap mt-6 -mx-3">
-            <div class="w-full px-3 mb-6 lg:mb-0 lg:flex-none">
-                
-                <!-- CARD FILTER -->
-                <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border mb-4">
-                    <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-                        <h6 class="font-bold">Filter & Cetak Laporan Tamu</h6>
-                    </div>
-                    <div class="flex-auto p-6">
-                        <!-- FORM PENCARIAN & FILTER (Action ke Dashboard) -->
-                        <form action="index.php" method="GET" class="flex flex-wrap items-end gap-4 mb-4">
-                            <input type="hidden" name="page" value="admin-dashboard">
-                            
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700">Dari Tanggal</label>
-                                <input type="date" name="start_date" value="<?= htmlspecialchars($startDate) ?>" class="text-sm border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:border-purple-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700">Sampai Tanggal</label>
-                                <input type="date" name="end_date" value="<?= htmlspecialchars($endDate) ?>" class="text-sm border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:border-purple-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700">Keyword (Opsional)</label>
-                                <input type="text" name="keyword" value="<?= htmlspecialchars($keyword) ?>" placeholder="Nama / Instansi" class="text-sm border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:border-purple-500">
-                            </div>
-                            <div class="ml-2">
-                                <button type="submit" class="inline-flex items-center justify-center px-6 py-2 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-xs font-bold uppercase shadow-md hover:scale-105 transition-all">
-                                    <i class="fas fa-search mr-1"></i> Cari
-                                </button>
-                            </div>
-                            <div class="ml-2">
-                                <a href="index.php?page=print-guestbook&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&keyword=<?= urlencode($keyword) ?>" target="_blank" class="inline-flex items-center justify-center px-6 py-2 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-xs font-bold uppercase shadow-md hover:scale-105 transition-all">
-                                    <i class="fas fa-print mr-2"></i> Cetak PDF
-                                </a>
-                            </div>
-                        </form>
-
-                        <!-- TOMBOL CETAK TERPISAH (Mengambil parameter filter yang sedang aktif) -->
-                        
-                    </div>
-                </div>
-
-                <!-- CARD TABEL GUESTBOOK -->
-                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
-                         <h6 class="font-bold">Daftar Buku Tamu Terbaru</h6>
-                    </div>
-                    <div class="flex-auto px-0 pt-0 pb-2">
-                        <div class="p-0 overflow-x-auto">
-                            <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
-                                <thead class="align-bottom">
-                                    <tr>
-                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Waktu</th>
-                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Nama & Instansi</th>
-                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Kontak</th>
-                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Pesan</th>
-                                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs opacity-70">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php if (!empty($guestbookList)): ?>
-                                        <?php foreach ($guestbookList as $item): ?>
-                                        <tr>
-                                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                                <div class="px-2 py-1">
-                                                    <p class="mb-0 text-xs font-semibold leading-tight"><?= date('d M Y H:i', strtotime($item['sent_at'])) ?></p>
-                                                </div>
-                                            </td>
-                                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                                <div class="px-2 py-1">
-                                                    <h6 class="mb-0 text-sm leading-normal font-bold text-slate-700"><?= htmlspecialchars($item['name']) ?></h6>
-                                                    <p class="mb-0 text-xs leading-tight text-slate-400"><?= htmlspecialchars($item['institution'] ?? '-') ?></p>
-                                                </div>
-                                            </td>
-                                            <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
-                                                <p class="mb-0 text-xs leading-tight text-slate-500"><?= htmlspecialchars($item['email'] ?? '-') ?></p>
-                                                <p class="mb-0 text-xs leading-tight text-slate-500"><?= htmlspecialchars($item['phone_number'] ?? '-') ?></p>
-                                            </td>
-                                            <td class="p-2 align-middle bg-transparent border-b shadow-transparent">
-                                                <p class="mb-0 text-xs leading-tight text-slate-500 whitespace-pre-wrap max-w-xs truncate" title="<?= htmlspecialchars($item['message']) ?>">
-                                                    <?= htmlspecialchars(substr($item['message'], 0, 50)) . (strlen($item['message']) > 50 ? '...' : '') ?>
-                                                </p>
-                                            </td>
-                                            <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                                <a href="index.php?page=guestbook&action=delete&id=<?= $item['id'] ?>" class="text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer" onclick="return confirm('Hapus pesan tamu ini?')">
-                                                    <i class="fas fa-trash mr-1"></i> Hapus
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <tr>
-                                            <td colspan="5" class="text-center p-4 text-sm font-semibold text-gray-500">Belum ada data buku tamu.</td>
-                                        </tr>
-                                    <?php endif; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-      </div>
+  
     </main>
 
     <script src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
