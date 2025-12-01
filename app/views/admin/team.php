@@ -608,19 +608,6 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   </div>
                 </a>
               </li>
-              <li class="flex items-center px-4">
-                <a
-                  href="javascript:;"
-                  class="p-0 text-sm transition-all ease-nav-brand text-slate-500"
-                >
-                  <i
-                    fixed-plugin-button-nav
-                    class="cursor-pointer fa fa-cog"
-                    aria-hidden="true"
-                  ></i>
-                  <!-- fixed-plugin-button-nav  -->
-                </a>
-              </li>
             </ul>
           </div>
         </div>
