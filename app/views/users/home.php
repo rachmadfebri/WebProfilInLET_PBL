@@ -1,27 +1,3 @@
-<?php
-require_once __DIR__ . '/../../../config/connection.php'; 
-
-$totalViewers = 0; 
-
-try {
-    $ip_visitor = $_SERVER['REMOTE_ADDR'];
-    $date_today = date('Y-m-d');
-
-    $stmtCheck = $pdo->prepare("SELECT id FROM visitors WHERE ip_address = ? AND access_date = ?");
-    $stmtCheck->execute([$ip_visitor, $date_today]);
-
-    if ($stmtCheck->rowCount() == 0) {
-        $stmtInsert = $pdo->prepare("INSERT INTO visitors (ip_address, access_date) VALUES (?, ?)");
-        $stmtInsert->execute([$ip_visitor, $date_today]);
-    }
-
-    $stmtCount = $pdo->query("SELECT COUNT(*) FROM visitors");
-    $totalViewers = $stmtCount->fetchColumn();
-
-} catch (Exception $e) {
-    $totalViewers = 0;
-}
-?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -68,21 +44,23 @@ try {
     <section class="stats-section">
         <div class="stats-container">
 
-            <div class="stat-item">
-                <img src="gambar_viewers.png" alt="Viewers" class="stat-img">
-                <h3 class="stat-text gradient-text"><?php echo $totalViewers; ?> VIEWERS</h3>
+            <div class="stat-row row-left">
+                <div class="stat-item">
+                    <img src="assets/img/viewer.png" alt="Viewers" class="stat-img">
+                    <h3 class="stat-text gradient-text">11 VIEWERS</h3>
+                </div>
             </div>
 
             <div class="stat-row row-right">
                 <div class="stat-item">
                     <h3 class="stat-text gradient-text">50 related articles</h3>
-                    <img src="gambar_articles.png" alt="Articles" class="stat-img">
+                    <img src="assets/img/viewer2.png" alt="Articles" class="stat-img">
                 </div>
             </div>
 
             <div class="stat-row row-left">
                 <div class="stat-item">
-                    <img src="gambar_prototypes.png" alt="Prototypes" class="stat-img">
+                    <img src="assets/img/viewer3.png" alt="Prototypes" class="stat-img">
                     <h3 class="stat-text gradient-text">5 prototypes</h3>
                 </div>
             </div>
@@ -127,11 +105,13 @@ try {
     <section id="news" class="news-section">
 
         <?php
+        // Ambil berita dari database
         try {
             require_once __DIR__ . '/../../model/newsModel.php';
             $newsModel = new NewsModel($pdo);
             $allNews = $newsModel->getAll();
             
+            // Pisahkan berita pertama dan sisanya
             $mainNews = !empty($allNews) ? $allNews[0] : null;
             $otherNews = !empty($allNews) ? array_slice($allNews, 1, 8) : [];
         } catch (Exception $e) {
@@ -305,10 +285,8 @@ try {
             <a href="#" class="arrow-button right-arrow">
                 <i class="fa-solid fa-chevron-right"></i>
             </a>
-        </div>
+        </div>  
     </section>
-
-    <?php include 'footer.php'; ?>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
