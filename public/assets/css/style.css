@@ -325,19 +325,21 @@ h1 {
 }
 
 .card-button-decorator:hover {
-    transform: translateY(-50%) scale(1.1); /* Efek hover pada tombol */
+    transform: translateX(-50%) scale(1.1); /* Efek hover pada tombol */
 }
 
 .button-left {
-    left: -35px; /* Setengah dari width */
+    left: 50%; /* Tengah horizontal */
+    transform: translateX(-50%);
 }
 /* Untuk tombol kiri, ikonnya mungkin perlu dibalik */
 .button-left i {
-    transform: rotate(180deg);
+    transform: none;
 }
 
 .button-right {
-    right: -35px; /* Setengah dari width */
+    left: 50%; /* Tengah horizontal */
+    transform: translateX(-50%);
 }
 /* --- AKHIR BAGIAN YANG BERUBAH --- */
 
