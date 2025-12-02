@@ -612,10 +612,12 @@ h1 {
     overflow: hidden; /* Penting agar iframe tidak keluar dari border radius */
 }
 
-.video-card iframe {
+.video-card iframe,
+.video-card img {
     width: 100%;
     height: 100%;
     border: none;
+    object-fit: cover;
 }
 
 /* Tombol Panah Kiri Kanan */
@@ -798,6 +800,13 @@ h1 {
     margin-bottom: 10px;
 }
 
+/* Pusatkan heading khusus untuk halaman Team */
+.team-page .page-heading {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* --- ABOUT PAGE --- */
 .about-panel {
     display: flex;
@@ -873,11 +882,14 @@ h1 {
 .team-page .team-grid {
     margin-top: 60px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px 16px;
-    max-width: 720px;
+    grid-template-columns: repeat(5, minmax(0, 1fr)); /* 5 kartu per baris di desktop */
+    gap: 24px;
+    max-width: 1200px;
+    width: 100%;
     position: relative;
     z-index: 2;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .team-card {

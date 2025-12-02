@@ -288,23 +288,43 @@ try {
             </div>
         </section>
 
+    <?php
+    // Ambil data aktivitas riset dari database
+    try {
+        require_once __DIR__ . '/../../model/researchModel.php';
+        $researchModel = new ResearchModel($pdo);
+        $researchActivities = $researchModel->getAll();
+    } catch (Exception $e) {
+        error_log("Research Activities Error: " . $e->getMessage());
+        $researchActivities = [];
+    }
+    ?>
+
     <section class="activity-section">
-        <h2 class="section-title gradient-text">Aktifiti</h2>
+        <h2 class="section-title gradient-text">Research Activities</h2>
         <div class="activity-container">
-            <a href="#" class="arrow-button left-arrow">
-                <i class="fa-solid fa-chevron-left"></i>
-            </a>
-            <div class="video-card-wrapper">
-                <div class="video-card">
-                    <iframe src="https://www.youtube.com/embed/YOUR_YOUTUBE_VIDEO_ID" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen>
-                    </iframe>
+            <?php if (!empty($researchActivities)): ?>
+                <?php $mainActivity = $researchActivities[0]; ?>
+
+                <a href="#" class="arrow-button left-arrow">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+
+                <div class="video-card-wrapper">
+                    <div class="video-card">
+                        <?php if (!empty($mainActivity['image'])): ?>
+                            <img src="<?php echo htmlspecialchars($mainActivity['image']); ?>"
+                                 alt="<?php echo htmlspecialchars($mainActivity['title']); ?>">
+                        <?php endif; ?>
+                    </div>
                 </div>
-            </div>
-            <a href="#" class="arrow-button right-arrow">
-                <i class="fa-solid fa-chevron-right"></i>
-            </a>
+
+                <a href="#" class="arrow-button right-arrow">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            <?php else: ?>
+                <p>Belum ada data aktivitas riset.</p>
+            <?php endif; ?>
         </div>
     </section>
 
