@@ -75,7 +75,7 @@
                         </div>
                     </div>
                     <div class="who-we-are-image">
-                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
+                        <img src="https://let.polinema.ac.id/assets/images/whatsapp-image-2023-11-28-at-13.53.53-ad815996.jpg"
                              alt="InLet Team">
                     </div>
                 </div>
