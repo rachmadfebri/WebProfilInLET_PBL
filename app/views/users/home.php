@@ -316,6 +316,8 @@
         </div>
     </section>
 
+    <?php include 'footer.php'; ?>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const toggleBtn = document.getElementById('toggleNewsBtn');
