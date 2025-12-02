@@ -7,18 +7,16 @@ class ProductsModel {
     }
 
     public function getAll($keyword = '') {
-        $sql = "SELECT p.*, u.full_name AS uploader_name 
-                FROM products p
-                LEFT JOIN users u ON p.user_id = u.user_id";
+        $sql = "SELECT * FROM products";
         
         $params = [];
 
         if ($keyword) {
-            $sql .= " WHERE (p.title ILIKE :keyword OR p.description ILIKE :keyword)";
+            $sql .= " WHERE (title ILIKE :keyword OR description ILIKE :keyword)";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
-        $sql .= " ORDER BY p.created_at DESC";
+        $sql .= " ORDER BY created_at DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
