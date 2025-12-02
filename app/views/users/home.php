@@ -1,13 +1,12 @@
 <?php
-require_once __DIR__ . '/../../../config/connection.php'; // Sesuaikan path config Anda
+require_once __DIR__ . '/../../../config/connection.php'; 
 
-$totalViewers = 0; // Set default 0 supaya tidak error jika query gagal
+$totalViewers = 0; 
 
 try {
     $ip_visitor = $_SERVER['REMOTE_ADDR'];
     $date_today = date('Y-m-d');
 
-    // Cek visitor hari ini
     $stmtCheck = $pdo->prepare("SELECT id FROM visitors WHERE ip_address = ? AND access_date = ?");
     $stmtCheck->execute([$ip_visitor, $date_today]);
 
@@ -16,7 +15,6 @@ try {
         $stmtInsert->execute([$ip_visitor, $date_today]);
     }
 
-    // Hitung total
     $stmtCount = $pdo->query("SELECT COUNT(*) FROM visitors");
     $totalViewers = $stmtCount->fetchColumn();
 
@@ -130,7 +128,7 @@ try {
 
         <?php
         try {
-            require_once _DIR_ . '/../../model/newsModel.php';
+            require_once __DIR__ . '/../../model/newsModel.php';
             $newsModel = new NewsModel($pdo);
             $allNews = $newsModel->getAll();
             
@@ -307,12 +305,6 @@ try {
             <a href="#" class="arrow-button right-arrow">
                 <i class="fa-solid fa-chevron-right"></i>
             </a>
-        </div>
-    </section>
-
-    <section>
-        <div style="text-align: center;">
-            <a href="https://info.flagcounter.com/iYqz"><img src="https://s05.flagcounter.com/count2/iYqz/bg_FFFFFF/txt_000000/border_CCCCCC/columns_8/maxflags_12/viewers_0/labels_1/pageviews_0/flags_0/percent_1/"  width="1600" alt="Flag Counter" border="0"></a>
         </div>
     </section>
 
