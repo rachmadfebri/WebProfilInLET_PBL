@@ -165,6 +165,11 @@ switch ($page) {
   case 'mahasiswa-dashboard':
     $mahasiswaController->dashboard();
     break;
+  
+  // Profil Mahasiswa
+  case 'profil':
+    $mahasiswaController->profil();
+    break;
  
   // Admin Features
   case 'gallery':

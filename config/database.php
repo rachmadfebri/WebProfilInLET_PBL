@@ -5,19 +5,28 @@ class Database {
     private $port = "5432";
     private $db_name = "lab_inlet";
     private $username = "postgres"; 
-    private $password = ""; 
+    private $password = ""; // Change this if your PostgreSQL has a password
 
     public function connect() {
         try {
+            $dsn = "pgsql:host={$this->host};port={$this->port};dbname={$this->db_name}";
+            error_log("Attempting to connect to PostgreSQL with DSN: " . $dsn);
+            
             $pdo = new PDO(
-                "pgsql:host={$this->host};port={$this->port};dbname={$this->db_name}",
+                $dsn,
                 $this->username,
-                $this->password
+                $this->password,
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+                ]
             );
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            error_log("PostgreSQL connection successful!");
             return $pdo;
 
         } catch (PDOException $e) {
+            error_log("Database connection failed: " . $e->getMessage());
             die("Database connection failed: " . $e->getMessage());
         }
     }
