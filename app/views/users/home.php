@@ -309,7 +309,7 @@
                         <?php endif; ?>
                     </div>
                 </div>
-            </div>
+            <?php endif; ?>
             <a href="#" class="arrow-button right-arrow">
                 <i class="fa-solid fa-chevron-right"></i>
             </a>
