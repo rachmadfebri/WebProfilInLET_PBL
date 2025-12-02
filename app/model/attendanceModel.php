@@ -8,13 +8,18 @@
 // - activity_description (text) NULL
 // - created_at (timestamp) NULL
 
-require_once __DIR__ . '/../../config/connection.php'; 
+require_once __DIR__ . '/../../config/database.php'; 
 
 class AttendanceModel {
     private $db;
 
     public function __construct() {
-        $this->db = require __DIR__ . '/../../config/connection.php';
+        $database = new Database();
+        $this->db = $database->connect();
+        
+        if (!$this->db) {
+            throw new Exception("Failed to establish database connection");
+        }
     }
 
     /**
@@ -186,10 +191,12 @@ class AttendanceModel {
      */
     public function getLatestTodayAttendance(int $user_id) {
         // PostgreSQL: Cast timestamp to date untuk perbandingan. menggunakan AT TIME ZONE untuk memastikan timezone konsisten
-        $query = "SELECT * FROM attendance 
-                  WHERE user_id = ? 
-                  AND (check_in_time AT TIME ZONE 'Asia/Jakarta')::date = CURRENT_DATE
-                  ORDER BY check_in_time DESC 
+        $query = "SELECT a.*, u.full_name, u.email 
+                  FROM attendance a
+                  LEFT JOIN users u ON a.user_id = u.user_id
+                  WHERE a.user_id = ? 
+                  AND (a.check_in_time AT TIME ZONE 'Asia/Jakarta')::date = CURRENT_DATE
+                  ORDER BY a.check_in_time DESC 
                   LIMIT 1"; 
 
         try {
@@ -248,7 +255,7 @@ class AttendanceModel {
     public function getAllAttendanceToday() {
         $query = "SELECT a.*, u.full_name, u.email 
                   FROM attendance a
-                  LEFT JOIN users u ON a.user_id = u.id
+                  LEFT JOIN users u ON a.user_id = u.user_id
                   WHERE a.check_in_time::date = CURRENT_DATE
                   ORDER BY a.check_in_time DESC";
         
@@ -290,31 +297,100 @@ class AttendanceModel {
      * @return array
      */
     public function getAllAttendance($startDate = null, $endDate = null) {
-        $query = "SELECT a.*, u.full_name, u.email 
+        // First, let's try a simple query to check if attendance table has data
+        try {
+            $countQuery = "SELECT COUNT(*) FROM attendance";
+            $countStmt = $this->db->query($countQuery);
+            $totalAttendance = $countStmt->fetchColumn();
+            error_log("Total attendance records in database: " . $totalAttendance);
+            
+            $countUsersQuery = "SELECT COUNT(*) FROM users";
+            $countUsersStmt = $this->db->query($countUsersQuery);
+            $totalUsers = $countUsersStmt->fetchColumn();
+            error_log("Total users in database: " . $totalUsers);
+        } catch (Exception $e) {
+            error_log("Error counting records: " . $e->getMessage());
+        }
+        
+        // Use LEFT JOIN to include attendance records even if user doesn't exist
+        $query = "SELECT a.id, a.user_id, a.check_in_time, a.check_out_time, 
+                         a.activity_description, a.created_at,
+                         COALESCE(u.full_name, 'User ID: ' || a.user_id) as full_name, 
+                         COALESCE(u.email, 'No email') as email 
                   FROM attendance a
-                  LEFT JOIN users u ON a.user_id = u.id
+                  LEFT JOIN users u ON a.user_id = u.user_id
                   WHERE 1=1";
         
         $params = [];
 
-        if ($startDate && $endDate) {
-            $query .= " AND (a.check_in_time AT TIME ZONE 'Asia/Jakarta')::date BETWEEN ? AND ?";
+        // Handle single date filter (when startDate and endDate are the same)
+        if ($startDate && $endDate && $startDate === $endDate) {
+            $query .= " AND a.check_in_time::date = ?";
+            $params[] = $startDate;
+        } 
+        // Handle date range filter
+        elseif ($startDate && $endDate) {
+            $query .= " AND a.check_in_time::date BETWEEN ? AND ?";
             $params[] = $startDate;
             $params[] = $endDate;
+        }
+        // Handle only startDate (filter for specific date)
+        elseif ($startDate) {
+            $query .= " AND a.check_in_time::date = ?";
+            $params[] = $startDate;
         }
 
         $query .= " ORDER BY a.check_in_time DESC";
 
         try {
-            if ($params) {
+            error_log("getAllAttendance Query: " . $query);
+            error_log("getAllAttendance Params: " . json_encode($params));
+            
+            if (!empty($params)) {
                 $stmt = $this->db->prepare($query);
                 $stmt->execute($params);
             } else {
                 $stmt = $this->db->query($query);
             }
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            error_log("getAllAttendance query executed successfully. Returned " . count($result) . " records.");
+            
+            // Log first few records for debugging
+            if (!empty($result)) {
+                error_log("Sample record: " . json_encode($result[0]));
+            }
+            
+            return $result;
         } catch (PDOException $e) {
             error_log("Error in getAllAttendance: " . $e->getMessage());
+            error_log("Query was: " . $query);
+            error_log("Params were: " . json_encode($params));
+            error_log("PDO Error Code: " . $e->getCode());
+            return [];
+        }
+    }
+
+    /**
+     * Simple method to get all attendance without any filters for debugging
+     */
+    public function getAllAttendanceRaw() {
+        try {
+            $query = "SELECT a.*, 
+                             COALESCE(u.full_name, 'User ID: ' || a.user_id) as full_name, 
+                             COALESCE(u.email, 'No email') as email 
+                      FROM attendance a
+                      LEFT JOIN users u ON a.user_id = u.user_id
+                      ORDER BY a.check_in_time DESC";
+            
+            error_log("Raw query: " . $query);
+            $stmt = $this->db->query($query);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            error_log("Raw query returned " . count($result) . " records");
+            
+            return $result;
+        } catch (PDOException $e) {
+            error_log("Error in getAllAttendanceRaw: " . $e->getMessage());
             return [];
         }
     }

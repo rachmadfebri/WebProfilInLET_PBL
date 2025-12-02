@@ -11,43 +11,82 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 
 require_once __DIR__ . '/../../model/AttendanceModel.php';
 
-$attendanceModel = new AttendanceModel();
+try {
+    $attendanceModel = new AttendanceModel();
+    
+    // Ambil data filter
+    $keyword = $_GET['keyword'] ?? '';
+    $filter_date = $_GET['filter_date'] ?? '';
+    $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
 
-// Ambil data filter
-$keyword = $_GET['keyword'] ?? '';
-$filter_date = $_GET['filter_date'] ?? '';
-$nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
+    // Debug logging
+    error_log("=== ABSENSI ADMIN PAGE DEBUG ===");
+    error_log("Keyword: " . $keyword);
+    error_log("Filter Date: " . $filter_date);
+    
+    // First, test with raw method to see if we can get any data at all
+    $rawAttendance = $attendanceModel->getAllAttendanceRaw();
+    error_log("Raw attendance count: " . count($rawAttendance));
+    
+    // If we have a filter date, try filtering, otherwise get all
+    if (!empty($filter_date)) {
+        // Single date filter
+        $allAttendance = $attendanceModel->getAllAttendance($filter_date, $filter_date);
+        error_log("Filtering by single date: " . $filter_date);
+        error_log("Filtered attendance count: " . count($allAttendance));
+        
+        // If no data for the filtered date, show message but keep raw data for debug
+        if (empty($allAttendance) && !empty($rawAttendance)) {
+            error_log("No data for filtered date, but raw data exists");
+        }
+    } else {
+        // Get all attendance data - if normal method fails, use raw
+        $allAttendance = $attendanceModel->getAllAttendance();
+        if (empty($allAttendance) && !empty($rawAttendance)) {
+            $allAttendance = $rawAttendance;
+            error_log("Using raw attendance data as fallback");
+        }
+        error_log("Getting all attendance data");
+    }
+    
+    error_log("Initial attendance count: " . count($allAttendance));
+    
+    // Filter berdasarkan keyword (nama) 
+    if (!empty($keyword)) {
+        $allAttendance = array_filter($allAttendance, function($item) use ($keyword) {
+            return stripos($item['full_name'] ?? '', $keyword) !== false;
+        });
+        error_log("After keyword filter count: " . count($allAttendance));
+    }
 
-// Ambil semua attendance data (jika filter_date ada, gunakan sebagai range; jika tidak, ambil semua)
-if (!empty($filter_date)) {
-    $allAttendance = $attendanceModel->getAllAttendance($filter_date, $filter_date);
-} else {
-    $allAttendance = $attendanceModel->getAllAttendance();
+    // Reset array keys setelah filter
+    $allAttendance = array_values($allAttendance);
+
+    // --- LOGIKA PAGINATION ---
+    $totalRecords = count($allAttendance);
+    $currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+    $limit = 10; // Batas per halaman
+    $totalPages = ceil($totalRecords / $limit);
+
+    if ($currentPage < 1) $currentPage = 1;
+    if ($currentPage > $totalPages && $totalPages > 0) $currentPage = $totalPages;
+
+    // Slice array
+    $offset = ($currentPage - 1) * $limit;
+    $pagedData = array_slice($allAttendance, $offset, $limit);
+    
+    error_log("Final paged data count: " . count($pagedData));
+    error_log("=== END DEBUG ===");
+    
+} catch (Exception $e) {
+    error_log("Error in absensi.php: " . $e->getMessage());
+    $allAttendance = [];
+    $pagedData = [];
+    $totalRecords = 0;
+    $totalPages = 0;
+    $currentPage = 1;
+    echo "<script>console.error('Error loading attendance data: " . addslashes($e->getMessage()) . "');</script>";
 }
-
-// Filter berdasarkan keyword (nama) 
-if (!empty($keyword)) {
-    $allAttendance = array_filter($allAttendance, function($item) use ($keyword) {
-        return stripos($item['full_name'], $keyword) !== false;
-    });
-}
-
-// Reset array keys setelah filter
-$allAttendance = array_values($allAttendance);
-
-// --- LOGIKA PAGINATION ---
-$totalRecords = count($allAttendance);
-$currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
-$limit = 10; // Batas per halaman
-$totalPages = ceil($totalRecords / $limit);
-
-if ($currentPage < 1) $currentPage = 1;
-if ($currentPage > $totalPages && $totalPages > 0) $currentPage = $totalPages;
-
-// Slice array
-$offset = ($currentPage - 1) * $limit;
-$pagedData = array_slice($allAttendance, $offset, $limit);
-// -------------------------
 ?>
 <!DOCTYPE html>
 <html>
@@ -388,6 +427,11 @@ $pagedData = array_slice($allAttendance, $offset, $limit);
                 <a href="?page=absensi" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-400 transition-all">
                   Reset
                 </a>
+                <!-- Debug button (can be removed in production) -->
+                <a href="?page=absensi&debug=1&<?= http_build_query(['keyword' => $keyword, 'filter_date' => $filter_date]) ?>" 
+                   class="px-3 py-2 bg-blue-500 text-white rounded-lg text-xs font-semibold hover:bg-blue-600 transition-all">
+                  Debug
+                </a>
               </div>
             </form>
           </div>
@@ -396,7 +440,22 @@ $pagedData = array_slice($allAttendance, $offset, $limit);
         <!-- TABEL ABSENSI -->
         <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
           <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-            <h6 class="font-bold">Riwayat Absensi (Total: <?= $totalRecords ?> records)</h6>
+            <div class="flex justify-between items-center">
+              <h6 class="font-bold">Riwayat Absensi (Total: <?= $totalRecords ?> records)</h6>
+              <!-- Debug Info (can be removed in production) -->
+              <div class="text-xs text-gray-500">
+                <?php if (isset($_GET['debug']) && $_GET['debug'] === '1'): ?>
+                  <span class="bg-gray-100 px-2 py-1 rounded">
+                    DB Connected: <?= $attendanceModel ? 'YES' : 'NO' ?> | 
+                    Raw Count: <?= count($rawAttendance ?? []) ?> |
+                    Filtered Count: <?= count($allAttendance ?? []) ?>
+                  </span>
+                  <?php if (!empty($rawAttendance)): ?>
+                    <br><small>Latest raw record: <?= htmlspecialchars($rawAttendance[0]['full_name'] ?? 'N/A') ?> (<?= htmlspecialchars($rawAttendance[0]['check_in_time'] ?? 'N/A') ?>)</small>
+                  <?php endif; ?>
+                <?php endif; ?>
+              </div>
+            </div>
           </div>
           <div class="flex-auto px-0 pt-0 pb-2">
             <div class="p-0 overflow-x-auto">
@@ -412,15 +471,16 @@ $pagedData = array_slice($allAttendance, $offset, $limit);
                   </tr>
                 </thead>
                 <tbody>
-                  <?php if (!empty($pagedData)): ?>
+                  <?php if (!empty($pagedData) && is_array($pagedData)): ?>
                     <?php 
                     $no = $offset + 1;
                     foreach ($pagedData as $item): 
-                      $check_in_time = $item['check_in_time'] ? date('H:i:s', strtotime($item['check_in_time'])) : '-';
-                      $check_out_time = $item['check_out_time'] ? date('H:i:s', strtotime($item['check_out_time'])) : '-';
-                      $check_in_date = $item['check_in_time'] ? date('d M Y', strtotime($item['check_in_time'])) : '-';
-                      $status = (!empty($item['check_out_time'])) ? 'Lengkap' : 'Sedang Aktivitas';
-                      $status_color = (!empty($item['check_out_time'])) ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
+                      // Error handling for missing data
+                      $check_in_time = isset($item['check_in_time']) && $item['check_in_time'] ? date('H:i:s', strtotime($item['check_in_time'])) : '-';
+                      $check_out_time = isset($item['check_out_time']) && $item['check_out_time'] ? date('H:i:s', strtotime($item['check_out_time'])) : '-';
+                      $check_in_date = isset($item['check_in_time']) && $item['check_in_time'] ? date('d M Y', strtotime($item['check_in_time'])) : '-';
+                      $status = (isset($item['check_out_time']) && !empty($item['check_out_time'])) ? 'Lengkap' : 'Sedang Aktivitas';
+                      $status_color = (isset($item['check_out_time']) && !empty($item['check_out_time'])) ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
                     ?>
                     <tr>
                       <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap">
@@ -446,7 +506,13 @@ $pagedData = array_slice($allAttendance, $offset, $limit);
                     <?php endforeach; ?>
                   <?php else: ?>
                     <tr>
-                      <td colspan="6" class="p-4 text-center text-sm font-semibold text-gray-500">Tidak ada data absensi.</td>
+                      <td colspan="6" class="p-4 text-center text-sm font-semibold text-gray-500">
+                        <?php if (empty($allAttendance)): ?>
+                          Tidak ada data absensi yang tersedia.
+                        <?php else: ?>
+                          Tidak ada data yang cocok dengan filter yang dipilih.
+                        <?php endif; ?>
+                      </td>
                     </tr>
                   <?php endif; ?>
                 </tbody>
