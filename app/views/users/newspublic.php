@@ -236,5 +236,7 @@ if (!empty($allNews)) {
 
     </div>
 
+    <?php include 'footer.php'; ?>
+
 </body>
 </html>
