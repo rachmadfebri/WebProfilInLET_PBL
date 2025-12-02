@@ -1,3 +1,29 @@
+<?php
+require_once __DIR__ . '/../../../config/connection.php'; // Sesuaikan path config Anda
+
+$totalViewers = 0; // Set default 0 supaya tidak error jika query gagal
+
+try {
+    $ip_visitor = $_SERVER['REMOTE_ADDR'];
+    $date_today = date('Y-m-d');
+
+    // Cek visitor hari ini
+    $stmtCheck = $pdo->prepare("SELECT id FROM visitors WHERE ip_address = ? AND access_date = ?");
+    $stmtCheck->execute([$ip_visitor, $date_today]);
+
+    if ($stmtCheck->rowCount() == 0) {
+        $stmtInsert = $pdo->prepare("INSERT INTO visitors (ip_address, access_date) VALUES (?, ?)");
+        $stmtInsert->execute([$ip_visitor, $date_today]);
+    }
+
+    // Hitung total
+    $stmtCount = $pdo->query("SELECT COUNT(*) FROM visitors");
+    $totalViewers = $stmtCount->fetchColumn();
+
+} catch (Exception $e) {
+    $totalViewers = 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -44,11 +70,9 @@
     <section class="stats-section">
         <div class="stats-container">
 
-            <div class="stat-row row-left">
-                <div class="stat-item">
-                    <img src="gambar_viewers.png" alt="Viewers" class="stat-img">
-                    <h3 class="stat-text gradient-text">11 VIEWERS</h3>
-                </div>
+            <div class="stat-item">
+                <img src="gambar_viewers.png" alt="Viewers" class="stat-img">
+                <h3 class="stat-text gradient-text"><?php echo $totalViewers; ?> VIEWERS</h3>
             </div>
 
             <div class="stat-row row-right">
@@ -105,13 +129,11 @@
     <section id="news" class="news-section">
 
         <?php
-        // Ambil berita dari database
         try {
-            require_once __DIR__ . '/../../model/newsModel.php';
+            require_once _DIR_ . '/../../model/newsModel.php';
             $newsModel = new NewsModel($pdo);
             $allNews = $newsModel->getAll();
             
-            // Pisahkan berita pertama dan sisanya
             $mainNews = !empty($allNews) ? $allNews[0] : null;
             $otherNews = !empty($allNews) ? array_slice($allNews, 1, 8) : [];
         } catch (Exception $e) {
@@ -285,6 +307,12 @@
             <a href="#" class="arrow-button right-arrow">
                 <i class="fa-solid fa-chevron-right"></i>
             </a>
+        </div>
+    </section>
+
+    <section>
+        <div style="text-align: center;">
+            <a href="https://info.flagcounter.com/iYqz"><img src="https://s05.flagcounter.com/count2/iYqz/bg_FFFFFF/txt_000000/border_CCCCCC/columns_8/maxflags_12/viewers_0/labels_1/pageviews_0/flags_0/percent_1/"  width="1600" alt="Flag Counter" border="0"></a>
         </div>
     </section>
 

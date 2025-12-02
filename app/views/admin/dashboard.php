@@ -800,11 +800,26 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
             </div>
           </div>
 
-          <a href="https://info.flagcounter.com/7bRW"><img src="https://s01.flagcounter.com/count2/7bRW/bg_C94AFF/txt_000000/border_CCCCCC/columns_8/maxflags_12/viewers_0/labels_1/pageviews_0/flags_0/percent_1/" alt="Flag Counter" border="0"></a>
+          <div class="w-full max-w-full px-3 mt-4">
+            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
+              <div class="flex-auto p-4">
+                <div class="w-full overflow-hidden text-center">
+                  <a href="https://info.flagcounter.com/iyqz">
+                    <img 
+                      src="https://s01.flagcounter.com/count2/9H1h/bg_FFFFFF/txt_000000/border_CCCCCC/columns_8/maxflags_16/viewers_Jumlah+Pengunjung/labels_1/pageviews_1/flags_0/percent_1/" 
+                      alt="Flag Counter" 
+                      border="0"
+                      class="w-full h-auto rounded-xl object-contain"
+                    >
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- RECENT DATA TABLES -->
-        <div class="flex flex-wrap mt-6 -mx-3">
+        <div class="flex flex-wrap mt-4 -mx-3">
           <!-- BERITA TERBARU -->
           <div class="w-full max-w-full px-3 mb-6 lg:mb-0 lg:w-1/2">
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
