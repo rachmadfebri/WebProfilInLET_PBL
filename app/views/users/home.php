@@ -69,20 +69,20 @@ try {
         <div class="stats-container">
 
             <div class="stat-item">
-                <img src="gambar_viewers.png" alt="Viewers" class="stat-img">
+                <img src="assets/img/viewer.png" alt="Viewers" class="stat-img">
                 <h3 class="stat-text gradient-text"><?php echo $totalViewers; ?> VIEWERS</h3>
             </div>
 
             <div class="stat-row row-right">
                 <div class="stat-item">
                     <h3 class="stat-text gradient-text">50 related articles</h3>
-                    <img src="gambar_articles.png" alt="Articles" class="stat-img">
+                    <img src="assets/img/viewer2.png" alt="Articles" class="stat-img">
                 </div>
             </div>
 
             <div class="stat-row row-left">
                 <div class="stat-item">
-                    <img src="gambar_prototypes.png" alt="Prototypes" class="stat-img">
+                    <img src="assets/img/viewer3.png" alt="Prototypes" class="stat-img">
                     <h3 class="stat-text gradient-text">5 prototypes</h3>
                 </div>
             </div>
