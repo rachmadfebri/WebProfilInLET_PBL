@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config/connection.php';
 
-class GuestbookModel {
+class GuestBookModel {
     private $db;
     private $table = 'guest_book'; 
 
@@ -28,6 +28,14 @@ class GuestbookModel {
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getRecent($limit = 10) {
+        $sql = "SELECT * FROM {$this->table} ORDER BY sent_at DESC LIMIT :limit";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

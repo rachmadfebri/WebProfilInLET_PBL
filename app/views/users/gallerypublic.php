@@ -1,9 +1,12 @@
 <?php
 // Initialize database connection and gallery model
+require_once __DIR__ . '/../../model/galleryModel.php';
+require_once __DIR__ . '/../../../config/database.php';
+
+$database = new Database();
+$pdo = $database->connect();
+
 try {
-    // Gunakan $pdo dari index.php (sudah tersedia sebagai global)
-    // Path dihitung dari app/views/users/, naik ke app/model/
-    require_once __DIR__ . '/../../model/galleryModel.php';
     $galleryModel = new GalleryModel($pdo);
     $galleries = $galleryModel->getAll();
 } catch (Exception $e) {
@@ -28,48 +31,105 @@ try {
 
     <?php include 'header.php'; ?>
 
-    <main class="page-wrapper gallery-page">
-        <div class="page-heading">
-            <p class="page-label">Selected Works</p>
-            <h1 class="page-title gradient-text">Galery</h1>
-            <p class="page-subtitle">
-                Ruang visual yang menampilkan dokumentasi kegiatan, eksperimen, dan hasil
-                prototipe terbaru dari Learning Engineering Technology Research Group.
-            </p>
-        </div>
+    <main class="page-wrapper">
+        <div class="gallery-page">
+            
+            <div class="gallery-header">
+                <div class="gallery-label">Visual Portfolio</div>
+                <h1 class="gallery-title">Gallery</h1>
+                <p class="gallery-subtitle">
+                    Dokumentasi visual kegiatan penelitian, eksperimen, dan pencapaian dari Learning Engineering 
+                    Technology Research Group yang menunjukkan perjalanan inovasi kami.
+                </p>
+            </div>
 
-        <section class="gallery-wall">
             <?php if (!empty($galleries)): ?>
-                <?php foreach ($galleries as $index => $gallery): ?>
-                    <?php 
-                        // Tentukan class untuk layout (wide, tall, normal)
-                        // Rotasi pattern: wide, normal, normal, tall, wide, normal, normal, normal, tall, dll
-                        $pattern = ($index + 1) % 10;
-                        $galleryClass = 'gallery-brick';
-                        if ($pattern == 1 || $pattern == 5) {
-                            $galleryClass .= ' wide';
-                        } elseif ($pattern == 4 || $pattern == 9) {
-                            $galleryClass .= ' tall';
-                        }
-                    ?>
-                    <a href="<?php echo htmlspecialchars($gallery['image']); ?>" 
-                       class="<?php echo $galleryClass; ?>" 
-                       target="_blank" 
-                       rel="noopener">
-                        <img src="<?php echo htmlspecialchars($gallery['image']); ?>" 
-                             alt="Gallery Item <?php echo htmlspecialchars($gallery['id'] ?? $index + 1); ?>"
-                             loading="lazy">
-                    </a>
-                <?php endforeach; ?>
+                
+                <!-- Standard Grid Layout -->
+                <div class="gallery-grid">
+                    <?php foreach ($galleries as $index => $gallery): ?>
+                        <div class="gallery-item" onclick="openModal('<?php echo htmlspecialchars($gallery['image']); ?>')">
+                            <div class="gallery-image">
+                                <img src="<?php echo htmlspecialchars($gallery['image']); ?>" 
+                                     alt="Gallery Item <?php echo $index + 1; ?>"
+                                     loading="lazy">
+                                <div class="gallery-overlay">
+                                    <i class="fas fa-expand"></i>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
             <?php else: ?>
-                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #999;">
-                    <p>Belum ada gambar dalam galeri.</p>
+                <div class="no-gallery">
+                    <i class="fas fa-images"></i>
+                    <h3>Belum Ada Galeri</h3>
+                    <p>Galeri visual kami sedang dalam pengembangan. Silakan kembali lagi nanti untuk melihat dokumentasi kegiatan terbaru.</p>
                 </div>
             <?php endif; ?>
-        </section>
+
+        </div>
     </main>
 
+    <!-- Image Modal -->
+    <div id="galleryModal" class="gallery-modal" onclick="closeModal()">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Gallery Image">
+        </div>
+    </div>
+
     <?php include 'footer.php'; ?>
+
+    <script>
+        function openModal(imageSrc) {
+            const modal = document.getElementById('galleryModal');
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = imageSrc;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('galleryModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Add smooth loading effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach((item, index) => {
+                item.style.animationDelay = (index * 0.1) + 's';
+                item.style.animation = 'fadeInUp 0.6s ease forwards';
+            });
+        });
+    </script>
+
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .gallery-item {
+            opacity: 0;
+        }
+    </style>
 
 </body>
 

@@ -13,32 +13,32 @@
 
         <ul>
             <li>
-                <a href="index.php?page=home" class="nav-item <?php echo $currentPage === 'home' ? 'active' : ''; ?>">
+                <a href="?page=home" class="nav-item <?php echo $currentPage === 'home' ? 'active' : ''; ?>">
                     Home
                 </a>
             </li>
             <li>
-                <a href="index.php?page=about" class="nav-item <?php echo $currentPage === 'about' ? 'active' : ''; ?>">
+                <a href="?page=about" class="nav-item <?php echo $currentPage === 'about' ? 'active' : ''; ?>">
                     About
                 </a>
             </li>
             <li>
-                <a href="index.php?page=teampublic" class="nav-item <?php echo $currentPage === 'teampublic' ? 'active' : ''; ?>">
+                <a href="?page=teampublic" class="nav-item <?php echo $currentPage === 'teampublic' ? 'active' : ''; ?>">
                     Team
                 </a>
             </li>
             <li>
-                <a href="index.php?page=newspublic" class="nav-item <?php echo $currentPage === 'newspublic' ? 'active' : ''; ?>">
+                <a href="?page=newspublic" class="nav-item <?php echo $currentPage === 'newspublic' ? 'active' : ''; ?>">
                     News
                 </a>
             </li>
             <li>
-                <a href="index.php?page=gallerypublic" class="nav-item <?php echo $currentPage === 'gallerypublic' ? 'active' : ''; ?>">
+                <a href="?page=gallerypublic" class="nav-item <?php echo $currentPage === 'gallerypublic' ? 'active' : ''; ?>">
                     Gallery
                 </a>
             </li>
             <li>
-                <a href="index.php?page=guestbook" class="nav-item <?php echo $currentPage === 'guestbook' ? 'active' : ''; ?>">
+                <a href="?page=guestbook" class="nav-item <?php echo $currentPage === 'guestbook' ? 'active' : ''; ?>">
                     Guestbook
                 </a>
             </li>

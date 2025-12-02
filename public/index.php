@@ -147,12 +147,27 @@ switch ($page) {
     // $galleryController->index();
     break;
   
+  // Public Guestbook Page
+  case 'guestbook':
+    require $viewDir . 'guestbook.php';
+    break;
+
   case 'newspublic':
     // Opsi 1: Panggil langsung View (Cara Cepat)
     require $viewDir . 'newspublic.php';
     
     // Opsi 2: Jika ingin pakai Controller:
     // $newsController->index();
+    break;
+
+  // Research Detail Page
+  case 'research-detail':
+    require $viewDir . 'research-detail.php';
+    break;
+
+  // Public Guestbook Page
+  case 'guestbook':
+    require $viewDir . 'guestbook.php';
     break;
 
   // Dashboards
@@ -202,13 +217,18 @@ switch ($page) {
     break;
 
   // Halaman Kelola Buku Tamu (Admin)
-  case 'guestbook':
+  case 'admin-guestbook':
     $guestbookController->index();
     break;
 
   // Halaman Absensi (Admin)
   case 'absensi':
     $absensiAdminController->index();
+    break;
+
+  // News Detail Page
+  case 'news-detail':
+    require $viewDir . 'news-detail.php';
     break;
 
   default:
