@@ -808,6 +808,239 @@ h1 {
 }
 
 /* --- ABOUT PAGE --- */
+.about-hero {
+    padding: 80px 5% 60px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+}
+
+.about-hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.about-hero-subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+.vision-mission-section {
+    padding: 80px 5%;
+    background: white;
+}
+
+.vision-mission-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 40px;
+}
+
+.vm-card {
+    padding: 40px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.vm-card h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.vm-card p, .vm-card li {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.vm-card ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.vm-card li {
+    padding-left: 30px;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.vm-card li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.who-we-are-section {
+    padding: 80px 5%;
+    background: #f8f9fa;
+}
+
+.who-we-are-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.who-we-are-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.who-we-are-text h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.who-we-are-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 1.5rem;
+}
+
+.who-we-are-quote {
+    padding: 30px;
+    background: white;
+    border-left: 4px solid #667eea;
+    border-radius: 10px;
+    font-style: italic;
+    color: #555;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.who-we-are-image img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.focus-areas-section {
+    padding: 80px 5%;
+    background: white;
+}
+
+.focus-areas-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title-center {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+}
+
+.focus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.focus-card {
+    padding: 40px 30px;
+    background: white;
+    border-radius: 15px;
+    border: 2px solid #e5e7eb;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.focus-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    border-color: #667eea;
+}
+
+.focus-icon {
+    font-size: 3rem;
+    color: #667eea;
+    margin-bottom: 1.5rem;
+}
+
+.focus-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.focus-card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.roadmap-section {
+    padding: 80px 5%;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+}
+
+.roadmap-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.roadmap-intro {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 3rem;
+}
+
+.roadmap-intro p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+}
+
+.roadmap-image {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.roadmap-image img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .about-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .vision-mission-container,
+    .who-we-are-content {
+        grid-template-columns: 1fr;
+    }
+
+    .vm-card h2,
+    .who-we-are-text h2,
+    .section-title-center {
+        font-size: 2rem;
+    }
+
+    .focus-grid {
+        grid-template-columns: 1fr;
+    }
+}
 .about-panel {
     display: flex;
     align-items: center;
