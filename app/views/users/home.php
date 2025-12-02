@@ -1,3 +1,29 @@
+<?php
+require_once __DIR__ . '/../../../config/connection.php'; // Sesuaikan path config Anda
+
+$totalViewers = 0; // Set default 0 supaya tidak error jika query gagal
+
+try {
+    $ip_visitor = $_SERVER['REMOTE_ADDR'];
+    $date_today = date('Y-m-d');
+
+    // Cek visitor hari ini
+    $stmtCheck = $pdo->prepare("SELECT id FROM visitors WHERE ip_address = ? AND access_date = ?");
+    $stmtCheck->execute([$ip_visitor, $date_today]);
+
+    if ($stmtCheck->rowCount() == 0) {
+        $stmtInsert = $pdo->prepare("INSERT INTO visitors (ip_address, access_date) VALUES (?, ?)");
+        $stmtInsert->execute([$ip_visitor, $date_today]);
+    }
+
+    // Hitung total
+    $stmtCount = $pdo->query("SELECT COUNT(*) FROM visitors");
+    $totalViewers = $stmtCount->fetchColumn();
+
+} catch (Exception $e) {
+    $totalViewers = 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -47,7 +73,7 @@
             <div class="stat-row row-left">
                 <div class="stat-item">
                     <img src="assets/img/viewer.png" alt="Viewers" class="stat-img">
-                    <h3 class="stat-text gradient-text">11 VIEWERS</h3>
+                    <h3 class="stat-text gradient-text"><?php echo $totalViewers; ?> VIEWERS</h3>
                 </div>
             </div>
 
