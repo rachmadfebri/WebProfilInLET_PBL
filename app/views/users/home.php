@@ -68,37 +68,48 @@
         </div>
     </section>
 
+    <?php
+    // Ambil produk dari database untuk ditampilkan di portfolio-section
+    try {
+        require_once __DIR__ . '/../../model/productsModel.php';
+        $productsModel = new ProductsModel($pdo);
+        $products = $productsModel->getAll();
+    } catch (Exception $e) {
+        error_log("Products Error: " . $e->getMessage());
+        $products = [];
+    }
+    ?>
+
     <section class="portfolio-section">
         <div class="portfolio-container">
+            <?php if (!empty($products)): ?>
+                <?php foreach (array_slice($products, 0, 2) as $index => $product): ?>
+                    <div class="portfolio-card">
+                        <?php if (!empty($product['url'])): ?>
+                            <a href="<?php echo htmlspecialchars($product['url']); ?>"
+                               class="card-button-decorator <?php echo $index === 0 ? 'button-left' : 'button-right'; ?>"
+                               target="_blank" rel="noopener noreferrer">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+                        <?php endif; ?>
 
-            <div class="portfolio-card">
-                <a href="#" class="card-button-decorator button-left">
-                    <i class="fa-solid fa-chevron-right"></i>
-                </a>
-
-                <div class="card-image-wrapper">
-                    <img src="img/viat-map.png" alt="Viat Map Logo">
-                </div>
-                <h3 class="card-title">Viat Map Application</h3>
-                <p class="card-description">
-                    VIAT-map (Visual Arguments Toulmin) Application to help Reding Comprehension by using Toulmin Arguments Concept. We are trying to emphasise the logic behind a written text by adding the claim, ground, and warrant following the Toulmin Argument Concept.
-                </p>
-            </div>
-
-            <div class="portfolio-card">
-                <a href="#" class="card-button-decorator button-right">
-                    <i class="fa-solid fa-chevron-right"></i>
-                </a>
-
-                <div class="card-image-wrapper">
-                    <img src="img/pseudolearn.png" alt="PseudoLearn Logo">
-                </div>
-                <h3 class="card-title">PseudoLearn Application</h3>
-                <p class="card-description">
-                    Sebuah media pembelajaran rekonstruksi algoritma pseudocode dengan menggunakan pendekatan Element Fill-in-Blank Problems di dalam pemrograman Java
-                </p>
-            </div>
-
+                        <div class="card-image-wrapper">
+                            <?php if (!empty($product['thumbnail'])): ?>
+                                <img src="<?php echo htmlspecialchars($product['thumbnail']); ?>"
+                                     alt="<?php echo htmlspecialchars($product['title']); ?>">
+                            <?php endif; ?>
+                        </div>
+                        <h3 class="card-title">
+                            <?php echo htmlspecialchars($product['title']); ?>
+                        </h3>
+                        <p class="card-description">
+                            <?php echo htmlspecialchars($product['description']); ?>
+                        </p>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p style="text-align:center; width:100%;">Belum ada produk yang ditambahkan.</p>
+            <?php endif; ?>
         </div>
     </section>
 
@@ -268,24 +279,41 @@
             </div>
         </section>
 
+    <?php
+    // Ambil data aktivitas riset dari database
+    try {
+        require_once __DIR__ . '/../../model/researchModel.php';
+        $researchModel = new ResearchModel($pdo);
+        $researchActivities = $researchModel->getAll();
+    } catch (Exception $e) {
+        error_log("Research Activities Error: " . $e->getMessage());
+        $researchActivities = [];
+    }
+    ?>
+
     <section class="activity-section">
-        <h2 class="section-title gradient-text">Aktifiti</h2>
+        <h2 class="section-title gradient-text">Research Activities</h2>
         <div class="activity-container">
-            <a href="#" class="arrow-button left-arrow">
-                <i class="fa-solid fa-chevron-left"></i>
-            </a>
-            <div class="video-card-wrapper">
-                <div class="video-card">
-                    <iframe src="https://www.youtube.com/embed/YOUR_YOUTUBE_VIDEO_ID" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen>
-                    </iframe>
+            <?php if (!empty($researchActivities)): ?>
+                <?php $mainActivity = $researchActivities[0]; ?>
+
+                <a href="#" class="arrow-button left-arrow">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+
+                <div class="video-card-wrapper">
+                    <div class="video-card">
+                        <?php if (!empty($mainActivity['image'])): ?>
+                            <img src="<?php echo htmlspecialchars($mainActivity['image']); ?>"
+                                 alt="<?php echo htmlspecialchars($mainActivity['title']); ?>">
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
             <a href="#" class="arrow-button right-arrow">
                 <i class="fa-solid fa-chevron-right"></i>
             </a>
-        </div>  
+        </div>
     </section>
 
     <script>
