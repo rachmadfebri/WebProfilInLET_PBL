@@ -135,11 +135,8 @@ switch ($page) {
     break;
 
   case 'teampublic':
-    // Opsi 1: Panggil langsung View (Cara Cepat)
-    require $viewDir . 'teampublic.php';
-    
-    // Opsi 2: Jika ingin pakai Controller (MVC Murni), gunakan ini:
-    // $teamMembersController->index(); 
+    // Gunakan controller agar data tim diambil dari database
+    $teamMembersController->publicIndex();
     break;
 
   case 'gallerypublic':

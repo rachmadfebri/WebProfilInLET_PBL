@@ -21,6 +21,17 @@ class TeamMembersController {
         require __DIR__ . '/../views/admin/team.php'; 
     }
 
+    /**
+     * Halaman publik: menampilkan daftar anggota tim tanpa perlu login admin.
+     */
+    public function publicIndex() {
+        // Untuk halaman publik, ambil semua data tanpa filter keyword
+        $teamList = $this->teamModel->getAll('');
+
+        // Kirim ke view publik
+        require __DIR__ . '/../views/users/teampublic.php';
+    }
+
     public function create() {
         $this->handleRequest(null);
     }
