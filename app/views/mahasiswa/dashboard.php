@@ -52,7 +52,7 @@ elseif (isset($_SESSION['flash_message'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png" />
-    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <link rel="icon" type="image/png" href="assets/img/logo.jpg" />
     
     <title>Dashboard Mahasiswa - Absensi Lab InLET</title>
     
@@ -96,6 +96,11 @@ elseif (isset($_SESSION['flash_message'])) {
 
      <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
         <ul class="flex flex-col pl-0 mb-0">
+          <!-- Menu Utama Section -->
+          <li class="mt-4 w-full px-4">
+            <h6 class="pl-2 ml-2 text-xs font-bold uppercase leading-tight opacity-60">Menu Utama</h6>
+          </li>
+
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
@@ -143,6 +148,24 @@ elseif (isset($_SESSION['flash_message'])) {
               <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Absensi Harian</span>
             </a>
           </li>
+
+          <!-- Pengaturan Section -->
+          <li class="mt-4 w-full px-4">
+            <h6 class="pl-2 ml-2 text-xs font-bold uppercase leading-tight opacity-60">Pengaturan</h6>
+          </li>
+
+          <!-- Profil Menu (Active when on profil page) -->
+          <li class="mt-0.5 w-full">
+    <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors" href="?page=profil">
+        <div class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 text-slate-700">
+            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path stroke="currentColor" stroke-width="2" d="M4 20c0-3.333 3.333-6 8-6s8 2.667 8 6" fill="none"/>
+            </svg>
+        </div>
+        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Profil</span>
+    </a>
+    </li>
         </ul>
       </div>
       <div class="mx-4 my-4">

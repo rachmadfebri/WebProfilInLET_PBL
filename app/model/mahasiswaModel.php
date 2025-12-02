@@ -65,4 +65,82 @@ class MahasiswaModel {
             ':activity_type' => $data['activity_type'] ?? null,
         ]);
     }
+
+    /**
+     * Update profile mahasiswa (email, password, NIM, full_name, program_study, batch)
+     * @param int $user_id
+     * @param array $data Email, password (optional), NIM, full_name, program_study, batch
+     * @return bool
+     */
+    public function getPasswordHash(int $user_id) {
+        // Query ambil password lama
+        $stmt = $this->db->prepare("SELECT password_hash FROM users WHERE user_id = :id");
+        $stmt->execute([':id' => $user_id]);
+        $data = $stmt->fetch();
+        
+        // Kembalikan isi kolom password_hash
+        return $data ? $data['password_hash'] : false;
+    }
+
+    public function updateProfile(int $user_id, array $data) {
+        $updateFieldsUsers = [];
+        $updateFieldsStudents = [];
+        $paramsUsers = [':id' => $user_id];
+        $paramsStudents = [':id' => $user_id];
+
+        // Update users table fields
+        if (isset($data['email'])) {
+            $updateFieldsUsers[] = "email = :email";
+            $paramsUsers[':email'] = $data['email'];
+        }
+
+        if (isset($data['full_name'])) {
+            $updateFieldsUsers[] = "full_name = :full_name";
+            $paramsUsers[':full_name'] = $data['full_name'];
+        }
+
+        // --- BAGIAN INI DIPERBAIKI (Mapping ke kolom 'password_hash') ---
+        if (isset($data['password'])) {
+            // Perhatikan: nama kolom di database adalah 'password_hash'
+            $updateFieldsUsers[] = "password_hash = :password";
+            $paramsUsers[':password'] = $data['password'];
+        }
+        // ----------------------------------------------------------------
+
+        // Update students table fields
+        if (isset($data['nim'])) {
+            $updateFieldsStudents[] = "nim = :nim";
+            $paramsStudents[':nim'] = $data['nim'];
+        }
+
+        if (isset($data['program_study'])) {
+            $updateFieldsStudents[] = "program_study = :program_study";
+            $paramsStudents[':program_study'] = $data['program_study'];
+        }
+
+        if (isset($data['batch'])) {
+            $updateFieldsStudents[] = "batch = :batch";
+            $paramsStudents[':batch'] = $data['batch'];
+        }
+
+        // Execute users table update
+        if (!empty($updateFieldsUsers)) {
+            $queryUsers = "UPDATE users SET " . implode(", ", $updateFieldsUsers) . " WHERE user_id = :id";
+            $stmtUsers = $this->db->prepare($queryUsers);
+            if (!$stmtUsers->execute($paramsUsers)) {
+                return false;
+            }
+        }
+
+        // Execute students table update
+        if (!empty($updateFieldsStudents)) {
+            $queryStudents = "UPDATE students SET " . implode(", ", $updateFieldsStudents) . " WHERE user_id = :id";
+            $stmtStudents = $this->db->prepare($queryStudents);
+            if (!$stmtStudents->execute($paramsStudents)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

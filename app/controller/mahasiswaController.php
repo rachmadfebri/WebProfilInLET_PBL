@@ -188,4 +188,121 @@ class MahasiswaController {
         
         require __DIR__ . '/../views/mahasiswa/setup_form.php';
     }
+
+    public function profil() {
+    if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'mahasiswa') {
+        header("Location: ?page=login");
+        exit;
+    }
+    
+    $user_id = (int)$_SESSION['user_id'];
+    $error_message = '';
+    $flash_message = null;
+
+    // Get student data
+    $sql = "SELECT s.*, u.email, u.full_name 
+            FROM students s
+            JOIN users u ON s.user_id = u.user_id
+            WHERE s.user_id = :id";
+    
+    // Pastikan path connection benar sesuai struktur folder Anda
+    $db = require __DIR__ . '/../../config/connection.php';
+    $stmt = $db->prepare($sql);
+    $stmt->execute([':id' => $user_id]);
+    $student_data = $stmt->fetch();
+
+    if (!$student_data) {
+        $_SESSION['flash_message'] = ['type' => 'error', 'text' => 'Data profil tidak ditemukan.'];
+        header("Location: ?page=mahasiswa-dashboard");
+        exit;
+    }
+
+    // Handle profile update
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $nim = trim($_POST['nim'] ?? '');
+        $full_name = trim($_POST['full_name'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $program_study = trim($_POST['program_study'] ?? '');
+        $batch = trim($_POST['batch'] ?? '');
+        
+        $old_password = $_POST['old_password'] ?? '';
+        $new_password = $_POST['new_password'] ?? '';
+        $confirm_password = $_POST['confirm_password'] ?? '';
+
+        // Data awal yang akan diupdate
+        $updateData = [
+            'nim' => $nim,
+            'full_name' => $full_name,
+            'email' => $email,
+            'program_study' => $program_study,
+            'batch' => (int)$batch
+        ];
+
+        // Validasi Standard
+        if (empty($nim) || strlen($nim) < 5) {
+            $error_message = "NIM tidak boleh kosong dan minimal 5 karakter.";
+        } elseif (empty($full_name) || strlen($full_name) < 3) {
+            $error_message = "Nama lengkap minimal 3 karakter.";
+        } elseif (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error_message = "Email tidak valid.";
+        } elseif (empty($program_study)) {
+            $error_message = "Program studi wajib diisi.";
+        } elseif (empty($batch) || !is_numeric($batch)) {
+            $error_message = "Angkatan tidak valid.";
+        }
+
+        // --- LOGIKA UPDATE PASSWORD ---
+        // Cek jika user mencoba mengganti password (salah satu kolom password terisi)
+        if (empty($error_message) && (!empty($old_password) || !empty($new_password) || !empty($confirm_password))) {
+            
+            // 1. Pastikan semua kolom password terisi
+            if (empty($old_password) || empty($new_password) || empty($confirm_password)) {
+                $error_message = "Untuk mengganti password, semua kolom password (Lama, Baru, Konfirmasi) wajib diisi.";
+            } 
+            // 2. Cek kecocokan password baru
+            elseif ($new_password !== $confirm_password) {
+                $error_message = "Password baru dan konfirmasi password tidak cocok.";
+            }
+            // 3. Verifikasi Password Lama
+            else {
+                $currentHash = $this->mahasiswaModel->getPasswordHash($user_id);
+                
+                if ($currentHash && password_verify($old_password, $currentHash)) {
+                    // Password lama BENAR, masukkan password baru yang sudah di-hash ke array update
+                    $updateData['password'] = password_hash($new_password, PASSWORD_DEFAULT);
+                } else {
+                    $error_message = "Password lama yang Anda masukkan salah.";
+                }
+            }
+        }
+        // ------------------------------
+
+        // Jika tidak ada error, eksekusi update
+        if (empty($error_message)) {
+            try {
+                if ($this->mahasiswaModel->updateProfile($user_id, $updateData)) {
+                    $_SESSION['flash_message'] = ['type' => 'success', 'text' => 'Profil berhasil diperbarui!'];
+                    
+                    $_SESSION['full_name'] = $full_name;
+                    $_SESSION['email'] = $email;
+
+                    // Refresh data
+                    $stmt = $db->prepare($sql);
+                    $stmt->execute([':id' => $user_id]);
+                    $student_data = $stmt->fetch();
+                    
+                    $flash_message = $_SESSION['flash_message'];
+                    unset($_SESSION['flash_message']);
+                } else {
+                    $error_message = "Gagal memperbarui database.";
+                }
+            } catch (Exception $e) {
+                $error_message = "Error: " . $e->getMessage();
+            }
+        }
+    }
+
+    $flash_message = $flash_message ?? null;
+    require __DIR__ . '/../views/mahasiswa/profil.php';
+}
 }
