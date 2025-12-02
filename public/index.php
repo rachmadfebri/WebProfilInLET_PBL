@@ -147,7 +147,7 @@ switch ($page) {
     // $galleryController->index();
     break;
   
-  // Public Guestbook Page
+  // Public Guestbook Page (menggunakan guestbook.php dari teman)
   case 'guestbook':
     require $viewDir . 'guestbook.php';
     break;
@@ -163,11 +163,6 @@ switch ($page) {
   // Research Detail Page
   case 'research-detail':
     require $viewDir . 'research-detail.php';
-    break;
-
-  // Public Guestbook Page
-  case 'guestbook':
-    require $viewDir . 'guestbook.php';
     break;
 
   // Dashboards

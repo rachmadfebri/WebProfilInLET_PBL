@@ -11,18 +11,16 @@ class ResearchModel {
     }
 
     public function getAll($keyword = '') {
-        $sql = "SELECT r.*, u.full_name AS uploader_name 
-                FROM {$this->table} r
-                LEFT JOIN users u ON r.user_id = u.user_id";
+        $sql = "SELECT * FROM {$this->table}";
         
         $params = [];
 
         if ($keyword) {
-            $sql .= " WHERE r.title ILIKE :keyword OR r.description ILIKE :keyword";
+            $sql .= " WHERE title ILIKE :keyword OR description ILIKE :keyword";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
-        $sql .= " ORDER BY r.created_at DESC";
+        $sql .= " ORDER BY created_at DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);

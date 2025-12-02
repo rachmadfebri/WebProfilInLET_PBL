@@ -7,18 +7,16 @@ class NewsModel {
     }
 
     public function getAll($keyword = '') {
-        $sql = "SELECT n.*, u.full_name as uploader_name 
-                FROM news n
-                LEFT JOIN users u ON n.user_id = u.user_id";
+        $sql = "SELECT * FROM news";
         
         $params = [];
 
         if ($keyword) {
-            $sql .= " WHERE n.title LIKE :keyword OR n.content LIKE :keyword";
+            $sql .= " WHERE title LIKE :keyword OR content LIKE :keyword";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
-        $sql .= " ORDER BY n.created_at DESC";
+        $sql .= " ORDER BY created_at DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
