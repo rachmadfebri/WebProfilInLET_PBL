@@ -1,0 +1,149 @@
+/* Pastikan Anda sudah mendefinisikan variabel di style.css, seperti: */
+
+:root {
+    primary-blue: #2d5bd4;
+    gradient-start: #6a5acd;
+    gradient-end: #d53f8c;
+    text-dark: #1a202c;
+}
+
+
+/* --- Umum untuk Halaman Form --- */
+.form-section {
+    /* Background warna solid */
+    background-color: #f0f0f0;
+    
+    /* ATAU background gambar */
+    background-image: url('../img/bgform.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    
+    padding: 120px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh; /* Pastikan height penuh */
+}
+
+/* --- Judul Form Gradient --- */
+.form-title {
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: 40px;
+    letter-spacing: -2px;
+    
+    /* Replikasi gaya gradient-text dari style.css, di sini menggunakan gradient-text yang sudah ada */
+}
+
+/* --- Form Container --- */
+.form-container {
+    background-color: rgba(247, 247, 247, 0.85); /* Background abu-abu muda dengan opacity 85% */
+    border-radius: 30px; /* Sudut tumpul */
+    padding: 40px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Bayangan halus */
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Jarak antar field */
+}
+
+/* --- Input Fields dan Textarea --- */
+.form-container input[type="text"],
+.form-container input[type="email"],
+.form-container input[type="tel"],
+.form-container textarea {
+    width: 100%;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 15px; /* Sudut tumpul untuk input */
+    font-size: 1rem;
+    color: var(--text-dark);
+    background-color: #fff;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Bayangan dalam halus */
+    transition: box-shadow 0.3s;
+}
+
+.form-container input:focus,
+.form-container textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-blue); /* Efek fokus biru */
+}
+
+.form-container textarea {
+    resize: none; /* Mencegah user mengubah ukuran textarea */
+    min-height: 150px;
+}
+
+/* --- Submit Button (Gradient) --- */
+.submit-btn {
+    align-self: center;
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 12px 40px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(213, 63, 140, 0.4);
+}
+
+
+/* --- Override Style Header Action (Back Button) --- */
+/* Tombol di header kanan perlu disesuaikan karena namanya jadi btn-back */
+/* Styling untuk tombol BACK */
+.header-action .btn-back {
+    /* Menggunakan kembali style dasar dari btn-form */
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+    text-decoration: none;
+    border: 2px solid var(--primary-blue); 
+    border-radius: 50px;
+    
+    /* Padding dibalik agar teks di kiri dan ikon di kanan */
+    padding: 5px 25px 5px 5px; 
+    
+    color: #000; 
+    font-weight: 500; 
+    min-width: 140px; 
+    justify-content: space-between;
+}
+
+/* Memastikan urutan dan rotasi ikon pada tombol BACK */
+.header-action .btn-back span {
+    order: 2; /* Teks di kanan */
+}
+.header-action .btn-back .circle-icon {
+    order: 1; /* Ikon di kiri */
+    /* Mengubah ikon panah ke kiri */
+    transform: none; /* Kembalikan rotasi jika sebelumnya ada rotasi */
+}
+.header-action .btn-back .circle-icon i {
+    /* Pastikan ikon panah menghadap kiri, default-nya sudah ke kanan di FontAwesome,
+       jadi kita bisa menggunakan ikon chevron-left di HTML dan pastikan circle-icon tidak ada rotasi */
+}
+
+/* Responsiveness */
+@media (max-width: 650px) {
+    .form-container {
+        padding: 30px 20px;
+        max-width: 90%;
+    }
+    .form-title {
+        font-size: 3rem;
+    }
+}

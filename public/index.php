@@ -155,6 +155,10 @@ switch ($page) {
     // $newsController->index();
     break;
 
+  case 'form':
+  require $viewDir . 'form.php';
+  break;
+
   // Dashboards
   case 'admin-dashboard':
     $adminController->dashboard();

@@ -242,7 +242,7 @@
     <section class="gallery-section">
             <div class="gallery-container">
                 <div class="gallery-left">
-                    <img src="assets/img/visual jurney.png" alt="Gallery Highlight" class="gallery-hero-img">
+                    <img src="assets/img/visual_jurney-removebg-preview.png" alt="Gallery Highlight" class="gallery-hero-img">
                     <p class="gallery-description">
                         Di balik setiap potret, ada kisah dan perasaan yang hidup. Inilah bagian kecil dari cerita besar kita — tempat kenangan tumbuh dan tak pernah hilang.
                     </p>

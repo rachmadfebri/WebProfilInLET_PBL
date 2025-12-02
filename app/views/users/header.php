@@ -38,7 +38,7 @@
                 </a>
             </li>
             <li>
-                <a href="index.php?page=guestbook" class="nav-item <?php echo $currentPage === 'guestbook' ? 'active' : ''; ?>">
+                <a href="index.php?page=form" class="nav-item <?php echo $currentPage === 'form' ? 'active' : ''; ?>">
                     Guestbook
                 </a>
             </li>
