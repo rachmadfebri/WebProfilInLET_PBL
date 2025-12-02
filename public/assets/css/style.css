@@ -308,7 +308,7 @@ h1 {
     border-radius: 50%;
     background: linear-gradient(135deg, #2d5bd4, #d53f8c);
     position: absolute;
-    bottom: -10px;
+    bottom: -40px;
     left: 50%;
     transform: translateX(-50%);
     box-shadow: 0 5px 15px rgba(106, 90, 205, 0.3);
