@@ -92,17 +92,35 @@ try {
                                         </a>
                                     <?php endif; ?>
                                     <?php if (!empty($leader['google_scholar'])): ?>
-                                        <a href="<?php echo htmlspecialchars($leader['google_scholar']); ?>" target="_blank" title="Google Scholar">
+                                        <?php 
+                                        $scholarUrl = $leader['google_scholar'];
+                                        if (!preg_match('/^https?:\/\//', $scholarUrl)) {
+                                            $scholarUrl = 'https://' . $scholarUrl;
+                                        }
+                                        ?>
+                                        <a href="<?php echo htmlspecialchars($scholarUrl); ?>" target="_blank" title="Google Scholar">
                                             <i class="fas fa-graduation-cap"></i>
                                         </a>
                                     <?php endif; ?>
                                     <?php if (!empty($leader['twitter'])): ?>
-                                        <a href="<?php echo htmlspecialchars($leader['twitter']); ?>" target="_blank" title="Twitter">
+                                        <?php 
+                                        $twitterUrl = $leader['twitter'];
+                                        if (!preg_match('/^https?:\/\//', $twitterUrl)) {
+                                            $twitterUrl = 'https://twitter.com/' . ltrim($twitterUrl, '@');
+                                        }
+                                        ?>
+                                        <a href="<?php echo htmlspecialchars($twitterUrl); ?>" target="_blank" title="Twitter">
                                             <i class="fab fa-twitter"></i>
                                         </a>
                                     <?php endif; ?>
                                     <?php if (!empty($leader['instagram'])): ?>
-                                        <a href="<?php echo htmlspecialchars($leader['instagram']); ?>" target="_blank" title="Instagram">
+                                        <?php 
+                                        $igUrl = $leader['instagram'];
+                                        if (!preg_match('/^https?:\/\//', $igUrl)) {
+                                            $igUrl = 'https://instagram.com/' . ltrim($igUrl, '@');
+                                        }
+                                        ?>
+                                        <a href="<?php echo htmlspecialchars($igUrl); ?>" target="_blank" title="Instagram">
                                             <i class="fab fa-instagram"></i>
                                         </a>
                                     <?php endif; ?>
@@ -145,17 +163,35 @@ try {
                                         </a>
                                     <?php endif; ?>
                                     <?php if (!empty($member['google_scholar'])): ?>
-                                        <a href="<?php echo htmlspecialchars($member['google_scholar']); ?>" target="_blank" title="Google Scholar">
+                                        <?php 
+                                        $scholarUrl = $member['google_scholar'];
+                                        if (!preg_match('/^https?:\/\//', $scholarUrl)) {
+                                            $scholarUrl = 'https://' . $scholarUrl;
+                                        }
+                                        ?>
+                                        <a href="<?php echo htmlspecialchars($scholarUrl); ?>" target="_blank" title="Google Scholar">
                                             <i class="fas fa-graduation-cap"></i>
                                         </a>
                                     <?php endif; ?>
                                     <?php if (!empty($member['twitter'])): ?>
-                                        <a href="<?php echo htmlspecialchars($member['twitter']); ?>" target="_blank" title="Twitter">
+                                        <?php 
+                                        $twitterUrl = $member['twitter'];
+                                        if (!preg_match('/^https?:\/\//', $twitterUrl)) {
+                                            $twitterUrl = 'https://twitter.com/' . ltrim($twitterUrl, '@');
+                                        }
+                                        ?>
+                                        <a href="<?php echo htmlspecialchars($twitterUrl); ?>" target="_blank" title="Twitter">
                                             <i class="fab fa-twitter"></i>
                                         </a>
                                     <?php endif; ?>
                                     <?php if (!empty($member['instagram'])): ?>
-                                        <a href="<?php echo htmlspecialchars($member['instagram']); ?>" target="_blank" title="Instagram">
+                                        <?php 
+                                        $igUrl = $member['instagram'];
+                                        if (!preg_match('/^https?:\/\//', $igUrl)) {
+                                            $igUrl = 'https://instagram.com/' . ltrim($igUrl, '@');
+                                        }
+                                        ?>
+                                        <a href="<?php echo htmlspecialchars($igUrl); ?>" target="_blank" title="Instagram">
                                             <i class="fab fa-instagram"></i>
                                         </a>
                                     <?php endif; ?>

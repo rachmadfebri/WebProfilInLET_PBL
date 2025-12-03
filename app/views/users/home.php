@@ -419,39 +419,41 @@ try {
                                         <a href="mailto:<?php echo htmlspecialchars($member['email']); ?>" class="team-contact-btn" title="Email">
                                             <i class="fas fa-envelope"></i>
                                         </a>
-                                    <?php else: ?>
-                                        <a href="mailto:example@email.com" class="team-contact-btn" title="Email">
-                                            <i class="fas fa-envelope"></i>
+                                    <?php endif; ?>
+                                    
+                                    <?php if (!empty($member['google_scholar'])): ?>
+                                        <?php 
+                                        $scholarUrl = $member['google_scholar'];
+                                        if (!preg_match('/^https?:\/\//', $scholarUrl)) {
+                                            $scholarUrl = 'https://' . $scholarUrl;
+                                        }
+                                        ?>
+                                        <a href="<?php echo htmlspecialchars($scholarUrl); ?>" class="team-contact-btn" title="Google Scholar" target="_blank">
+                                            <i class="fas fa-graduation-cap"></i>
                                         </a>
                                     <?php endif; ?>
                                     
-                                    <?php if (!empty($member['phone'])): ?>
-                                        <a href="tel:<?php echo htmlspecialchars($member['phone']); ?>" class="team-contact-btn" title="Phone">
-                                            <i class="fas fa-phone"></i>
-                                        </a>
-                                    <?php else: ?>
-                                        <a href="tel:+1234567890" class="team-contact-btn" title="Phone">
-                                            <i class="fas fa-phone"></i>
-                                        </a>
-                                    <?php endif; ?>
-                                    
-                                    <?php if (!empty($member['linkedin'])): ?>
-                                        <a href="<?php echo htmlspecialchars($member['linkedin']); ?>" class="team-contact-btn" title="LinkedIn" target="_blank">
-                                            <i class="fab fa-linkedin"></i>
-                                        </a>
-                                    <?php else: ?>
-                                        <a href="https://linkedin.com" class="team-contact-btn" title="LinkedIn" target="_blank">
-                                            <i class="fab fa-linkedin"></i>
+                                    <?php if (!empty($member['twitter'])): ?>
+                                        <?php 
+                                        $twitterUrl = $member['twitter'];
+                                        if (!preg_match('/^https?:\/\//', $twitterUrl)) {
+                                            $twitterUrl = 'https://twitter.com/' . ltrim($twitterUrl, '@');
+                                        }
+                                        ?>
+                                        <a href="<?php echo htmlspecialchars($twitterUrl); ?>" class="team-contact-btn" title="Twitter" target="_blank">
+                                            <i class="fab fa-twitter"></i>
                                         </a>
                                     <?php endif; ?>
                                     
-                                    <?php if (!empty($member['website'])): ?>
-                                        <a href="<?php echo htmlspecialchars($member['website']); ?>" class="team-contact-btn" title="Website" target="_blank">
-                                            <i class="fas fa-globe"></i>
-                                        </a>
-                                    <?php else: ?>
-                                        <a href="#" class="team-contact-btn" title="Website">
-                                            <i class="fas fa-globe"></i>
+                                    <?php if (!empty($member['instagram'])): ?>
+                                        <?php 
+                                        $igUrl = $member['instagram'];
+                                        if (!preg_match('/^https?:\/\//', $igUrl)) {
+                                            $igUrl = 'https://instagram.com/' . ltrim($igUrl, '@');
+                                        }
+                                        ?>
+                                        <a href="<?php echo htmlspecialchars($igUrl); ?>" class="team-contact-btn" title="Instagram" target="_blank">
+                                            <i class="fab fa-instagram"></i>
                                         </a>
                                     <?php endif; ?>
                                 </div>
