@@ -1,4 +1,12 @@
 <?php
+// Start session for language preference
+session_start();
+
+// Handle language switching
+if (isset($_GET['lang']) && in_array($_GET['lang'], ['en', 'id'])) {
+    $_SESSION['lang'] = $_GET['lang'];
+}
+
 // --- 1. REQUIRE CONFIG & CONTROLLERS ---
 require_once __DIR__ . '/../config/connection.php';
 

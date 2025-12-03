@@ -7,16 +7,18 @@ class NewsModel {
     }
 
     public function getAll($keyword = '') {
-        $sql = "SELECT * FROM news";
+        $sql = "SELECT n.*, u.full_name as uploader_name 
+                FROM news n 
+                LEFT JOIN users u ON n.user_id = u.user_id";
         
         $params = [];
 
         if ($keyword) {
-            $sql .= " WHERE title LIKE :keyword OR content LIKE :keyword";
+            $sql .= " WHERE n.title LIKE :keyword OR n.content LIKE :keyword";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
-        $sql .= " ORDER BY created_at DESC";
+        $sql .= " ORDER BY n.created_at DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
@@ -24,7 +26,10 @@ class NewsModel {
     }
 
     public function getById($id) {
-        $stmt = $this->db->prepare("SELECT * FROM news WHERE id = :id LIMIT 1");
+        $stmt = $this->db->prepare("SELECT n.*, u.full_name as uploader_name 
+                                    FROM news n 
+                                    LEFT JOIN users u ON n.user_id = u.user_id 
+                                    WHERE n.id = :id LIMIT 1");
         $stmt->execute([':id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

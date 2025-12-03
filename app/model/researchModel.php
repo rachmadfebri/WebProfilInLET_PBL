@@ -11,16 +11,18 @@ class ResearchModel {
     }
 
     public function getAll($keyword = '') {
-        $sql = "SELECT * FROM {$this->table}";
+        $sql = "SELECT r.*, u.full_name as uploader_name 
+                FROM {$this->table} r 
+                LEFT JOIN users u ON r.user_id = u.user_id";
         
         $params = [];
 
         if ($keyword) {
-            $sql .= " WHERE title ILIKE :keyword OR description ILIKE :keyword";
+            $sql .= " WHERE r.title ILIKE :keyword OR r.description ILIKE :keyword";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
-        $sql .= " ORDER BY created_at DESC";
+        $sql .= " ORDER BY r.created_at DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
@@ -28,7 +30,10 @@ class ResearchModel {
     }
 
     public function getById($id) {
-        $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id LIMIT 1");
+        $stmt = $this->db->prepare("SELECT r.*, u.full_name as uploader_name 
+                                    FROM {$this->table} r 
+                                    LEFT JOIN users u ON r.user_id = u.user_id 
+                                    WHERE r.id = :id LIMIT 1");
         $stmt->execute([':id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

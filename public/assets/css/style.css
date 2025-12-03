@@ -6,6 +6,12 @@
     --gradient-end: #d53f8c;
     --text-dark: #1a202c;
 }
+
+/* Smooth scroll untuk seluruh halaman */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #fff;

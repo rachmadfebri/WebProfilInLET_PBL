@@ -447,7 +447,7 @@ $pagedData = array_slice($guestbookList, $offset, $limit);
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
-              href="?page=guestbook"
+              href="?page=admin-guestbook"
             >
               <div
                 class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -723,7 +723,7 @@ $pagedData = array_slice($guestbookList, $offset, $limit);
                                                 </p>
                                             </td>
                                             <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                                <a href="index.php?page=guestbook&action=delete&id=<?= $item['id'] ?>" class="text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer" onclick="return confirm('Hapus pesan tamu ini?')">
+                                                <a href="index.php?page=admin-guestbook&action=delete&id=<?= $item['id'] ?>" class="text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer" onclick="return confirm('Hapus pesan tamu ini?')">
                                                     <i class="fas fa-trash mr-1"></i>Hapus
                                                 </a>
                                             </td>
@@ -746,15 +746,15 @@ $pagedData = array_slice($guestbookList, $offset, $limit);
                     <nav aria-label="Page navigation">
                         <ul class="inline-flex items-center -space-x-px">
                             <li class="mx-1">
-                                <a href="?page=guestbook&p=<?= max(1, $currentPage - 1) ?>&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-left"></i></a>
+                                <a href="?page=admin-guestbook&p=<?= max(1, $currentPage - 1) ?>&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-left"></i></a>
                             </li>
                             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                             <li class="mx-1">
-                                <a href="?page=guestbook&p=<?= $i ?>&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>"><?= $i ?></a>
+                                <a href="?page=admin-guestbook&p=<?= $i ?>&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>"><?= $i ?></a>
                             </li>
                             <?php endfor; ?>
                             <li class="mx-1">
-                                <a href="?page=guestbook&p=<?= min($totalPages, $currentPage + 1) ?>&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-right"></i></a>
+                                <a href="?page=admin-guestbook&p=<?= min($totalPages, $currentPage + 1) ?>&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-right"></i></a>
                             </li>
                         </ul>
                     </nav>

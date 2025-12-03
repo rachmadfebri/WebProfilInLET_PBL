@@ -31,9 +31,10 @@
             <div class="footer-column">
                 <p class="footer-label">Location</p>
                 <div class="footer-address">
-                    <p><i class="fas fa-map-marker-alt"></i> Universitas Brawijaya</p>
-                    <p><i class="fas fa-building"></i> Fakultas Ilmu Komputer</p>
-                    <p><i class="fas fa-envelope"></i> contact@let.ub.ac.id</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Politeknik Negeri Malang</p>
+                    <p><i class="fas fa-building"></i> Jurusan Teknologi Informasi</p>
+                    <p><i class="fas fa-envelope"></i> jti@polinema.ac.id</p>
+                    <p><i class="fas fa-phone"></i> (0341) 404424</p>
                 </div>
             </div>
         </div>
@@ -44,7 +45,7 @@
             <span>&copy; <?php echo $year; ?> Information and Learning Engineering Technology • All rights reserved.</span>
             <div class="footer-map-mini">
                 <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.4479573778096!2d112.61301391477464!3d-7.951676794289586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e78827687d272e7%3A0x789ce9a636cd3aa2!2sFaculty%20of%20Computer%20Science%2C%20Brawijaya%20University!5e0!3m2!1sen!2sid!4v1701234567890!5m2!1sen!2sid" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.2904744648584!2d112.61606731534065!3d-7.963632094269095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7882781d0d10fb%3A0x33d89d9bc2d5f8fc!2sPoliteknik%20Negeri%20Malang!5e0!3m2!1sen!2sid!4v1701234567890!5m2!1sen!2sid" 
                     width="250" 
                     height="150" 
                     style="border:0; border-radius: 10px;" 

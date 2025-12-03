@@ -469,7 +469,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
           <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-              href="?page=guestbook"
+              href="?page=admin-guestbook"
             >
               <div
                 class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
@@ -876,7 +876,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
               <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl flex justify-between items-center">
                 <h6 class="font-bold text-slate-700">Laporan Tamu Terbaru</h6>
-                <a href="?page=guestbook" class="text-xs font-bold text-purple-600 hover:text-purple-800">
+                <a href="?page=admin-guestbook" class="text-xs font-bold text-purple-600 hover:text-purple-800">
                   <i class="fas fa-arrow-right mr-1"></i>Lihat Semua
                 </a>
               </div>

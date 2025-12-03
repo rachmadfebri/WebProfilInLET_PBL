@@ -33,8 +33,8 @@ class GuestbookController {
         
         $this->guestbookModel->delete($id);
         
-        // Redirect kembali ke halaman guestbook
-        header("Location: index.php?page=guestbook");
+        // Redirect kembali ke halaman admin guestbook
+        header("Location: index.php?page=admin-guestbook");
         exit;
     }
 

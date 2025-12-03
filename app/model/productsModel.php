@@ -7,16 +7,18 @@ class ProductsModel {
     }
 
     public function getAll($keyword = '') {
-        $sql = "SELECT * FROM products";
+        $sql = "SELECT p.*, u.full_name as uploader_name 
+                FROM products p 
+                LEFT JOIN users u ON p.user_id = u.user_id";
         
         $params = [];
 
         if ($keyword) {
-            $sql .= " WHERE (title ILIKE :keyword OR description ILIKE :keyword)";
+            $sql .= " WHERE (p.title ILIKE :keyword OR p.description ILIKE :keyword)";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
-        $sql .= " ORDER BY created_at DESC";
+        $sql .= " ORDER BY p.created_at DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
@@ -24,7 +26,10 @@ class ProductsModel {
     }
 
     public function getById($id) {
-        $stmt = $this->db->prepare("SELECT * FROM products WHERE id = :id LIMIT 1");
+        $stmt = $this->db->prepare("SELECT p.*, u.full_name as uploader_name 
+                                    FROM products p 
+                                    LEFT JOIN users u ON p.user_id = u.user_id 
+                                    WHERE p.id = :id LIMIT 1");
         $stmt->execute([':id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
