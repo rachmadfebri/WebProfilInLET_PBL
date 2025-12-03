@@ -221,7 +221,11 @@ switch ($page) {
 
   // Halaman Kelola Buku Tamu (Admin)
   case 'admin-guestbook':
-    $guestbookController->index();
+    if ($action === 'delete' && isset($_GET['id'])) {
+        $guestbookController->delete($_GET['id']);
+    } else {
+        $guestbookController->index();
+    }
     break;
 
   // Halaman Absensi (Admin)

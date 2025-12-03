@@ -79,11 +79,6 @@ try {
                                 <div class="team-info">
                                     <h3 class="team-name"><?php echo htmlspecialchars($leader['name']); ?></h3>
                                     <p class="team-position"><?php echo htmlspecialchars($leader['position']); ?></p>
-                                    <?php if (!empty($leader['created_at'])): ?>
-                                        <p class="team-meta">
-                                            Bergabung sejak <?php echo date('d M Y', strtotime($leader['created_at'])); ?>
-                                        </p>
-                                    <?php endif; ?>
                                 </div>
                                 <div class="team-social">
                                     <?php if (!empty($leader['email'])): ?>
@@ -150,11 +145,6 @@ try {
                                 <div class="team-info">
                                     <h3 class="team-name"><?php echo htmlspecialchars($member['name']); ?></h3>
                                     <p class="team-position"><?php echo htmlspecialchars($member['position']); ?></p>
-                                    <?php if (!empty($member['created_at'])): ?>
-                                        <p class="team-meta">
-                                            Bergabung sejak <?php echo date('d M Y', strtotime($member['created_at'])); ?>
-                                        </p>
-                                    <?php endif; ?>
                                 </div>
                                 <div class="team-social">
                                     <?php if (!empty($member['email'])): ?>
