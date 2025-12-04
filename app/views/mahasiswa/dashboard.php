@@ -155,6 +155,21 @@ elseif (isset($_SESSION['flash_message'])) {
             </a>
           </li>
 
+          <!-- Menu Peminjaman -->
+          <li class="mt-0.5 w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=peminjaman"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <i class="fas fa-box text-purple-500"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Peminjaman</span>
+            </a>
+          </li>
+
           <!-- Pengaturan Section -->
           <li class="mt-4 w-full px-4">
             <h6 class="pl-2 ml-2 text-xs font-bold uppercase leading-tight opacity-60">Pengaturan</h6>
@@ -250,7 +265,12 @@ elseif (isset($_SESSION['flash_message'])) {
                     <i class="fas fa-clipboard-list mr-2 text-purple-500"></i> Absensi Kehadiran
                 </h5>
                 <p class="mb-4 text-sm font-semibold text-slate-500">
-                    <i class="far fa-calendar-alt mr-1"></i> <?= date('l, d F Y') ?>
+                    <?php 
+                    // Gunakan timezone Jakarta untuk tampilan tanggal
+                    $jakartaTimezone = new DateTimeZone('Asia/Jakarta');
+                    $nowJakarta = new DateTime('now', $jakartaTimezone);
+                    ?>
+                    <i class="far fa-calendar-alt mr-1"></i> <?= $nowJakarta->format('l, d F Y') ?>
                 </p>
 
                     <div class="my-6">
@@ -400,17 +420,42 @@ elseif (isset($_SESSION['flash_message'])) {
   <script src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
 
   <script>
+    // Waktu server Jakarta dari PHP
+    <?php 
+    $jakartaTz = new DateTimeZone('Asia/Jakarta');
+    $serverTime = new DateTime('now', $jakartaTz);
+    $serverHour = (int)$serverTime->format('H');
+    $serverMinute = (int)$serverTime->format('i');
+    $serverSecond = (int)$serverTime->format('s');
+    ?>
+    
+    // Inisialisasi waktu dari server
+    let serverHours = <?= $serverHour ?>;
+    let serverMinutes = <?= $serverMinute ?>;
+    let serverSeconds = <?= $serverSecond ?>;
+    
     // Fungsi untuk memperbarui jam digital setiap detik
     function updateClock() {
-        const now = new Date();
-        let hours = now.getHours();
-        let minutes = now.getMinutes();
-        let seconds = now.getSeconds();
-
-        // Tambahkan angka 0 di depan jika kurang dari 10 (misal: 09:05:02)
-        hours = hours < 10 ? '0' + hours : hours;
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        seconds = seconds < 10 ? '0' + seconds : seconds;
+        serverSeconds++;
+        
+        if (serverSeconds >= 60) {
+            serverSeconds = 0;
+            serverMinutes++;
+        }
+        
+        if (serverMinutes >= 60) {
+            serverMinutes = 0;
+            serverHours++;
+        }
+        
+        if (serverHours >= 24) {
+            serverHours = 0;
+        }
+        
+        // Format dengan leading zero
+        let hours = serverHours < 10 ? '0' + serverHours : serverHours;
+        let minutes = serverMinutes < 10 ? '0' + serverMinutes : serverMinutes;
+        let seconds = serverSeconds < 10 ? '0' + serverSeconds : serverSeconds;
 
         const timeString = hours + ':' + minutes + ':' + seconds + ' WIB'; 
         document.getElementById('clock').innerText = timeString;

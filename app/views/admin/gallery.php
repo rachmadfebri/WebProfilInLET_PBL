@@ -531,6 +531,55 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
               <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Daftar Mahasiswa</span>
             </a>
           </li>
+          <!-- Tombol Peminjaman -->
+          <li class="mt-* w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=admin-loans"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <svg
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect x="3" y="6" width="18" height="12" rx="2" fill="#8B5CF6" />
+                  <path d="M8 12H16M12 8V16" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Peminjaman</span>
+            </a>
+          </li>
+          <!-- Tombol Inventaris -->
+          <li class="mt-* w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=inventory"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <svg
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect x="3" y="4" width="18" height="16" rx="2" fill="#8B5CF6" />
+                  <rect x="6" y="7" width="4" height="3" rx="1" fill="#fff"/>
+                  <rect x="11" y="7" width="4" height="3" rx="1" fill="#fff"/>
+                  <rect x="6" y="12" width="4" height="3" rx="1" fill="#fff"/>
+                  <rect x="11" y="12" width="4" height="3" rx="1" fill="#fff"/>
+                </svg>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Inventaris</span>
+            </a>
+          </li>
           <!-- Tombol Log Out -->
           <li class="mt-6 w-full">
             <a href="?action=logout"

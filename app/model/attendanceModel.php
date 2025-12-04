@@ -170,17 +170,31 @@ class AttendanceModel {
 
     /**
      * Mengecek apakah waktu saat ini sudah boleh untuk check-in (setelah jam 07:00)
+     * Menggunakan timezone Asia/Jakarta untuk konsistensi dengan database
      */
     public function isCheckInTimeAllowed(): bool {
-        $current_hour = (int)date('H');
+        // Set timezone ke Asia/Jakarta untuk memastikan waktu yang benar
+        $jakartaTimezone = new DateTimeZone('Asia/Jakarta');
+        $now = new DateTime('now', $jakartaTimezone);
+        $current_hour = (int)$now->format('H');
+        
+        error_log("isCheckInTimeAllowed - Current Jakarta time: " . $now->format('Y-m-d H:i:s') . ", Hour: " . $current_hour);
+        
         return $current_hour >= 7; 
     }
 
     /**
      * Mengecek apakah waktu saat ini masih boleh untuk aktivitas (sebelum jam 22:00)
+     * Menggunakan timezone Asia/Jakarta untuk konsistensi dengan database
      */
     public function isActivityTimeAllowed(): bool {
-        $current_hour = (int)date('H');
+        // Set timezone ke Asia/Jakarta untuk memastikan waktu yang benar
+        $jakartaTimezone = new DateTimeZone('Asia/Jakarta');
+        $now = new DateTime('now', $jakartaTimezone);
+        $current_hour = (int)$now->format('H');
+        
+        error_log("isActivityTimeAllowed - Current Jakarta time: " . $now->format('Y-m-d H:i:s') . ", Hour: " . $current_hour);
+        
         return $current_hour < 22; 
     }
 

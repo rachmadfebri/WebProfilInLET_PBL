@@ -14,24 +14,24 @@ unset($_SESSION['flash_message']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Mahasiswa</title>
-     <link rel="icon" type="image/png" href="assets/img/logo.jpg" />
+    <link rel="icon" type="image/png" href="assets/img/logo.jpg" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    
+    <link 
+        rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" 
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" 
+        crossorigin="anonymous" 
+        referrerpolicy="no-referrer" 
+    />
+    
     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
     <link id="pagestyle" href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.8" rel="stylesheet" />
-  <link 
-  rel="stylesheet" 
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" 
-  integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" 
-  crossorigin="anonymous" 
-  referrerpolicy="no-referrer" 
-/>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <style>
-        * {
-            font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-        }
-        body {
-            font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+        body, p, h1, h2, h3, h4, h5, h6, span, a, input, textarea, button, label, div {
+            font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
     </style>
 </head>
@@ -101,6 +101,21 @@ unset($_SESSION['flash_message']);
                 <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Absensi Harian</span>
             </a>
         </li>
+
+        <!-- Menu Peminjaman -->
+        <li class="mt-0.5 w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=peminjaman"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <i class="fas fa-box text-purple-500"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Peminjaman</span>
+            </a>
+          </li>
 
         <!-- Pengaturan Section -->
         <li class="mt-4 w-full px-4">

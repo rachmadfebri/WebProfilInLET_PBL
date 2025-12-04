@@ -1,52 +1,55 @@
 <?php
-// app/views/admin/students.php
-
-if (!isset($studentList) || !is_array($studentList)) {
-    $studentList = [];
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-// --- LOGIKA PAGINATION ---
-$totalRecords = count($studentList);
-$currentPage = isset($_GET['p']) ? (int)$_GET['p'] : 1;
-$limit = 5; // Batas data per halaman
-$totalPages = ceil($totalRecords / $limit);
-
-// Pastikan page tidak kurang dari 1 atau lebih dari total pages
-if ($currentPage < 1) { $currentPage = 1; }
-if ($currentPage > $totalPages && $totalPages > 0) { $currentPage = $totalPages; }
-
-// Potong array data sesuai halaman (Simulasi Pagination di View)
-$offset = ($currentPage - 1) * $limit;
-$pagedData = array_slice($studentList, $offset, $limit);
-// -------------------------
-
-$keyword = $_GET['keyword'] ?? '';
 $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
+
+// Flash Message Handling
+$session_message = '';
+$message_type = 'info';
+
+if (isset($flash_message)) {
+    if (is_array($flash_message)) {
+        $session_message = $flash_message['text'] ?? '';
+        $message_type = $flash_message['type'] ?? 'info';
+    } elseif (is_string($flash_message)) {
+        $session_message = $flash_message;
+    }
+}
+
+$inventoryList = $inventoryList ?? [];
+$currentType = $_GET['type'] ?? '';
 ?>
+
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="id">
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Daftar Mahasiswa - Admin</title>
-    <!-- Assets -->
+    
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png" />
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    
+    <title>Kelola Inventaris - Lab InLET</title>
+    
+    <!-- Fonts and icons -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-    <<link 
-  rel="stylesheet" 
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" 
-  integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" 
-  crossorigin="anonymous" 
-  referrerpolicy="no-referrer" 
-/>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <link href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
-  </head>
-
-  <body class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500">
     
-    <!-- SIDENAV UTAMA -->
+    <!-- Popper -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    
+    <!-- Main Styling -->
+    <link href="assets/css/soft-ui-dashboard-tailwind.css?v=1.0.5" rel="stylesheet" />
+</head>
+
+<body class="m-0 font-sans antialiased font-normal text-base leading-default bg-gray-50 text-slate-500">
+    
+    <!-- sidenav -->
     <aside
       id="sidenav-main"
       class="fixed inset-y-0 left-0 w-full max-w-62.5 -translate-x-full p-0 antialiased shadow-2xl transition-transform duration-300 xl:ml-4 xl:my-4 xl:translate-x-0 xl:rounded-2xl xl:shadow-soft-xl xl:h-[calc(100vh-2rem)] h-full flex flex-col border-r border-gray-200 xl:border-0"
@@ -160,7 +163,6 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                             d="M12.25,17.5 L8.75,17.5 L8.75,1.75 C8.75,0.78225 9.53225,0 10.5,0 L31.5,0 C32.46775,0 33.25,0.78225 33.25,1.75 L33.25,12.25 L29.75,12.25 L29.75,3.5 L12.25,3.5 L12.25,17.5 Z"
                           ></path>
                           <path
-
                             class="fill-slate-800"
                             d="M40.25,14 L24.5,14 C23.53225,14 22.75,14.78225 22.75,15.75 L22.75,38.5 L19.25,38.5 L19.25,22.75 C19.25,21.78225 18.46775,21 17.5,21 L1.75,21 C0.78225,21 0,21.78225 0,22.75 L0,40.25 C0,41.21775 0.78225,42 1.75,42 L40.25,42 C41.21775,42 42,41.21775 42,40.25 L42,15.75 C42,14.78225 41.21775,14 40.25,14 Z M12.25,36.75 L7,36.75 L7,33.25 L12.25,33.25 L12.25,36.75 Z M12.25,29.75 L7,29.75 L7,26.25 L12.25,26.25 L12.25,29.75 Z M35,36.75 L29.75,36.75 L29.75,33.25 L35,33.25 L35,36.75 Z M35,29.75 L29.75,29.75 L29.75,26.25 L35,26.25 L35,29.75 Z M35,22.75 L29.75,22.75 L29.75,19.25 L35,19.25 L35,22.75 Z"
                           ></path>
@@ -195,17 +197,8 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
                   <title>credit-card</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-2169.000000, -745.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(453.000000, 454.000000)">
                           <path
@@ -222,10 +215,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Berita</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Berita</span>
             </a>
           </li>
 
@@ -247,17 +237,8 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
                   <title>box-3d-50</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-2319.000000, -291.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-2319.000000, -291.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(603.000000, 0.000000)">
                           <path
@@ -278,10 +259,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Produk</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Produk</span>
             </a>
           </li>
 
@@ -303,17 +281,8 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
                   <title>settings</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-2020.000000, -442.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-2020.000000, -442.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(304.000000, 151.000000)">
                           <polygon
@@ -334,14 +303,12 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Riset</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Riset</span>
             </a>
           </li>
 
-         <li class="mt-0.5 w-full">
+          <!-- Tombol Tim -->
+          <li class="mt-0.5 w-full">
             <a
               class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
               href="?page=team"
@@ -358,17 +325,8 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   xmlns:xlink="http://www.w3.org/1999/xlink"
                 >
                   <title>customer-support</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-1717.000000, -291.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-1717.000000, -291.000000)" fill="#FFFFFF" fill-rule="nonzero">
                       <g transform="translate(1716.000000, 291.000000)">
                         <g transform="translate(1.000000, 0.000000)">
                           <path
@@ -389,10 +347,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   </g>
                 </svg>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Tim</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Tim</span>
             </a>
           </li>
 
@@ -407,10 +362,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
               >
                 <i class="ni leading-none ni-paper-diploma text-xs relative top-2 text-gray"></i>
               </div>
-              <span
-                class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-                >Kerjasama</span
-              >
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kerjasama</span>
             </a>
           </li>
 
@@ -469,19 +421,31 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
             </a>
           </li>
           <!-- Tombol Daftar Mahasiswa -->
-         <li class="mt-0.5 w-full">
-                <a class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors" href="?page=students">
-                  <div class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
-                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="4" y="4" width="16" height="20" rx="3" fill="#fff" fill-opacity="0.9" />
-                      <rect x="7" y="8" width="10" height="2" rx="1" fill="#8B5CF6"/>
-                      <rect x="7" y="12" width="10" height="2" rx="1" fill="#8B5CF6"/>
-                      <rect x="7" y="16" width="6" height="2" rx="1" fill="#8B5CF6"/>
-                    </svg>
-                  </div>
-                  <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Daftar Mahasiswa</span>
-                </a>
-              </li>
+          <li class="mt-* w-full">
+            <a
+              class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
+              href="?page=students"
+            >
+              <div
+                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+              >
+                <!-- Icon kertas simpel -->
+                <svg
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect x="4" y="4" width="16" height="20" rx="3" fill="#8B5CF6" />
+                  <rect x="7" y="8" width="10" height="2" rx="1" fill="#fff"/>
+                  <rect x="7" y="12" width="10" height="2" rx="1" fill="#fff"/>
+                  <rect x="7" y="16" width="6" height="2" rx="1" fill="#fff"/>
+                </svg>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Daftar Mahasiswa</span>
+            </a>
+          </li>
           <!-- Tombol Peminjaman -->
           <li class="mt-* w-full">
             <a
@@ -505,14 +469,14 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
               <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Peminjaman</span>
             </a>
           </li>
-          <!-- Tombol Inventaris -->
-         <li class="mt-* w-full">
+          <!-- Tombol Inventaris (ACTIVE) -->
+          <li class="mt-* w-full">
             <a
-              class="py-2.7 text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap px-4 transition-colors"
+              class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-0 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
               href="?page=inventory"
             >
               <div
-                class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+                class="bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
               >
                 <svg
                   width="20px"
@@ -521,11 +485,11 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <rect x="3" y="4" width="18" height="16" rx="2" fill="#8B5CF6" />
-                  <rect x="6" y="7" width="4" height="3" rx="1" fill="#fff"/>
-                  <rect x="11" y="7" width="4" height="3" rx="1" fill="#fff"/>
-                  <rect x="6" y="12" width="4" height="3" rx="1" fill="#fff"/>
-                  <rect x="11" y="12" width="4" height="3" rx="1" fill="#fff"/>
+                  <rect x="3" y="4" width="18" height="16" rx="2" fill="#fff" />
+                  <rect x="6" y="7" width="4" height="3" rx="1" fill="#8B5CF6"/>
+                  <rect x="11" y="7" width="4" height="3" rx="1" fill="#8B5CF6"/>
+                  <rect x="6" y="12" width="4" height="3" rx="1" fill="#8B5CF6"/>
+                  <rect x="11" y="12" width="4" height="3" rx="1" fill="#8B5CF6"/>
                 </svg>
               </div>
               <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Inventaris</span>
@@ -543,146 +507,269 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
     </aside>
     <!-- end sidenav -->
 
-    <main class="ease-soft-in-out xl:ml-68.5 relative min-h-screen rounded-xl transition-all duration-200">
+    <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
+      
       <!-- Navbar -->
-      <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start">
+      <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="true">
         <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
-           <nav>
+          <nav>
             <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
-              <li class="leading-normal text-sm"><a class="opacity-50 text-slate-700" href="javascript:;">Pages</a></li>
-              <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">Mahasiswa</li>
-            </ol>
-            <h6 class="mb-0 font-bold capitalize">Daftar Mahasiswa</h6>
-          </nav>
-          
-          <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
-            <div class="flex items-center md:ml-auto md:pr-4">
-               <span class="flex items-center px-3 py-2 bg-white rounded-lg shadow-soft-md">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="#8B5CF6"/>
-                    <path stroke="#8B5CF6" stroke-width="2" d="M4 20c0-3.333 3.333-6 8-6s8 2.667 8 6" fill="none"/>
-                  </svg>
-                  <span class="font-semibold text-slate-700"><?= htmlspecialchars($nama_pengguna) ?></span>
-                </span>
-            </div>
-            
-            <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-              <li class="flex items-center pl-4 xl:hidden">
-                <a href="javascript:;" class="block p-0 text-sm transition-all ease-nav-brand text-slate-500" sidenav-trigger>
-                  <div class="w-4.5 overflow-hidden">
-                    <i class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
-                    <i class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
-                    <i class="ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
-                  </div>
-                </a>
+              <li class="leading-normal text-sm">
+                <a class="opacity-50 text-slate-700" href="javascript:;">Pages</a>
               </li>
-            </ul>
+              <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">
+                Inventaris
+              </li>
+            </ol>
+            <h6 class="mb-0 font-bold capitalize">Kelola Inventaris Barang/Ruang</h6>
+          </nav>
 
+          <div class="flex items-center md:ml-auto md:pr-4">
+            <span class="flex items-center px-3 py-2 bg-white rounded-lg shadow-soft-md">
+              <i class="fas fa-user-circle text-purple-600 mr-2"></i>
+              <span class="font-semibold text-slate-700"><?= htmlspecialchars($nama_pengguna) ?></span>
+            </span>
           </div>
+          
+          <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
+            <li class="flex items-center pl-4 xl:hidden">
+              <a href="javascript:;" class="block p-0 text-sm transition-all ease-nav-brand text-slate-500" sidenav-trigger>
+                <div class="w-4.5 overflow-hidden">
+                  <i class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
+                  <i class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
+                  <i class="ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
+                </div>
+              </a>
+            </li>
+          </ul>
         </div>
       </nav>
 
       <!-- Content -->
-      <div class="mx-6 mt-6 relative">
-        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-padding">
-            
-            <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
-                <h6>Tabel Mahasiswa Terdaftar</h6>
-                <form action="index.php" method="GET" class="flex items-center space-x-2">
-                    <input type="hidden" name="page" value="students">
-                    <input type="search" name="keyword" placeholder="Cari Nama / NIM..." value="<?= htmlspecialchars($keyword) ?>" class="border rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500 transition-all">
-                    <button type="submit" class="px-3 py-1 bg-gradient-to-tl from-purple-700 to-pink-500 text-white rounded-lg text-sm font-semibold hover:scale-105 transition-all shadow-md">Cari</button>
-                </form>
-            </div>
+      <div class="w-full px-6 py-6 mx-auto">
+        
+        <!-- Flash Message -->
+        <?php if ($session_message): 
+            $base_class = "p-4 mb-4 text-sm rounded-lg shadow-soft-md text-white";
+            $icon = 'fas fa-info-circle';
+            $bg_color = 'bg-gray-500';
 
-            <div class="flex-auto px-0 pt-0 pb-2">
-                <div class="p-0 overflow-x-auto">
-                    <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
-                        <thead class="align-bottom">
-                            <tr>
-                                <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Profil</th>
-                                <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">NIM</th>
-                                <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Prodi & Angkatan</th>
-                                <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aktivitas</th>
-                                <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                           <?php if (!empty($pagedData)): // GANTI studentList jadi pagedData ?>
-                                <?php foreach ($pagedData as $s): ?>
-                                <tr>
-                                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                        <div class="flex px-2 py-1">
-                                            <!-- PERBAIKAN: Menghapus <img> avatar -->
-                                            <div class="flex flex-col justify-center">
-                                                <h6 class="mb-0 text-sm leading-normal font-semibold text-slate-700"><?= htmlspecialchars($s['full_name'] ?? '') ?></h6>
-                                                <p class="mb-0 text-xs leading-tight text-slate-400"><?= htmlspecialchars($s['email'] ?? '') ?></p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                        <p class="mb-0 text-xs font-bold leading-tight text-slate-500"><?= htmlspecialchars($s['nim'] ?? '') ?></p>
-                                    </td>
-                                    <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                        <p class="text-xs font-semibold mb-0 text-slate-500"><?= htmlspecialchars($s['program_study'] ?? '') ?></p>
-                                        <p class="text-xs text-slate-400">Angkatan <?= htmlspecialchars($s['batch'] ?? '') ?></p>
-                                    </td>
-                                    <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                        <span class="bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                                            <?= htmlspecialchars($s['activity_type'] ?? '') ?>
-                                         </span>
-                                    </td>
-                                    <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                        <a href="index.php?page=students&action=delete&id=<?= $s['student_id'] ?>" onclick="return confirm('Hapus mahasiswa ini? Data user akan tetap ada, hanya data mahasiswa yang dihapus.')" class="text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer">
-                                            <i class="fas fa-trash mr-1"></i>Hapus
-                                        </a>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr><td colspan="5" class="text-center p-4 text-sm text-gray-500">Tidak ada data mahasiswa.</td></tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
+            if ($message_type == 'success') {
+                $icon = 'fas fa-check-circle';
+                $bg_color = 'bg-green-500';
+            } elseif ($message_type == 'warning') {
+                $icon = 'fas fa-exclamation-triangle';
+                $bg_color = 'bg-yellow-500';
+            } elseif ($message_type == 'error') {
+                $icon = 'fas fa-times-circle';
+                $bg_color = 'bg-red-500';
+            }
+        ?>
+            <div class="<?= $base_class ?> <?= $bg_color ?>" role="alert">
+                <i class="<?= $icon ?> mr-2"></i> <?= htmlspecialchars($session_message) ?>
             </div>
-            
-            <!-- PAGINATION -->
-            <?php if ($totalPages > 1): ?>
-            <div class="flex justify-center mt-4 mb-4">
-                <nav aria-label="Page navigation">
-                    <ul class="inline-flex items-center -space-x-px">
-                        <!-- Tombol Prev -->
-                        <li class="mx-1">
-                            <a href="?page=students&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
-                                <i class="fas fa-chevron-left"></i>
-                            </a>
-                        </li>
-                        
-                        <!-- Angka Halaman -->
-                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <li class="mx-1">
-                            <a href="?page=students&p=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all <?= $i == $currentPage ? 'bg-gradient-to-tl from-purple-700 to-pink-500 text-white shadow-soft-md border-0' : 'bg-white border border-gray-200 text-slate-500 hover:bg-gray-100' ?>">
-                                <?= $i ?>
-                            </a>
-                        </li>
-                        <?php endfor; ?>
-                        
-                        <!-- Tombol Next -->
-                        <li class="mx-1">
-                            <a href="?page=students&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs">
-                                <i class="fas fa-chevron-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <?php endif; ?>
-            <!-- END PAGINATION -->
+        <?php endif; ?>
 
+        <!-- Tombol Tambah dan Popover -->
+        <div class="relative">
+          <button type="button" id="addInventoryBtn" class="bg-gradient-to-tl from-purple-700 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:scale-102 transition-all shadow-md" onclick="toggleInventoryPopover()">
+            + Tambah Inventaris
+          </button>
         </div>
+
+        <!-- Inventory Popover Form -->
+        <div id="inventoryPopover" class="absolute left-0 top-12 z-50 hidden bg-white rounded-2xl shadow-2xl p-6 border border-gray-100" style="width: 100%; max-width: 400px;">
+          <h3 class="text-lg font-bold mb-4 border-b pb-2" id="popoverTitle">Tambah Inventaris</h3>
+          
+          <form method="POST" action="index.php?page=inventory&action=create" id="inventoryForm">
+            <input type="hidden" name="id" id="formId" value="">
+            
+            <!-- Nama -->
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Nama <span class="text-red-500">*</span>
+              </label>
+              <input type="text" name="name" id="itemName" required placeholder="Nama barang/ruang..."
+                     class="block w-full px-3 py-2 text-sm text-slate-700 bg-white border border-gray-300 rounded-lg focus:border-purple-500 focus:ring-purple-500">
+            </div>
+
+            <!-- Tipe -->
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Tipe <span class="text-red-500">*</span>
+              </label>
+              <select name="type" id="itemType" required class="block w-full px-3 py-2 text-sm text-slate-700 bg-white border border-gray-300 rounded-lg focus:border-purple-500 focus:ring-purple-500">
+                <option value="">-- Pilih Tipe --</option>
+                <option value="barang">Barang</option>
+                <option value="ruang">Ruang</option>
+              </select>
+            </div>
+
+            <!-- Deskripsi -->
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Deskripsi
+              </label>
+              <textarea name="description" id="itemDescription" rows="3" placeholder="Deskripsi (opsional)..." class="block w-full px-3 py-2 text-sm text-slate-700 bg-white border border-gray-300 rounded-lg focus:border-purple-500 focus:ring-purple-500"></textarea>
+            </div>
+
+            <!-- Status Ketersediaan -->
+            <div class="mb-4 flex items-center">
+              <input type="checkbox" name="is_available" id="itemAvailable" value="1" checked class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500">
+              <label for="itemAvailable" class="ml-2 text-sm font-medium text-gray-700">
+                Tersedia untuk dipinjam
+              </label>
+            </div>
+            
+            <div class="flex justify-end pt-2">
+              <button type="button" onclick="closePopover()" class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all">
+                Batal
+              </button>
+              <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">
+                Simpan
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Table dengan Filter -->
+        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-padding mt-4">
+          <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
+            <h6>Daftar Inventaris</h6>
+            <select onchange="window.location.href='?page=inventory&type='+this.value" class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-purple-500">
+              <option value="" <?= $currentType == '' ? 'selected' : '' ?>>Semua Tipe</option>
+              <option value="barang" <?= $currentType == 'barang' ? 'selected' : '' ?>>Barang</option>
+              <option value="ruang" <?= $currentType == 'ruang' ? 'selected' : '' ?>>Ruang</option>
+            </select>
+          </div>
+          <div class="flex-auto px-0 pt-0 pb-2">
+            <div class="p-0 overflow-x-auto">
+                  <?php if (!empty($inventoryList)): ?>
+                    <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                      <thead class="align-bottom">
+                        <tr>
+                          <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs text-slate-400">No</th>
+                          <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs text-slate-400">Nama</th>
+                          <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs text-slate-400">Tipe</th>
+                          <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xxs text-slate-400">Deskripsi</th>
+                          <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs text-slate-400">Status</th>
+                          <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xxs text-slate-400">Aksi</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php $no = 1; foreach ($inventoryList as $item): ?>
+                          <tr>
+                            <td class="p-4 align-middle bg-transparent border-b text-sm"><?= $no++ ?></td>
+                            <td class="p-4 align-middle bg-transparent border-b">
+                              <h6 class="mb-0 text-sm font-semibold text-slate-700"><?= htmlspecialchars($item['name']) ?></h6>
+                            </td>
+                            <td class="p-4 text-center align-middle bg-transparent border-b">
+                              <?php if ($item['type'] == 'barang'): ?>
+                                <span class="px-3 py-1 text-xs font-bold rounded-full bg-blue-100 text-blue-700">
+                                  <i class="fas fa-box mr-1"></i> Barang
+                                </span>
+                              <?php else: ?>
+                                <span class="px-3 py-1 text-xs font-bold rounded-full bg-green-100 text-green-700">
+                                  <i class="fas fa-door-open mr-1"></i> Ruang
+                                </span>
+                              <?php endif; ?>
+                            </td>
+                            <td class="p-4 align-middle bg-transparent border-b">
+                              <p class="text-sm text-slate-500"><?= htmlspecialchars($item['description'] ?? '-') ?></p>
+                            </td>
+                            <td class="p-4 text-center align-middle bg-transparent border-b">
+                              <?php if ($item['is_available']): ?>
+                                <span class="px-3 py-1 text-xs font-bold rounded-full bg-green-100 text-green-700">
+                                  <i class="fas fa-check mr-1"></i> Tersedia
+                                </span>
+                              <?php else: ?>
+                                <span class="px-3 py-1 text-xs font-bold rounded-full bg-red-100 text-red-700">
+                                  <i class="fas fa-times mr-1"></i> Tidak Tersedia
+                                </span>
+                              <?php endif; ?>
+                            </td>
+                            <td class="p-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
+                              <a href="javascript:void(0)" onclick="openEditModal(<?= htmlspecialchars(json_encode($item)) ?>)" 
+                                 class="text-xs font-bold leading-tight text-blue-800 mr-6 hover:text-blue-950 transition-all">
+                                 <i class="fas fa-edit mr-1"></i>Edit
+                              </a>
+                              <a href="index.php?page=inventory&action=delete&id=<?= $item['id'] ?>" 
+                                 class="text-xs font-bold leading-tight text-red-500 hover:text-red-700 transition-all"
+                                 onclick="return confirm('Yakin ingin menghapus inventaris ini?')">
+                                 <i class="fas fa-trash mr-1"></i>Hapus
+                              </a>
+                            </td>
+                          </tr>
+                        <?php endforeach; ?>
+                      </tbody>
+                    </table>
+                  <?php else: ?>
+                    <div class="text-center py-12">
+                      <i class="fas fa-box-open text-5xl text-slate-300 mb-4"></i>
+                      <p class="text-slate-400 text-lg">Belum ada data inventaris.</p>
+                      <button onclick="toggleInventoryPopover()" class="mt-4 px-4 py-2 font-bold text-white bg-gradient-to-tl from-purple-700 to-pink-500 rounded-lg hover:shadow-soft-2xl cursor-pointer">
+                        <i class="fas fa-plus mr-2"></i> Tambah Inventaris Pertama
+                      </button>
+                    </div>
+                  <?php endif; ?>
+            </div>
+          </div>
+        </div>
+
       </div>
     </main>
+
     <script src="assets/js/soft-ui-dashboard-tailwind.js?v=1.0.5" async></script>
-  </body>
+    
+    <script>
+      function toggleInventoryPopover() {
+        const popover = document.getElementById("inventoryPopover");
+        popover.classList.toggle("hidden");
+        
+        // Reset form to add mode when opening
+        if (!popover.classList.contains("hidden")) {
+          resetFormToAddMode();
+        }
+      }
+      
+      function closePopover() {
+        const popover = document.getElementById("inventoryPopover");
+        popover.classList.add("hidden");
+      }
+      
+      function resetFormToAddMode() {
+        document.getElementById('popoverTitle').textContent = 'Tambah Inventaris';
+        document.getElementById('inventoryForm').action = 'index.php?page=inventory&action=create';
+        document.getElementById('formId').value = '';
+        document.getElementById('itemName').value = '';
+        document.getElementById('itemType').value = '';
+        document.getElementById('itemDescription').value = '';
+        document.getElementById('itemAvailable').checked = true;
+      }
+      
+      // Close popover when clicking outside
+      document.addEventListener("click", function(e) {
+        const btn = document.getElementById("addInventoryBtn");
+        const popover = document.getElementById("inventoryPopover");
+        if (btn && popover && !popover.contains(e.target) && e.target !== btn) {
+          popover.classList.add("hidden");
+        }
+      });
+      
+      function openEditModal(item) {
+        // Update form fields for edit
+        document.getElementById('popoverTitle').textContent = 'Edit Inventaris';
+        document.getElementById('inventoryForm').action = 'index.php?page=inventory&action=edit&id=' + item.id;
+        document.getElementById('formId').value = item.id;
+        document.getElementById('itemName').value = item.name;
+        document.getElementById('itemType').value = item.type;
+        document.getElementById('itemDescription').value = item.description || '';
+        document.getElementById('itemAvailable').checked = item.is_available == true || item.is_available == 't' || item.is_available == '1';
+        
+        // Show popover
+        const popover = document.getElementById("inventoryPopover");
+        popover.classList.remove("hidden");
+      }
+    </script>
+</body>
 </html>

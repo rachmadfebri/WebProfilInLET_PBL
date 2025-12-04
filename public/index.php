@@ -24,6 +24,8 @@ require_once __DIR__ . '/../app/controller/AttendanceController.php';
 require_once __DIR__ . '/../app/controller/AbsensiAdminController.php';
 require_once __DIR__ . '/../app/controller/StudentController.php';
 require_once __DIR__ . '/../app/controller/GuestbookController.php';
+require_once __DIR__ . '/../app/controller/LoanController.php';
+require_once __DIR__ . '/../app/controller/inventoryController.php';
 
 // --- 2. INISIALISASI DATABASE & CONTROLLER ---
 $db = new Database();
@@ -44,6 +46,12 @@ $guestbookController = new GuestbookController($pdo);
 
 // [BARU] Inisialisasi Student Controller
 $studentController = new StudentController($pdo);
+
+// [BARU] Inisialisasi Loan Controller
+$loanController = new LoanController($pdo);
+
+// [BARU] Inisialisasi Inventory Controller
+$inventoryController = new InventoryController($pdo);
 
 // --- 3. AMBIL PARAMETER URL ---
 $page = $_GET['page'] ?? 'home'; // Nanti bisa diganti 'home' jika frontend sudah siap
@@ -231,6 +239,56 @@ switch ($page) {
   // Halaman Absensi (Admin)
   case 'absensi':
     $absensiAdminController->index();
+    break;
+
+  // Halaman Peminjaman (Mahasiswa)
+  case 'peminjaman':
+    if ($action === 'create_loan' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $loanController->createLoan();
+    } elseif ($action === 'cancel_loan' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $loanController->cancelLoan();
+    } else {
+        $loanController->mahasiswaIndex();
+    }
+    break;
+
+  // Halaman Kelola Peminjaman (Admin)
+  case 'admin-loans':
+    if ($action === 'approve' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $loanController->approveLoan();
+    } elseif ($action === 'reject' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $loanController->rejectLoan();
+    } elseif ($action === 'return' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $loanController->returnLoan();
+    } elseif ($action === 'delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $loanController->deleteLoan();
+    } else {
+        $loanController->adminIndex();
+    }
+    break;
+
+  // Halaman Kelola Inventaris (Admin)
+  case 'inventory':
+    if ($action === 'create') {
+        $inventoryController->create();
+    } elseif ($action === 'edit' && isset($_GET['id'])) {
+        $inventoryController->edit($_GET['id']);
+    } elseif ($action === 'delete' && isset($_GET['id'])) {
+        $inventoryController->delete($_GET['id']);
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $postAction = $_POST['action'] ?? '';
+        if ($postAction === 'create') {
+            $inventoryController->create();
+        } elseif ($postAction === 'update' && isset($_POST['id'])) {
+            $inventoryController->edit($_POST['id']);
+        } elseif ($postAction === 'delete' && isset($_POST['id'])) {
+            $inventoryController->delete($_POST['id']);
+        } else {
+            $inventoryController->index();
+        }
+    } else {
+        $inventoryController->index();
+    }
     break;
 
   // News Detail Page

@@ -143,11 +143,16 @@ class MahasiswaController {
         $flash_message = $_SESSION['flash_message'] ?? null;
         unset($_SESSION['flash_message']); 
         
-        $current_hour = (int)date('H');
-        $current_minute = (int)date('i');
+        // Gunakan timezone Asia/Jakarta untuk konsistensi
+        $jakartaTimezone = new DateTimeZone('Asia/Jakarta');
+        $now = new DateTime('now', $jakartaTimezone);
+        $current_hour = (int)$now->format('H');
+        $current_minute = (int)$now->format('i');
+        
         $is_check_in_time_allowed = $this->attendanceModel->isCheckInTimeAllowed();
         $is_activity_time_allowed = $this->attendanceModel->isActivityTimeAllowed();
         
+        error_log("Current Jakarta time: " . $now->format('Y-m-d H:i:s'));
         error_log("Current time: {$current_hour}:{$current_minute}");
         error_log("Check-in time allowed: " . ($is_check_in_time_allowed ? 'YES' : 'NO'));
         error_log("Activity time allowed: " . ($is_activity_time_allowed ? 'YES' : 'NO'));
