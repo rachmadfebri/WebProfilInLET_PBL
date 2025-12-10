@@ -9,6 +9,11 @@ $totalResearch = $totalResearch ?? 0;
 $totalStudents = $totalStudents ?? 0;
 $totalTeam     = $totalTeam ?? 0;
 
+// Visitor Statistics (passed from controller)
+$totalVisitors = $totalVisitors ?? 0;
+$todayVisitors = $todayVisitors ?? 0;
+$monthVisitors = $monthVisitors ?? 0;
+
 // Fallback variabel guestbook
 $guestbookList = $guestbookList ?? [];
 $startDate     = $startDate ?? '';
@@ -851,27 +856,55 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="w-full max-w-full px-3 mt-4">
+        <!-- STATISTIK PENGUNJUNG - FULL WIDTH -->
+        <div class="flex flex-wrap mt-4 -mx-3">
+          <div class="w-full max-w-full px-3 mb-4">
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-              <div class="flex-auto p-4">
-                <div class="w-full overflow-hidden text-center">
-                  <a href="https://info.flagcounter.com/iyqz">
-                    <img 
-                      src="https://s01.flagcounter.com/count2/9H1h/bg_FFFFFF/txt_000000/border_CCCCCC/columns_8/maxflags_16/viewers_Jumlah+Pengunjung/labels_1/pageviews_1/flags_0/percent_1/" 
-                      alt="Flag Counter" 
-                      border="0"
-                      class="w-full h-auto rounded-xl object-contain"
-                    >
-                  </a>
+              <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
+                <h6 class="font-bold text-slate-700"><i class="fas fa-chart-line mr-2 text-purple-600"></i>Statistik Pengunjung</h6>
+              </div>
+              <div class="flex-auto p-6">
+                <div class="flex flex-col">
+                  <!-- Total Visitor -->
+                  <div class="flex items-center justify-between py-4 border-b border-gray-100">
+                    <div class="flex items-center">
+                      <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
+                        <i class="fas fa-users text-white text-sm"></i>
+                      </div>
+                      <span class="font-semibold text-slate-700 ml-4">Total Pengunjung</span>
+                    </div>
+                    <span class="text-xl font-bold text-slate-700 mr-4"><?= number_format($totalVisitors) ?></span>
+                  </div>
+                  <!-- Hari Ini -->
+                  <div class="flex items-center justify-between py-4 border-b border-gray-100">
+                    <div class="flex items-center">
+                      <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400">
+                        <i class="fas fa-user-clock text-white text-sm"></i>
+                      </div>
+                      <span class="font-semibold text-slate-700 ml-4">Hari Ini</span>
+                    </div>
+                    <span class="text-xl font-bold text-slate-700 mr-4"><?= number_format($todayVisitors) ?></span>
+                  </div>
+                  <!-- Bulan Ini -->
+                  <div class="flex items-center justify-between py-4">
+                    <div class="flex items-center">
+                      <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-tl from-green-600 to-teal-400">
+                        <i class="fas fa-calendar-alt text-white text-sm"></i>
+                      </div>
+                      <span class="font-semibold text-slate-700 ml-4">Bulan Ini</span>
+                    </div>
+                    <span class="text-xl font-bold text-slate-700 mr-4"><?= number_format($monthVisitors) ?></span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- RECENT DATA TABLES -->
-        <div class="flex flex-wrap mt-4 -mx-3">
+        <!-- BERITA TERBARU & LAPORAN TAMU -->
+        <div class="flex flex-wrap -mx-3">
           <!-- BERITA TERBARU -->
           <div class="w-full max-w-full px-3 mb-6 lg:mb-0 lg:w-1/2">
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">

@@ -1,4 +1,36 @@
 <?php
+$lang = $_SESSION['lang'] ?? 'en';
+
+$guestTrans = array(
+    'en' => array(
+        'page_title' => 'Guestbook',
+        'form_title' => 'Guestbook',
+        'name' => 'Name',
+        'institution' => 'Institution',
+        'email' => 'Email',
+        'phone' => 'Phone',
+        'message' => 'Message',
+        'submit' => 'Submit',
+        'success_msg' => 'Thank you! Your message has been sent.',
+        'error_msg' => 'Failed to send message. Please try again.',
+        'error_required' => 'All fields are required!'
+    ),
+    'id' => array(
+        'page_title' => 'Buku Tamu',
+        'form_title' => 'Buku Tamu',
+        'name' => 'Nama',
+        'institution' => 'Institusi',
+        'email' => 'Email',
+        'phone' => 'Telepon',
+        'message' => 'Pesan',
+        'submit' => 'Kirim',
+        'success_msg' => 'Terima kasih! Pesan Anda sudah dikirim.',
+        'error_msg' => 'Gagal mengirim pesan. Silakan coba lagi.',
+        'error_required' => 'Semua field harus diisi!'
+    )
+);
+$gt = $guestTrans[$lang];
+
 // Handle form submission
 $successMessage = '';
 $errorMessage = '';
@@ -20,30 +52,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Validate required fields
         if (empty($data['name']) || empty($data['institution']) || empty($data['email']) || 
             empty($data['phone_number']) || empty($data['message'])) {
-            $errorMessage = 'Semua field harus diisi!';
+            $errorMessage = $gt['error_required'];
         } else {
             // Insert to database
             if ($guestbookModel->create($data)) {
-                $successMessage = 'Terima kasih! Pesan Anda sudah dikirim.';
+                $successMessage = $gt['success_msg'];
                 // Clear form
                 $_POST = [];
             } else {
-                $errorMessage = 'Gagal mengirim pesan. Silakan coba lagi.';
+                $errorMessage = $gt['error_msg'];
             }
         }
     } catch (Exception $e) {
         error_log("Guestbook Error: " . $e->getMessage());
-        $errorMessage = 'Terjadi kesalahan: ' . $e->getMessage();
+        $errorMessage = 'Error: ' . $e->getMessage();
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="id">
+<html lang="<?php echo $lang; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir Pendaftaran</title>
+    <title><?php echo $gt['page_title']; ?> - Learning Engineering Technology</title>
     
     <link rel="stylesheet" href="assets/css/style.css"> 
     <link rel="stylesheet" href="assets/css/form-page.css">
@@ -75,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <section class="form-section">
         
-        <h1 class="form-title gradient-text">Guestbook</h1>
+        <h1 class="form-title gradient-text"><?php echo $gt['form_title']; ?></h1>
         
         <div class="form-container">
             <?php if (!empty($successMessage)): ?>
@@ -92,13 +124,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <form action="" method="POST">
                 
-                <input type="text" id="name" name="name" placeholder="Name" value="<?php echo htmlspecialchars($_POST['name'] ?? ''); ?>" required>
-                <input type="text" id="institution" name="institution" placeholder="Institution" value="<?php echo htmlspecialchars($_POST['institution'] ?? ''); ?>" required>
-                <input type="email" id="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required>
-                <input type="tel" id="phone" name="phone" placeholder="Phone" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>" required>
-                <textarea id="message" name="message" placeholder="Message" rows="6" required><?php echo htmlspecialchars($_POST['message'] ?? ''); ?></textarea>
+                <input type="text" id="name" name="name" placeholder="<?php echo $gt['name']; ?>" value="<?php echo htmlspecialchars($_POST['name'] ?? ''); ?>" required>
+                <input type="text" id="institution" name="institution" placeholder="<?php echo $gt['institution']; ?>" value="<?php echo htmlspecialchars($_POST['institution'] ?? ''); ?>" required>
+                <input type="email" id="email" name="email" placeholder="<?php echo $gt['email']; ?>" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required>
+                <input type="tel" id="phone" name="phone" placeholder="<?php echo $gt['phone']; ?>" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>" required>
+                <textarea id="message" name="message" placeholder="<?php echo $gt['message']; ?>" rows="6" required><?php echo htmlspecialchars($_POST['message'] ?? ''); ?></textarea>
                 
-                <button type="submit" class="submit-btn">Submit</button>
+                <button type="submit" class="submit-btn"><?php echo $gt['submit']; ?></button>
             </form>
         </div>
     </section>

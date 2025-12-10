@@ -1,5 +1,38 @@
 <?php
     $year = date('Y');
+    $lang = $_SESSION['lang'] ?? 'en';
+    
+    $footerTrans = array(
+        'en' => array(
+            'tagline' => 'Designing research-based learning experiences and digital products.',
+            'explore' => 'Explore',
+            'home' => 'Home',
+            'about' => 'About',
+            'team' => 'Team',
+            'news' => 'News',
+            'gallery' => 'Gallery',
+            'connect' => 'Connect',
+            'guestbook' => 'Guestbook',
+            'admin_login' => 'Admin Login',
+            'location' => 'Location',
+            'copyright' => 'All rights reserved.'
+        ),
+        'id' => array(
+            'tagline' => 'Merancang pengalaman belajar dan produk digital berbasis riset.',
+            'explore' => 'Jelajahi',
+            'home' => 'Beranda',
+            'about' => 'Tentang',
+            'team' => 'Tim',
+            'news' => 'Berita',
+            'gallery' => 'Galeri',
+            'connect' => 'Hubungi',
+            'guestbook' => 'Buku Tamu',
+            'admin_login' => 'Login Admin',
+            'location' => 'Lokasi',
+            'copyright' => 'Hak cipta dilindungi.'
+        )
+    );
+    $ft = $footerTrans[$lang];
 ?>
 
 <footer class="site-footer">
@@ -8,28 +41,28 @@
             <img src="assets/img/logo lab tanpa bg.png" alt="Learning Engineering Technology" class="footer-logo">
             <div class="footer-text">
                 <h3>Information and Learning Engineering Technology</h3>
-                <p>Designing research-based learning experiences and digital products.</p>
+                <p><?php echo $ft['tagline']; ?></p>
             </div>
         </div>
 
         <div class="footer-links">
             <div class="footer-column">
-                <p class="footer-label">Explore</p>
-                <a href="index.php?page=home">Home</a>
-                <a href="index.php?page=about">About</a>
-                <a href="index.php?page=teampublic">Team</a>
-                <a href="index.php?page=newspublic">News</a>
-                <a href="index.php?page=gallerypublic">Gallery</a>
+                <p class="footer-label"><?php echo $ft['explore']; ?></p>
+                <a href="index.php?page=home"><?php echo $ft['home']; ?></a>
+                <a href="index.php?page=about"><?php echo $ft['about']; ?></a>
+                <a href="index.php?page=teampublic"><?php echo $ft['team']; ?></a>
+                <a href="index.php?page=newspublic"><?php echo $ft['news']; ?></a>
+                <a href="index.php?page=gallerypublic"><?php echo $ft['gallery']; ?></a>
             </div>
 
             <div class="footer-column">
-                <p class="footer-label">Connect</p>
-                <a href="index.php?page=guestbook">Guestbook</a>
-                <a href="index.php?page=login">Admin Login</a>
+                <p class="footer-label"><?php echo $ft['connect']; ?></p>
+                <a href="index.php?page=guestbook"><?php echo $ft['guestbook']; ?></a>
+                <a href="index.php?page=login"><?php echo $ft['admin_login']; ?></a>
             </div>
 
             <div class="footer-column">
-                <p class="footer-label">Location</p>
+                <p class="footer-label"><?php echo $ft['location']; ?></p>
                 <div class="footer-address">
                     <p><i class="fas fa-map-marker-alt"></i> Politeknik Negeri Malang</p>
                     <p><i class="fas fa-building"></i> Jurusan Teknologi Informasi</p>
@@ -42,7 +75,7 @@
 
     <div class="footer-bottom">
         <div class="footer-bottom-content">
-            <span>&copy; <?php echo $year; ?> Information and Learning Engineering Technology • All rights reserved.</span>
+            <span>&copy; <?php echo $year; ?> Information and Learning Engineering Technology - <?php echo $ft['copyright']; ?></span>
             <div class="footer-map-mini">
                 <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.2904744648584!2d112.61606731534065!3d-7.963632094269095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7882781d0d10fb%3A0x33d89d9bc2d5f8fc!2sPoliteknik%20Negeri%20Malang!5e0!3m2!1sen!2sid!4v1701234567890!5m2!1sen!2sid" 

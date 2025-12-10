@@ -15,8 +15,10 @@ class AdminController {
     private $teamModel;
     private $guestbookModel;
     private $newsModel;
+    private $pdo;
 
     public function __construct($pdo) {
+        $this->pdo = $pdo;
         $this->productsModel = new ProductsModel($pdo);
         $this->researchModel = new ResearchModel($pdo);
         $this->studentModel = new StudentModel($pdo);
@@ -48,6 +50,29 @@ class AdminController {
         // Ambil data terbaru untuk dashboard
         $recentNews = $this->newsModel ? $this->newsModel->getAll() : [];
         $recentGuestbook = $guestbookList;
+
+        // Visitor Statistics
+        $totalVisitors = 0;
+        $todayVisitors = 0;
+        $monthVisitors = 0;
+        
+        try {
+            // Total all visitors
+            $stmtTotal = $this->pdo->query("SELECT COUNT(*) FROM visitors");
+            $totalVisitors = (int)$stmtTotal->fetchColumn();
+            
+            // Today's visitors
+            $stmtToday = $this->pdo->prepare("SELECT COUNT(*) FROM visitors WHERE access_date = ?");
+            $stmtToday->execute([date('Y-m-d')]);
+            $todayVisitors = (int)$stmtToday->fetchColumn();
+            
+            // This month's visitors
+            $stmtMonth = $this->pdo->prepare("SELECT COUNT(*) FROM visitors WHERE access_date >= ? AND access_date <= ?");
+            $stmtMonth->execute([date('Y-m-01'), date('Y-m-t')]);
+            $monthVisitors = (int)$stmtMonth->fetchColumn();
+        } catch (Exception $e) {
+            // Keep default values
+        }
 
         require __DIR__ . '/../views/admin/dashboard.php';
     }

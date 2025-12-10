@@ -1,4 +1,22 @@
 <?php
+$lang = $_SESSION['lang'] ?? 'en';
+
+$newsDetailTrans = array(
+    'en' => array(
+        'back_to_news' => 'Back to News',
+        'latest_news' => 'Latest News',
+        'min_read' => 'min read',
+        'related' => 'Related News'
+    ),
+    'id' => array(
+        'back_to_news' => 'Kembali ke Berita',
+        'latest_news' => 'Berita Terbaru',
+        'min_read' => 'menit baca',
+        'related' => 'Berita Lainnya'
+    )
+);
+$ndt = $newsDetailTrans[$lang];
+
 // News detail page
 require_once __DIR__ . '/../../model/newsModel.php';
 require_once __DIR__ . '/../../../config/database.php';
@@ -24,12 +42,12 @@ if (!$news) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="id">
+<html lang="<?php echo $lang; ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($news['title']) ?> • News Detail</title>
+    <title><?= htmlspecialchars($news['title']) ?> - News Detail</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -42,9 +60,9 @@ if (!$news) {
     <main class="page-wrapper">
         <div class="news-detail">
             
-            <a href="?page=home#news" class="back-button">
+            <a href="?page=newspublic" class="back-button">
                 <i class="fas fa-arrow-left"></i>
-                Kembali ke News
+                <?php echo $ndt['back_to_news']; ?>
             </a>
             
             <div class="news-hero">
@@ -63,11 +81,11 @@ if (!$news) {
                     </span>
                     <span>
                         <i class="fas fa-newspaper"></i>
-                        Berita Terbaru
+                        <?php echo $ndt['latest_news']; ?>
                     </span>
                     <span>
                         <i class="fas fa-clock"></i>
-                        <?= ceil(str_word_count($news['content']) / 200) ?> menit baca
+                        <?= ceil(str_word_count($news['content']) / 200) ?> <?php echo $ndt['min_read']; ?>
                     </span>
                 </div>
             </div>
@@ -94,7 +112,7 @@ if (!$news) {
             
             <?php if (!empty($relatedNews)): ?>
                 <div class="related-news">
-                    <h3>Berita Lainnya</h3>
+                    <h3><?php echo $ndt['related']; ?></h3>
                     <div class="related-grid">
                         <?php foreach ($relatedNews as $related): ?>
                             <a href="?page=news-detail&id=<?= $related['id'] ?>" class="related-card">

@@ -91,6 +91,13 @@ try {
     $ip_visitor = $_SERVER['REMOTE_ADDR'];
     $date_today = date('Y-m-d');
 
+    // Buat tabel visitors jika belum ada
+    $pdo->exec("CREATE TABLE IF NOT EXISTS visitors (
+        id SERIAL PRIMARY KEY,
+        ip_address VARCHAR(50) NOT NULL,
+        access_date DATE NOT NULL
+    )");
+
     $stmtCheck = $pdo->prepare("SELECT id FROM visitors WHERE ip_address = ? AND access_date = ?");
     $stmtCheck->execute([$ip_visitor, $date_today]);
 
@@ -103,6 +110,8 @@ try {
     $totalViewers = $stmtCount->fetchColumn();
 
 } catch (Exception $e) {
+    // Debug: uncomment baris di bawah untuk lihat error
+    // echo "Error: " . $e->getMessage();
     $totalViewers = 0;
 }
 

@@ -1,4 +1,22 @@
 <?php
+$lang = $_SESSION['lang'] ?? 'en';
+
+$researchDetailTrans = array(
+    'en' => array(
+        'back_to_research' => 'Back to Research Activities',
+        'research_activity' => 'Research Activity',
+        'related' => 'Other Research Activities',
+        'read_more' => 'Read More'
+    ),
+    'id' => array(
+        'back_to_research' => 'Kembali ke Aktivitas Riset',
+        'research_activity' => 'Aktivitas Riset',
+        'related' => 'Aktivitas Riset Lainnya',
+        'read_more' => 'Baca Selengkapnya'
+    )
+);
+$rdt = $researchDetailTrans[$lang];
+
 // Research detail page
 require_once __DIR__ . '/../../model/researchModel.php';
 require_once __DIR__ . '/../../../config/database.php';
@@ -24,12 +42,12 @@ if (!$research) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="id">
+<html lang="<?php echo $lang; ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($research['title']) ?> • Research Detail</title>
+    <title><?= htmlspecialchars($research['title']) ?> - Research Detail</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -44,7 +62,7 @@ if (!$research) {
             
             <a href="?page=home#research" class="back-button">
                 <i class="fas fa-arrow-left"></i>
-                Kembali ke Research Activities
+                <?php echo $rdt['back_to_research']; ?>
             </a>
             
             <div class="research-hero">
@@ -63,7 +81,7 @@ if (!$research) {
                     </span>
                     <span>
                         <i class="fas fa-flask"></i>
-                        Research Activity
+                        <?php echo $rdt['research_activity']; ?>
                     </span>
                 </div>
             </div>
@@ -90,7 +108,7 @@ if (!$research) {
             
             <?php if (!empty($relatedResearch)): ?>
                 <div class="research-grid-related">
-                    <h3>Research Activities Lainnya</h3>
+                    <h3><?php echo $rdt['related']; ?></h3>
                     <div class="related-research-grid">
                         <?php foreach ($relatedResearch as $related): ?>
                             <div class="research-card-modern">
@@ -117,7 +135,7 @@ if (!$research) {
                                         <?= htmlspecialchars(substr($related['description'], 0, 120)) ?>...
                                     </p>
                                     <a href="?page=research-detail&id=<?= $related['id'] ?>" class="research-read-more">
-                                        <span>Read More</span>
+                                        <span><?php echo $rdt['read_more']; ?></span>
                                         <i class="fas fa-arrow-right"></i>
                                     </a>
                                 </div>

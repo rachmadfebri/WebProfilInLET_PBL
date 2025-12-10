@@ -1,4 +1,30 @@
 <?php
+$lang = $_SESSION['lang'] ?? 'en';
+
+$teamTrans = array(
+    'en' => array(
+        'page_title' => 'Team',
+        'label' => 'Our Team',
+        'title' => 'Meet Our Team',
+        'subtitle' => 'A multidisciplinary team combining education researchers, engineers, and visual designers to execute innovative and impactful modern learning ideas.',
+        'leadership' => 'Leadership Team',
+        'members' => 'Team Members',
+        'no_team_title' => 'No Team Data Yet',
+        'no_team_desc' => 'Team member information will be added soon.'
+    ),
+    'id' => array(
+        'page_title' => 'Tim',
+        'label' => 'Tim Kami',
+        'title' => 'Temui Tim Kami',
+        'subtitle' => 'Tim multidisiplin yang menggabungkan peneliti pendidikan, engineer, dan visual designer untuk mengeksekusi gagasan pembelajaran modern yang inovatif dan berdampak.',
+        'leadership' => 'Tim Pimpinan',
+        'members' => 'Anggota Tim',
+        'no_team_title' => 'Belum Ada Data Tim',
+        'no_team_desc' => 'Informasi anggota tim akan segera ditambahkan.'
+    )
+);
+$tt = $teamTrans[$lang];
+
 // Ambil data tim dari database
 require_once __DIR__ . '/../../model/teamMembersModel.php';
 require_once __DIR__ . '/../../../config/database.php';
@@ -15,12 +41,12 @@ try {
 }
 ?>
 <!DOCTYPE html>
-<html lang="id">
+<html lang="<?php echo $lang; ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team • Learning Engineering Technology</title>
+    <title><?php echo $tt['page_title']; ?> - Learning Engineering Technology</title>
 
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -35,11 +61,10 @@ try {
         <div class="team-page">
             
             <div class="team-header">
-                <div class="team-label">Our Team</div>
-                <h1 class="team-title">Meet Our Team</h1>
+                <div class="team-label"><?php echo $tt['label']; ?></div>
+                <h1 class="team-title"><?php echo $tt['title']; ?></h1>
                 <p class="team-subtitle">
-                    Tim multidisiplin yang menggabungkan peneliti pendidikan, engineer, dan visual designer untuk
-                    mengeksekusi gagasan pembelajaran modern yang inovatif dan berdampak.
+                    <?php echo $tt['subtitle']; ?>
                 </p>
             </div>
 
@@ -62,7 +87,7 @@ try {
 
                 <?php if (!empty($leaders)): ?>
                 <section class="leadership-section">
-                    <h2 class="section-title">Leadership Team</h2>
+                    <h2 class="section-title"><?php echo $tt['leadership']; ?></h2>
                     <div class="leadership-grid">
                         <?php foreach ($leaders as $leader): ?>
                             <article class="leader-card">
@@ -128,7 +153,7 @@ try {
 
                 <?php if (!empty($members)): ?>
                 <section class="members-section">
-                    <h2 class="section-title">Team Members</h2>
+                    <h2 class="section-title"><?php echo $tt['members']; ?></h2>
                     <div class="team-grid">
                         <?php foreach ($members as $member): ?>
                             <article class="team-card">
@@ -195,8 +220,8 @@ try {
             <?php else: ?>
                 <div class="no-team-message">
                     <i class="fas fa-users"></i>
-                    <h3>Belum Ada Data Tim</h3>
-                    <p>Tim kami sedang berkembang. Silakan kembali lagi nanti untuk melihat anggota tim terbaru.</p>
+                    <h3><?php echo $tt['no_team_title']; ?></h3>
+                    <p><?php echo $tt['no_team_desc']; ?></p>
                 </div>
             <?php endif; ?>
 
