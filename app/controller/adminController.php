@@ -58,16 +58,16 @@ class AdminController {
         
         try {
             // Total all visitors
-            $stmtTotal = $this->pdo->query("SELECT COUNT(*) FROM visitors");
+            $stmtTotal = $this->pdo->query("SELECT COUNT(*) FROM visitor_stats");
             $totalVisitors = (int)$stmtTotal->fetchColumn();
             
             // Today's visitors
-            $stmtToday = $this->pdo->prepare("SELECT COUNT(*) FROM visitors WHERE access_date = ?");
+            $stmtToday = $this->pdo->prepare("SELECT COUNT(*) FROM visitor_stats WHERE visit_date = ?");
             $stmtToday->execute([date('Y-m-d')]);
             $todayVisitors = (int)$stmtToday->fetchColumn();
             
             // This month's visitors
-            $stmtMonth = $this->pdo->prepare("SELECT COUNT(*) FROM visitors WHERE access_date >= ? AND access_date <= ?");
+            $stmtMonth = $this->pdo->prepare("SELECT COUNT(*) FROM visitor_stats WHERE visit_date >= ? AND visit_date <= ?");
             $stmtMonth->execute([date('Y-m-01'), date('Y-m-t')]);
             $monthVisitors = (int)$stmtMonth->fetchColumn();
         } catch (Exception $e) {

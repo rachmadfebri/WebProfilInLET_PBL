@@ -832,7 +832,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
             <nav aria-label="Page navigation">
                 <ul class="inline-flex items-center -space-x-px">
                     <li class="mx-1">
-                        <a href="?page=collaboration&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-left"><</i></a>
+                        <a href="?page=collaboration&p=<?= max(1, $currentPage - 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-left"></i></a>
                     </li>
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                     <li class="mx-1">
@@ -840,7 +840,7 @@ $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
                     </li>
                     <?php endfor; ?>
                     <li class="mx-1">
-                        <a href="?page=collaboration&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-right">></i></a>
+                        <a href="?page=collaboration&p=<?= min($totalPages, $currentPage + 1) ?>&keyword=<?= urlencode($keyword) ?>" class="flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 bg-white text-slate-500 hover:bg-gray-100 transition-all text-xs"><i class="fas fa-chevron-right"></i></a>
                     </li>
                 </ul>
             </nav>

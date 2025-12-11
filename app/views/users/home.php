@@ -89,24 +89,29 @@ $totalTeamMembers = 0;
 
 try {
     $ip_visitor = $_SERVER['REMOTE_ADDR'];
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
     $date_today = date('Y-m-d');
 
-    // Buat tabel visitors jika belum ada
-    $pdo->exec("CREATE TABLE IF NOT EXISTS visitors (
+    // Buat tabel visitor_stats jika belum ada (dengan user_agent)
+    $pdo->exec("CREATE TABLE IF NOT EXISTS visitor_stats (
         id SERIAL PRIMARY KEY,
         ip_address VARCHAR(50) NOT NULL,
-        access_date DATE NOT NULL
+        visit_date DATE NOT NULL,
+        user_agent VARCHAR(500)
     )");
 
-    $stmtCheck = $pdo->prepare("SELECT id FROM visitors WHERE ip_address = ? AND access_date = ?");
+    // Cek apakah kolom user_agent sudah ada, jika belum tambahkan
+    $pdo->exec("ALTER TABLE visitor_stats ADD COLUMN IF NOT EXISTS user_agent VARCHAR(500)");
+
+    $stmtCheck = $pdo->prepare("SELECT id FROM visitor_stats WHERE ip_address = ? AND visit_date = ?");
     $stmtCheck->execute([$ip_visitor, $date_today]);
 
     if ($stmtCheck->rowCount() == 0) {
-        $stmtInsert = $pdo->prepare("INSERT INTO visitors (ip_address, access_date) VALUES (?, ?)");
-        $stmtInsert->execute([$ip_visitor, $date_today]);
+        $stmtInsert = $pdo->prepare("INSERT INTO visitor_stats (ip_address, visit_date, user_agent) VALUES (?, ?, ?)");
+        $stmtInsert->execute([$ip_visitor, $date_today, $user_agent]);
     }
 
-    $stmtCount = $pdo->query("SELECT COUNT(*) FROM visitors");
+    $stmtCount = $pdo->query("SELECT COUNT(*) FROM visitor_stats");
     $totalViewers = $stmtCount->fetchColumn();
 
 } catch (Exception $e) {
@@ -506,7 +511,7 @@ try {
                                 <div class="news-thumbnail">
                                     <img src="<?php echo htmlspecialchars($news['thumbnail']); ?>" alt="<?php echo htmlspecialchars($news['title']); ?>">
                                     <div class="news-overlay">
-                                        <span class="news-tag">Berita: <?php echo htmlspecialchars($news['title']); ?></span>
+                                        <span class="news-tag"><?php echo htmlspecialchars($news['title']); ?></span>
                                     </div>
                                 </div>
                             <?php endif; ?>
