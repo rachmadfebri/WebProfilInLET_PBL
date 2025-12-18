@@ -137,9 +137,17 @@ class InventoryController {
             exit;
         }
 
-        // Jika bukan POST, redirect ke halaman inventory
-        header('Location: ?page=inventory');
-        exit;
+        // Jika GET, tampilkan halaman dengan data edit (seperti gallery)
+        $filter = $_GET['type'] ?? null;
+        $inventoryList = $this->inventoryModel->getAll($filter);
+        
+        $flash_message = $_SESSION['flash_message'] ?? null;
+        unset($_SESSION['flash_message']);
+        
+        $editData = $inventory; // Pass data untuk mode edit
+        $nama_pengguna = $_SESSION['full_name'] ?? 'Administrator';
+
+        require __DIR__ . '/../views/admin/inventory.php';
     }
 
     /**

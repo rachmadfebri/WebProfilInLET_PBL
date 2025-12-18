@@ -2997,7 +2997,7 @@ h1 {
     margin-top: 60px;
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr)); /* 5 kartu per baris di desktop */
-    gap: 24px;
+    gap: 32px 24px; /* gap vertikal lebih besar untuk mencegah overlap */
     max-width: 1200px;
     width: 100%;
     position: relative;
@@ -3015,14 +3015,16 @@ h1 {
     text-align: center;
     max-width: 200px;
     margin: 0 auto;
+    /* Tidak ada transform - cards sejajar */
 }
 
+/* Hapus efek zigzag yang menyebabkan overlap */
 .team-card:nth-child(odd) {
-    transform: translateY(30px);
+    transform: none;
 }
 
 .team-card:nth-child(3n + 2) {
-    transform: translateY(-20px);
+    transform: none;
 }
 
 .team-card h3 {

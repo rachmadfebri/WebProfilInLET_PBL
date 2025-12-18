@@ -700,9 +700,9 @@ $pagedData = array_slice($guestbookList, $offset, $limit);
                         <h6 class="font-bold">Filter & Cetak Laporan Buku Tamu</h6>
                     </div>
                     <div class="flex-auto p-6">
-                        <!-- FORM PENCARIAN & FILTER (Action ke Halaman Guestbook) -->
+                        <!-- FORM PENCARIAN & FILTER (Action ke Halaman Admin Guestbook) -->
                         <form action="index.php" method="GET" class="flex flex-wrap items-end gap-4 mb-4">
-                            <input type="hidden" name="page" value="guestbook">
+                            <input type="hidden" name="page" value="admin-guestbook">
                             
                             <div>
                                 <label class="block text-sm font-bold text-slate-700">Dari Tanggal</label>

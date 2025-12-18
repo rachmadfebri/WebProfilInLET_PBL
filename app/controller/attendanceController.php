@@ -66,7 +66,7 @@ class AttendanceController {
         
         $latest_attendance = $this->attendanceModel->getLatestTodayAttendance($user_id);
         
-        error_log("AttendanceController::processCheckOut - Latest Attendance: " . print_r($latest_attendance, true));
+        error_log(message: "AttendanceController::processCheckOut - Latest Attendance: " . print_r($latest_attendance, true));
 
         if (!$latest_attendance) {
             $_SESSION['flash_message'] = [

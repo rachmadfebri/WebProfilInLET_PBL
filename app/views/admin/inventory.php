@@ -20,6 +20,14 @@ if (isset($flash_message)) {
 
 $inventoryList = $inventoryList ?? [];
 $currentType = $_GET['type'] ?? '';
+
+// Logika Edit/Tambah (seperti gallery)
+$isEdit = isset($editData);
+$formTitle = $isEdit ? "Edit Inventaris" : "Tambah Inventaris";
+$formAction = $isEdit 
+    ? "index.php?page=inventory&action=edit&id=" . $editData['id'] 
+    : "index.php?page=inventory&action=create";
+$popoverClass = $isEdit ? "" : "hidden"; // Jika edit, tampilkan popover langsung
 ?>
 
 <!DOCTYPE html>
@@ -578,11 +586,11 @@ $currentType = $_GET['type'] ?? '';
         </div>
 
         <!-- Inventory Popover Form -->
-        <div id="inventoryPopover" class="absolute left-0 top-12 z-50 hidden bg-white rounded-2xl shadow-2xl p-6 border border-gray-100" style="width: 100%; max-width: 400px;">
-          <h3 class="text-lg font-bold mb-4 border-b pb-2" id="popoverTitle">Tambah Inventaris</h3>
+        <div id="inventoryPopover" class="absolute left-0 top-12 z-50 <?= $popoverClass ?> bg-white rounded-2xl shadow-2xl p-6 border border-gray-100" style="width: 100%; max-width: 400px;">
+          <h3 class="text-lg font-bold mb-4 border-b pb-2" id="popoverTitle"><?= $formTitle ?></h3>
           
-          <form method="POST" action="index.php?page=inventory&action=create" id="inventoryForm">
-            <input type="hidden" name="id" id="formId" value="">
+          <form method="POST" action="<?= $formAction ?>" id="inventoryForm">
+            <input type="hidden" name="id" id="formId" value="<?= $isEdit ? htmlspecialchars($editData['id']) : '' ?>">
             
             <!-- Nama -->
             <div class="mb-4">
@@ -590,6 +598,7 @@ $currentType = $_GET['type'] ?? '';
                 Nama <span class="text-red-500">*</span>
               </label>
               <input type="text" name="name" id="itemName" required placeholder="Nama barang/ruang..."
+                     value="<?= $isEdit ? htmlspecialchars($editData['name'] ?? '') : '' ?>"
                      class="block w-full px-3 py-2 text-sm text-slate-700 bg-white border border-gray-300 rounded-lg focus:border-purple-500 focus:ring-purple-500">
             </div>
 
@@ -600,8 +609,8 @@ $currentType = $_GET['type'] ?? '';
               </label>
               <select name="type" id="itemType" required class="block w-full px-3 py-2 text-sm text-slate-700 bg-white border border-gray-300 rounded-lg focus:border-purple-500 focus:ring-purple-500">
                 <option value="">-- Pilih Tipe --</option>
-                <option value="barang">Barang</option>
-                <option value="ruang">Ruang</option>
+                <option value="barang" <?= ($isEdit && ($editData['type'] ?? '') === 'barang') ? 'selected' : '' ?>>Barang</option>
+                <option value="ruang" <?= ($isEdit && ($editData['type'] ?? '') === 'ruang') ? 'selected' : '' ?>>Ruang</option>
               </select>
             </div>
 
@@ -610,21 +619,28 @@ $currentType = $_GET['type'] ?? '';
               <label class="block text-sm font-medium text-gray-700 mb-2">
                 Deskripsi
               </label>
-              <textarea name="description" id="itemDescription" rows="3" placeholder="Deskripsi (opsional)..." class="block w-full px-3 py-2 text-sm text-slate-700 bg-white border border-gray-300 rounded-lg focus:border-purple-500 focus:ring-purple-500"></textarea>
+              <textarea name="description" id="itemDescription" rows="3" placeholder="Deskripsi (opsional)..." class="block w-full px-3 py-2 text-sm text-slate-700 bg-white border border-gray-300 rounded-lg focus:border-purple-500 focus:ring-purple-500"><?= $isEdit ? htmlspecialchars($editData['description'] ?? '') : '' ?></textarea>
             </div>
 
             <!-- Status Ketersediaan -->
+            <?php 
+            $isAvailableChecked = true; // default checked untuk tambah baru
+            if ($isEdit) {
+                $av = $editData['is_available'] ?? true;
+                $isAvailableChecked = ($av === true || $av === 't' || $av === '1' || $av === 1 || $av === 'true');
+            }
+            ?>
             <div class="mb-4 flex items-center">
-              <input type="checkbox" name="is_available" id="itemAvailable" value="1" checked class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500">
+              <input type="checkbox" name="is_available" id="itemAvailable" value="1" <?= $isAvailableChecked ? 'checked' : '' ?> class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500">
               <label for="itemAvailable" class="ml-2 text-sm font-medium text-gray-700">
                 Tersedia untuk dipinjam
               </label>
             </div>
             
             <div class="flex justify-end pt-2">
-              <button type="button" onclick="closePopover()" class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all">
+              <a href="index.php?page=inventory" class="mr-4 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition-all">
                 Batal
-              </button>
+              </a>
               <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 text-white text-sm font-bold hover:scale-102 transition-all shadow-md">
                 Simpan
               </button>
@@ -689,7 +705,7 @@ $currentType = $_GET['type'] ?? '';
                               <?php endif; ?>
                             </td>
                             <td class="p-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
-                              <a href="javascript:void(0)" onclick="openEditModal(<?= htmlspecialchars(json_encode($item)) ?>)" 
+                              <a href="index.php?page=inventory&action=edit&id=<?= $item['id'] ?>" 
                                  class="text-xs font-bold leading-tight text-blue-800 mr-6 hover:text-blue-950 transition-all">
                                  <i class="fas fa-edit mr-1"></i>Edit
                               </a>
@@ -726,15 +742,15 @@ $currentType = $_GET['type'] ?? '';
         const popover = document.getElementById("inventoryPopover");
         popover.classList.toggle("hidden");
         
-        // Reset form to add mode when opening
+        // Reset form to add mode when opening via button
         if (!popover.classList.contains("hidden")) {
           resetFormToAddMode();
         }
       }
       
       function closePopover() {
-        const popover = document.getElementById("inventoryPopover");
-        popover.classList.add("hidden");
+        // Redirect ke halaman inventory untuk reset state
+        window.location.href = 'index.php?page=inventory';
       }
       
       function resetFormToAddMode() {
@@ -747,29 +763,17 @@ $currentType = $_GET['type'] ?? '';
         document.getElementById('itemAvailable').checked = true;
       }
       
-      // Close popover when clicking outside
+      // Close popover when clicking outside (hanya jika bukan mode edit)
       document.addEventListener("click", function(e) {
         const btn = document.getElementById("addInventoryBtn");
         const popover = document.getElementById("inventoryPopover");
-        if (btn && popover && !popover.contains(e.target) && e.target !== btn) {
+        const isEditMode = <?= $isEdit ? 'true' : 'false' ?>;
+        
+        // Jangan tutup otomatis jika sedang mode edit
+        if (!isEditMode && btn && popover && !popover.contains(e.target) && e.target !== btn) {
           popover.classList.add("hidden");
         }
       });
-      
-      function openEditModal(item) {
-        // Update form fields for edit
-        document.getElementById('popoverTitle').textContent = 'Edit Inventaris';
-        document.getElementById('inventoryForm').action = 'index.php?page=inventory&action=edit&id=' + item.id;
-        document.getElementById('formId').value = item.id;
-        document.getElementById('itemName').value = item.name;
-        document.getElementById('itemType').value = item.type;
-        document.getElementById('itemDescription').value = item.description || '';
-        document.getElementById('itemAvailable').checked = item.is_available == true || item.is_available == 't' || item.is_available == '1';
-        
-        // Show popover
-        const popover = document.getElementById("inventoryPopover");
-        popover.classList.remove("hidden");
-      }
     </script>
 </body>
 </html>

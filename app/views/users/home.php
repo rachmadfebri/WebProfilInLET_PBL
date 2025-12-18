@@ -397,7 +397,7 @@ try {
         require_once __DIR__ . '/../../model/teamMembersModel.php';
         $teamMembersModel = new TeamMembersModel($pdo);
         $teamMembers = $teamMembersModel->getAll();
-        $featuredTeam = array_slice($teamMembers, 0, 6); // Show 6 team members instead of 4
+        $featuredTeam = array_slice($teamMembers, 0, 4); // Show 6 team members instead of 4
     } catch (Exception $e) {
         error_log("Team Error: " . $e->getMessage());
         $featuredTeam = [];
