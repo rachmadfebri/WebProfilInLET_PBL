@@ -37,6 +37,12 @@ class authController {
         exit;
     }
 
+    if ($this->userModel->getByUsername($username)) {
+        $_SESSION['error'] = "Username already taken.";
+        header("Location: ?page=register");
+        exit;
+    }
+
     $user_id = $this->userModel->createUser($fullname, $username, $email, $password, 'mahasiswa');
 
     if (!$user_id) {

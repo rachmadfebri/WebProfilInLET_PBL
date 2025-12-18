@@ -36,6 +36,12 @@ class userModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getByUsername($username) {
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE username = :username LIMIT 1");
+        $stmt->execute([':username' => $username]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function getById($id) {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE user_id = :id LIMIT 1");
         $stmt->execute([':id' => $id]);
